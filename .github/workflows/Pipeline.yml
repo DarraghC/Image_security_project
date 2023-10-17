@@ -33,6 +33,9 @@ jobs:
       run: |
         download_url="${{ steps.get_latest_release.outputs.latest_release_url }}/download/trivy_linux_amd64.tar.gz"
         curl -sL -o trivy.tar.gz "$download_url"
+        chmod +x trivy
+        sudo mv trivy /usr/local/bin/trivy
+        trivy --version
       shell: bash
 
     - name: List of Images
