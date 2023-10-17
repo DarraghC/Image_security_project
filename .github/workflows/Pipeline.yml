@@ -1,0 +1,49 @@
+name: Image Security Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Adjust the branch as needed
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Download Trivy
+      run: |
+        wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.20.0_Linux-64bit.tar.gz
+        tar zxvf trivy_0.20.0_Linux-64bit.tar.gz
+        chmod +x trivy
+        sudo mv trivy /usr/local/bin/trivy
+        trivy --version
+      shell: bash
+
+    - name: List of Images
+      run: |
+        # Define the list of image names you want to scan
+        images=("alpine:latest" "nginx:latest" "ubuntu:latest" "python:latest" "redis:latest" "postgres:latest" "node:latest" "httpd:latest" "memcached:latest" "mongo:latest" "mysql:latest" "traefik:latest" "mariadb:latest" "docker:latest" "rabbitmq:latest" "golang:latest" "wordpress:latest" "php:latest" "consul:latest" "sonarqube:latest" "ruby:latest" "haproxy:latest" "elasticsearch:latest" "tomcat:latest" "kong:latest" "neo4j:latest")
+    
+        for image in "${images[@]}"; do
+          echo "Pulling $image"
+          docker pull $image
+    
+          echo "Scanning $image"
+          trivy --exit-code 0 --severity HIGH,CRITICAL --no-progress $image
+        done
+      shell: bash
+
+    - name: Save Trivy Reports
+      run: |
+        mkdir -p trivy-reports
+        mv -t trivy-reports /root/.cache/trivy/db/*
+      shell: bash
+
+    - name: Upload Trivy Reports
+      uses: actions/upload-artifact@v2
+      with:
+        name: trivy-reports
+        path: trivy-reports
