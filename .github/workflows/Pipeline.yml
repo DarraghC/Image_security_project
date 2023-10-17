@@ -45,7 +45,7 @@ jobs:
           docker pull $image
     
           echo "Scanning $image"
-          trivy --exit-code 0 --severity HIGH,CRITICAL --no-progress $image
+          /usr/local/bin/trivy --exit-code 0 --severity HIGH,CRITICAL --no-progress $image
         done
       shell: bash
 
