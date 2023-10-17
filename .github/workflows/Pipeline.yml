@@ -13,11 +13,42 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    # - name: Trivy Scan
+    #   uses: aquasecurity/trivy-action@master
+    #   with:
+    #     image-ref: "alpine:latest,nginx:latest,ubuntu:latest,python:latest,redis:latest,postgres:latest,node:latest,httpd:latest,memcached:latest,mongo:latest,mysql:latest,traefik:latest,mariadb:latest,docker:latest,rabbitmq:latest,golang:latest,wordpress:latest,php:latest,consul:latest,sonarqube:latest,ruby:latest,haproxy:latest,elasticsearch:latest,tomcat:latest,kong:latest,neo4j:latest"
+
     - name: Trivy Scan
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: "alpine:latest,nginx:latest,ubuntu:latest,python:latest,redis:latest,postgres:latest,node:latest,httpd:latest,memcached:latest,mongo:latest,mysql:latest,traefik:latest,mariadb:latest,docker:latest,rabbitmq:latest,golang:latest,wordpress:latest,php:latest,consul:latest,sonarqube:latest,ruby:latest,haproxy:latest,elasticsearch:latest,tomcat:latest,kong:latest,neo4j:latest"
-
+        image-ref: >
+          alpine:latest
+          nginx:latest
+          ubuntu:latest
+          python:latest
+          redis:latest
+          postgres:latest
+          node:latest
+          httpd:latest
+          memcached:latest
+          mongo:latest
+          mysql:latest
+          traefik:latest
+          mariadb:latest
+          docker:latest
+          rabbitmq:latest
+          golang:latest
+          wordpress:latest
+          php:latest
+          consul:latest
+          sonarqube:latest
+          ruby:latest
+          haproxy:latest
+          elasticsearch:latest
+          tomcat:latest
+          kong:latest
+          neo4j:latest
+          
     - name: Save Trivy Reports
       run: |
         mkdir -p trivy-reports
