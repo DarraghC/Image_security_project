@@ -13,15 +13,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    # - name: Download Trivy
-    #   run: |
-    #     curl -sfL -o trivy.tar.gz https://github.com/aquasecurity/trivy/releases/latest/
-    #     tar zxvf trivy_0.20.0_Linux-64bit.tar.gz
-    #     chmod +x trivy
-    #     sudo mv trivy /usr/local/bin/trivy
-    #     trivy --version
-    #   shell: bash
-
     - name: Get Latest Trivy Release URL
       id: get_latest_release
       run: |
@@ -33,6 +24,7 @@ jobs:
       run: |
         download_url="${{ steps.get_latest_release.outputs.latest_release_url }}/download/trivy_linux_amd64.tar.gz"
         curl -sL -o trivy.tar.gz "$download_url"
+        tar zxvf trivy.tar.gz
         chmod +x trivy
         sudo mv trivy /usr/local/bin/trivy
         trivy --version
