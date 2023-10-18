@@ -24,15 +24,15 @@ jobs:
 
         for image in "${images[@]}"; do
           echo "Scanning $image"
-          trivy image "$image" --version
+          trivy image -f json -o trivy-reports/"$image.json" "$image"
         done
       shell: bash
 
-    - name: Save Trivy Reports
-      run: |
-        mkdir -p trivy-reports
-        sudo mv ~/.cache/trivy/db/* trivy-reports/
-      shell: bash
+    # - name: Save Trivy Reports
+    #   run: |
+    #     mkdir -p trivy-reports
+    #     sudo mv ~/.cache/trivy/db/* trivy-reports/
+    #   shell: bash
 
     # - name: Save Trivy Reports
     #   run: |
