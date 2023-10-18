@@ -50,7 +50,7 @@ jobs:
       run: |
         # Define the S3 bucket and folder (prefix) where you want to upload the reports
         s3_bucket="imagereportbucket"
-
+        current_date=$(date +'%Y-%m-%d')
         # Define the S3 prefix, including the current date
         s3_prefix="trivy-reports-${current_date}/"
   
