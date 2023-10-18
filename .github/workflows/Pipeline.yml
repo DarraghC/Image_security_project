@@ -29,7 +29,7 @@ jobs:
         for image in "${images[@]}"; do
           sanitized_name="${image//:/_}"
           echo "Scanning $image"
-          trivy image -f table -o "trivy-reports/$sanitized_name.table" "$image"
+          trivy image -f json -o "trivy-reports/$sanitized_name.json" "$image"
         done
       shell: bash
 
@@ -39,14 +39,14 @@ jobs:
         name: trivy-reports
         path: trivy-reports
 
-    # - name: Upload Trivy Reports to Amazon S3
-    #   run: |
-    #     # Define the S3 bucket and folder (prefix) where you want to upload the reports
-    #     s3_bucket="your-s3-bucket-name"
-    #     s3_prefix="trivy-reports/"
+    - name: Upload Trivy Reports to Amazon S3
+      run: |
+        # Define the S3 bucket and folder (prefix) where you want to upload the reports
+        s3_bucket="imagereportbucket"
+        s3_prefix="trivy-reports/"
   
-    #     # Loop through the reports and upload them to S3
-    #     for report in trivy-reports/*.json; do
-    #       aws s3 cp "$report" "s3://$s3_bucket/$s3_prefix$(basename $report)"
-    #     done
-    #   shell: bash
+        # Loop through the reports and upload them to S3
+        for report in trivy-reports/*.json; do
+          aws s3 cp "$report" "s3://$s3_bucket/$s3_prefix$(basename $report)"
+        done
+      shell: bash
