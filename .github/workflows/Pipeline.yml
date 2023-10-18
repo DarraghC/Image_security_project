@@ -39,7 +39,7 @@ jobs:
 
         for image in "${images[@]}"; do
           echo "Scanning $image"
-          trivy "$image"
+          trivy image "$image" --version
         done
       shell: bash
 
