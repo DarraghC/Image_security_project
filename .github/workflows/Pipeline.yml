@@ -30,8 +30,8 @@ jobs:
 
     - name: Save Trivy Reports
       run: |
-        mkdir -p $GITHUB_WORKSPACE/trivy-reports
-        su mv /root/.cache/trivy/db/* $GITHUB_WORKSPACE/trivy-reports/
+        mkdir -p trivy-reports
+        sudo mv /root/.cache/trivy/db/* trivy-reports/
       shell: bash
 
     # - name: Save Trivy Reports
