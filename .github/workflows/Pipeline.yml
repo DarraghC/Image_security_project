@@ -31,7 +31,7 @@ jobs:
     - name: Save Trivy Reports
       run: |
         mkdir -p trivy-reports
-        sudo mv /root/.cache/trivy/db/* trivy-reports/
+        sudo mv ~/.cache/trivy/db/* trivy-reports/
       shell: bash
 
     # - name: Save Trivy Reports
