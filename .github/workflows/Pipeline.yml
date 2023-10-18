@@ -30,9 +30,15 @@ jobs:
 
     - name: Save Trivy Reports
       run: |
-        mkdir -p trivy-reports
-        mv /root/.cache/trivy/db/* trivy-reports/
+        mkdir -p $GITHUB_WORKSPACE/trivy-reports
+        mv /root/.cache/trivy/db/* $GITHUB_WORKSPACE/trivy-reports/
       shell: bash
+
+    # - name: Save Trivy Reports
+    #   run: |
+    #     mkdir -p trivy-reports
+    #     mv /root/.cache/trivy/db/* trivy-reports/
+    #   shell: bash
 
     - name: Upload Trivy Reports
       uses: actions/upload-artifact@v2
