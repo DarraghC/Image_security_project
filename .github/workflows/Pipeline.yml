@@ -25,7 +25,7 @@ jobs:
       run: |
         # Define the list of image names you want to scan
         images=("alpine:latest" "nginx:latest" "ubuntu:latest" "python:latest" "redis:latest" "postgres:latest" "node:latest" "httpd:latest" "memcached:latest" "mongo:latest" "mysql:latest" "traefik:latest" "mariadb:latest" "docker:latest" "rabbitmq:latest" "golang:latest" "wordpress:latest" "php:latest" "sonarqube:latest" "ruby:latest" "haproxy:latest" "tomcat:latest" "kong:latest" "neo4j:latest")
-
+        current_date=$(date +'%Y-%m-%d')
         for image in "${images[@]}"; do
           sanitized_name="${image//:/_}"
           echo "Scanning $image"
@@ -38,7 +38,7 @@ jobs:
       with:
         name: trivy-reports
         path: trivy-reports
-    
+
     - name: Set up AWS CLI
       run: |
         aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -50,7 +50,9 @@ jobs:
       run: |
         # Define the S3 bucket and folder (prefix) where you want to upload the reports
         s3_bucket="imagereportbucket"
-        s3_prefix="trivy-reports/"
+
+        # Define the S3 prefix, including the current date
+        s3_prefix="trivy-reports-${current_date}/"
   
         # Loop through the reports and upload them to S3
         for report in trivy-reports/*.json; do
