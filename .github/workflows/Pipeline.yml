@@ -39,7 +39,7 @@ jobs:
 
         for image in "${images[@]}"; do
           echo "Scanning $image"
-          trivy --exit-code 0 --severity HIGH,CRITICAL --no-progress "$image"
+          trivy --no-progress "$image"
         done
       shell: bash
 
