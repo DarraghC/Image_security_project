@@ -21,14 +21,15 @@ jobs:
       run: mkdir -p trivy-reports
       shell: bash
 
-    - name: List of Images
+    - name: Scan images and generate reports
       run: |
         # Define the list of image names you want to scan
         images=("alpine:latest" "nginx:latest" "ubuntu:latest" "python:latest" "redis:latest" "postgres:latest" "node:latest" "httpd:latest" "memcached:latest" "mongo:latest" "mysql:latest" "traefik:latest" "mariadb:latest" "docker:latest" "rabbitmq:latest" "golang:latest" "wordpress:latest" "php:latest" "sonarqube:latest" "ruby:latest" "haproxy:latest" "tomcat:latest" "kong:latest" "neo4j:latest")
 
         for image in "${images[@]}"; do
+          sanitized_name="${image//:/_}"
           echo "Scanning $image"
-          trivy image -f json -o trivy-reports/"$image.json" "$image"
+          trivy image -f json -o "trivy-reports/$sanitized_name.json" "$image"
         done
       shell: bash
 
