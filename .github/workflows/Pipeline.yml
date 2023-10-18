@@ -13,20 +13,25 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Get Latest Trivy Release URL
-      id: get_latest_release
-      run: |
-        latest_release_url=$(curl -s -L -o /dev/null -w %{url_effective} "https://github.com/aquasecurity/trivy/releases/latest")
-        echo "::set-output name=latest_release_url::$latest_release_url"
-      shell: bash
-
     - name: Download Trivy
       run: |
-        download_url="${{ steps.get_latest_release.outputs.latest_release_url }}/trivy_linux_amd64"
-        curl -sL -o /usr/local/bin/trivy "$download_url"
-        chmod +x /usr/local/bin/trivy
-        trivy --version
-      shell: bash
+        curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.45.1
+
+S
+    # - name: Get Latest Trivy Release URL
+    #   id: get_latest_release
+    #   run: |
+    #     latest_release_url=$(curl -s -L -o /dev/null -w %{url_effective} "https://github.com/aquasecurity/trivy/releases/latest")
+    #     echo "::set-output name=latest_release_url::$latest_release_url"
+    #   shell: bash
+
+    # - name: Download Trivy
+    #   run: |
+    #     download_url="${{ steps.get_latest_release.outputs.latest_release_url }}/trivy_linux_amd64"
+    #     curl -sL -o /usr/local/bin/trivy "$download_url"
+    #     chmod +x /usr/local/bin/trivy
+    #     trivy --version
+    #   shell: bash
 
     - name: List of Images
       run: |
