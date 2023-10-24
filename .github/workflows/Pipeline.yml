@@ -57,7 +57,7 @@ jobs:
         s3_prefix="trivy-reports-${current_date}/"
   
         # Loop through the reports and upload them to S3
-        for report in trivy-reports/*.json; do
+        for report in trivy-reports/*.table; do
           aws s3 cp "$report" "s3://$s3_bucket/$s3_prefix$(basename $report)"
         done
       shell: bash
