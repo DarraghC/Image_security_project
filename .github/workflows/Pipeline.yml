@@ -30,7 +30,7 @@ jobs:
           sanitized_name="${image//:/_}"
           echo "Scanning $image"
           trivy image -f json -o "trivy-reports/$sanitized_name.json" "$image"
-          jq -c '.' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name.ndjson" && mv "trivy-reports/$sanitized_name.ndjson" "trivy-reports/$sanitized_name.json"
+          # jq -c '.' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name.ndjson" && mv "trivy-reports/$sanitized_name.ndjson" "trivy-reports/$sanitized_name.json"
 
         done
       shell: bash
