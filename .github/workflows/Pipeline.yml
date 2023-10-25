@@ -30,7 +30,7 @@ jobs:
           sanitized_name="${image//:/_}"
           echo "Scanning $image"
           trivy image -f json -o "trivy-reports/$sanitized_name.json" "$image"
-          jq 'del(.[].DiffID)' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name-no-diffid.json" && mv "trivy-reports/$sanitized_name-no-diffid.json" "trivy-reports/$sanitized_name.json"
+          jq 'walk(if type == "object" and has("DiffID") then del(.DiffID) else . end)' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name-no-diffid.json" && mv "trivy-reports/$sanitized_name-no-diffid.json" "trivy-reports/$sanitized_name.json"
 
           # jq -c '.' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name.ndjson" && mv "trivy-reports/$sanitized_name.ndjson" "trivy-reports/$sanitized_name.json"
 
