@@ -29,8 +29,8 @@ jobs:
         for image in "${images[@]}"; do
           sanitized_name="${image//:/_}"
           echo "Scanning $image"
-          trivy image -f csv -o "trivy-reports/$sanitized_name.csv" "$image"
-          # jq -c '.' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name.ndjson" && mv "trivy-reports/$sanitized_name.ndjson" "trivy-reports/$sanitized_name.json"
+          trivy image -f json -o "trivy-reports/$sanitized_name.json" "$image"
+          jq -c '.' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name.ndjson" && mv "trivy-reports/$sanitized_name.ndjson" "trivy-reports/$sanitized_name.json"
 
         done
       shell: bash
@@ -57,7 +57,7 @@ jobs:
         s3_prefix="trivy-reports-${current_date}/"
   
         # Loop through the reports and upload them to S3
-        for report in trivy-reports/*.csv; do
+        for report in trivy-reports/*.json; do
           aws s3 cp "$report" "s3://$s3_bucket/$s3_prefix$(basename $report)"
         done
       shell: bash
