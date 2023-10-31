@@ -52,40 +52,71 @@ jobs:
     
     - name: Python manipulation
       run: |
-        
-        image_name_pattern = r'ArtifactName: (.*?),'
-        image_version_pattern = r'"RUBY_VERSION= (.*?)",'
-        image_Vulnerability_pattern = r'"Vulnerabilities": [{ (.*?)},{'
-
+        image_name_pattern='ArtifactName: (.*?),'
+        image_version_pattern='"RUBY_VERSION= (.*?)",'
+        image_vulnerability_pattern='"Vulnerabilities": \[(.*?)\],'
+    
         for report in trivy-reports/*.json; do
-          with open(report, 'r') as json_file:
-            data = json.load(json_file)
-            echo "data is {0}".format(data)
-            
-            # convert to a string
-            json_string = json.dumps(data)
-            echo json_string
-
-          
-            # prepares string for regular expressions
-            
-            json_string = json_string.replace(" ", "")
-            echo "string without spaces {0}".format(json_string)
-            json_string = json_string.replace("\n ", "")
-            echo "string without spaces and newlines{0}".format(json_string)
-            
-            # Gets our data to populate CSV File
-
-            image_name = re.findall(image_name_pattern, json_string)
-            echo image_name
-            image_version = re.findall(image_version_pattern, json_string)
-            echo image_version
-            vulnerability_list = re.findall(image_Vulnerability_pattern, json_string)
-            echo vulnerability_list
-
-
+          if [ -f "$report" ]; then
+            data=$(cat "$report")
+            echo "data is $data"
+  
+          # Convert JSON to a single-line string
+          json_string=$(echo "$data" | tr -d '\n')
+  
+          echo "string without spaces and newlines: $json_string"
+  
+          # Extract data using regular expressions
+          if [[ $json_string =~ $image_name_pattern ]]; then
+            image_name="${BASH_REMATCH[1]}"
+            echo "Image Name: $image_name"
+          fi
+  
+          if [[ $json_string =~ $image_version_pattern ]]; then
+            image_version="${BASH_REMATCH[1]}"
+            echo "Image Version: $image_version"
+          fi
+  
+          if [[ $json_string =~ $image_vulnerability_pattern ]]; then
+            vulnerability_list="${BASH_REMATCH[1]}"
+            echo "Vulnerability List: $vulnerability_list"
+          fi
+        fi
         done
       shell: bash
+      #   image_name_pattern = r'ArtifactName: (.*?),'
+      #   image_version_pattern = r'"RUBY_VERSION= (.*?)",'
+      #   image_Vulnerability_pattern = r'"Vulnerabilities": [{ (.*?)},{'
+
+      #   for report in trivy-reports/*.json; do
+      #     with open(report, 'r') as json_file:
+      #       data = json.load(json_file)
+      #       echo "data is {0}".format(data)
+            
+      #       # convert to a string
+      #       json_string = json.dumps(data)
+      #       echo json_string
+
+          
+      #       # prepares string for regular expressions
+            
+      #       json_string = json_string.replace(" ", "")
+      #       echo "string without spaces {0}".format(json_string)
+      #       json_string = json_string.replace("\n ", "")
+      #       echo "string without spaces and newlines{0}".format(json_string)
+            
+      #       # Gets our data to populate CSV File
+
+      #       image_name = re.findall(image_name_pattern, json_string)
+      #       echo image_name
+      #       image_version = re.findall(image_version_pattern, json_string)
+      #       echo image_version
+      #       vulnerability_list = re.findall(image_Vulnerability_pattern, json_string)
+      #       echo vulnerability_list
+
+
+      #   done
+      # shell: bash
 
 
     # - name: Upload Trivy Reports to Amazon S3
