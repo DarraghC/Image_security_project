@@ -60,7 +60,7 @@ jobs:
         image_Vulnerability_pattern = r'"Vulnerabilities": [{ (.*?)},{'
 
         for report in trivy-reports/*.json; do
-          with open('data.json', 'r') as json_file:
+          with open(report, 'r') as json_file:
             data = json.load(json_file)
             echo "data is {0}".format(data)
             
@@ -68,10 +68,13 @@ jobs:
             json_string = json.dumps(data)
             echo json_string
 
+          
+            # prepares for regular expressions
             json_string = json_string.replace(" ", "")
             echo "string without spaces {0}".format(json_string)
             json_string = json_string.replace("\n ", "")
             echo "string without spaces and newlines{0}".format(json_string)
+
         done
       shell: bash
 
