@@ -49,17 +49,43 @@ jobs:
         aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws configure set region eu-north-1
       shell: bash
-
-    - name: Upload Trivy Reports to Amazon S3
+    
+    - name: Python manipulation
       run: |
-        # Define the S3 bucket and folder (prefix) where you want to upload the reports
-        s3_bucket="imagereportbucket"
-        current_date=$(date +'%Y-%m-%d')
-        # Define the S3 prefix, including the current date
-        s3_prefix="trivy-reports-${current_date}/"
-  
-        # Loop through the reports and upload them to S3
+        import json 
+        import re 
+
+        image_name_pattern = r'ArtifactName: (.*?),'
+        image_version_pattern = r'ArtifactName: (.*?),'
+        image_Vulnerability_pattern = r'"Vulnerabilities": [{ (.*?)},{'
+
         for report in trivy-reports/*.json; do
-          aws s3 cp "$report" "s3://$s3_bucket/$s3_prefix$(basename $report)"
+          with open('data.json', 'r') as json_file:
+            data = json.load(json_file)
+            echo "data is {0}".format(data)
+            
+            # convert to a string
+            json_string = json.dumps(data)
+            echo json_string
+
+            json_string = json_string.replace(" ", "")
+            echo "string without spaces {0}".format(json_string)
+            json_string = json_string.replace("\n ", "")
+            echo "string without spaces and newlines{0}".format(json_string)
         done
       shell: bash
+
+
+    # - name: Upload Trivy Reports to Amazon S3
+    #   run: |
+    #     # Define the S3 bucket and folder (prefix) where you want to upload the reports
+    #     s3_bucket="imagereportbucket"
+    #     current_date=$(date +'%Y-%m-%d')
+    #     # Define the S3 prefix, including the current date
+    #     s3_prefix="trivy-reports-${current_date}/"
+  
+    #     # Loop through the reports and upload them to S3
+    #     for report in trivy-reports/*.json; do
+    #       aws s3 cp "$report" "s3://$s3_bucket/$s3_prefix$(basename $report)"
+    #     done
+    #   shell: bash
