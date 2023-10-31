@@ -52,11 +52,9 @@ jobs:
     
     - name: Python manipulation
       run: |
-        import json 
-        import re 
-
+        
         image_name_pattern = r'ArtifactName: (.*?),'
-        image_version_pattern = r'ArtifactName: (.*?),'
+        image_version_pattern = r'"RUBY_VERSION= (.*?)",'
         image_Vulnerability_pattern = r'"Vulnerabilities": [{ (.*?)},{'
 
         for report in trivy-reports/*.json; do
@@ -69,11 +67,22 @@ jobs:
             echo json_string
 
           
-            # prepares for regular expressions
+            # prepares string for regular expressions
+            
             json_string = json_string.replace(" ", "")
             echo "string without spaces {0}".format(json_string)
             json_string = json_string.replace("\n ", "")
             echo "string without spaces and newlines{0}".format(json_string)
+            
+            # Gets our data to populate CSV File
+
+            image_name = re.findall(image_name_pattern, json_string)
+            echo image_name
+            image_version = re.findall(image_version_pattern, json_string)
+            echo image_version
+            vulnerability_list = re.findall(image_Vulnerability_pattern, json_string)
+            echo vulnerability_list
+
 
         done
       shell: bash
