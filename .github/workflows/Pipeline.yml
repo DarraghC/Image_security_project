@@ -60,6 +60,7 @@ jobs:
         for report in trivy-reports/*.json; do
           if [ -f "$report" ]; then
             data=$(cat "$report")
+          fi
             # echo "data is $data"
 
           count_low=0
@@ -94,12 +95,12 @@ jobs:
                 ((count_medium++))
               elif [[ $line == *"HIGH"* ]]; then
                 ((count_high++))
+              fi
 
             echo "Count of LOW: $count_low"
             echo "Count of MEDIUM: $count_medium"
             echo "Count of HIGH: $count_high"
           fi
-        fi
         done
       shell: bash
       #   image_name_pattern = r'ArtifactName: (.*?),'
