@@ -52,6 +52,7 @@ jobs:
     
     - name: Python manipulation
       run: |
+        
         image_name_pattern='"ArtifactName": \[(.*?)\],'
         image_version_pattern='"Env": [ \[(.*?)\],'
         image_vulnerability_pattern='"Vulnerabilities": \[(.*?)\],'
@@ -60,6 +61,10 @@ jobs:
           if [ -f "$report" ]; then
             data=$(cat "$report")
             # echo "data is $data"
+
+          count_low=0
+          count_medium=0
+          count_high=0
   
           # Convert JSON to a single-line string
           json_string=$(echo "$data" | tr -d '\n')
@@ -80,7 +85,20 @@ jobs:
           if [[ $json_string =~ $image_vulnerability_pattern ]]; then
             vulnerability_list="${BASH_REMATCH[1]}"
             echo "Vulnerability_List_is: $vulnerability_list"
-            echo "Length of vulnerability_list: ${#vulnerability_list}" 
+
+            # Count the occurrences of LOW, MEDIUM, and HIGH
+            while IFS= read -r line; do
+              if [[ $line == *"LOW"* ]]; then
+                ((count_low++))
+              elif [[ $line == *"MEDIUM"* ]]; then
+                ((count_medium++))
+              elif [[ $line == *"HIGH"* ]]; then
+                ((count_high++))
+              fi
+              
+            echo "Count of LOW: $count_low"
+            echo "Count of MEDIUM: $count_medium"
+            echo "Count of HIGH: $count_high"
           fi
         fi
         done
