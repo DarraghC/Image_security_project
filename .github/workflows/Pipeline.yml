@@ -52,8 +52,8 @@ jobs:
     
     - name: Python manipulation
       run: |
-        image_name_pattern='ArtifactName: (.*?),'
-        image_version_pattern='"RUBY_VERSION= (.*?)",'
+        image_name_pattern='"ArtifactName": \[(.*?)\],'
+        image_version_pattern='"Env": [ \[(.*?)\],'
         image_vulnerability_pattern='"Vulnerabilities": \[(.*?)\],'
     
         for report in trivy-reports/*.json; do
@@ -80,6 +80,7 @@ jobs:
           if [[ $json_string =~ $image_vulnerability_pattern ]]; then
             vulnerability_list="${BASH_REMATCH[1]}"
             echo "Vulnerability_List_is: $vulnerability_list"
+            echo "Length of vulnerability_list: ${#vulnerability_list}" 
           fi
         fi
         done
