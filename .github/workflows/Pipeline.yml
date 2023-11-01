@@ -52,57 +52,55 @@ jobs:
     
     - name: Python manipulation
       run: |
-        
-        image_name_pattern='"ArtifactName": \[(.*?)\],'
-        image_version_pattern='"Env": [ \[(.*?)\],'
-        image_vulnerability_pattern='"Vulnerabilities": \[(.*?)\],'
+        image_name_pattern='"ArtifactName": "(.*?)",'
+        image_version_pattern='"Env": \[(.*?)\],'
+        image_vulnerability_pattern='"Vulnerabilities": \[(.*?)\]'
     
         for report in trivy-reports/*.json; do
           if [ -f "$report" ]; then
             data=$(cat "$report")
-          fi
-            # echo "data is $data"
-
-          count_low=0
-          count_medium=0
-          count_high=0
-  
-          # Convert JSON to a single-line string
-          json_string=$(echo "$data" | tr -d '\n')
-  
-          # echo "string without spaces and newlines: $json_string"
-  
-          # Extract data using regular expressions
-          if [[ $json_string =~ $image_name_pattern ]]; then
-            image_name="${BASH_REMATCH[1]}"
-            echo "Image_Name_is: $image_name"
-          fi
-  
-          if [[ $json_string =~ $image_version_pattern ]]; then
-            image_version="${BASH_REMATCH[1]}"
-            echo "Image_Version_is: $image_version"
-          fi
-  
-          if [[ $json_string =~ $image_vulnerability_pattern ]]; then
-            vulnerability_list="${BASH_REMATCH[1]}"
-            echo "Vulnerability_List_is: $vulnerability_list"
-
-            # Count the occurrences of LOW, MEDIUM, and HIGH
-            while IFS= read -r line; do
-              if [[ $line == *"LOW"* ]]; then
-                ((count_low++))
-              elif [[ $line == *"MEDIUM"* ]]; then
-                ((count_medium++))
-              elif [[ $line == *"HIGH"* ]]; then
-                ((count_high++))
-              fi
-
-            echo "Count of LOW: $count_low"
-            echo "Count of MEDIUM: $count_medium"
-            echo "Count of HIGH: $count_high"
+    
+            count_low=0
+            count_medium=0
+            count_high=0
+    
+            # Convert JSON to a single-line string
+            json_string=$(echo "$data" | tr -d '\n')
+    
+            # Extract data using regular expressions
+            if [[ $json_string =~ $image_name_pattern ]]; then
+              image_name="${BASH_REMATCH[1]}"
+              echo "Image_Name_is: $image_name"
+            fi
+    
+            if [[ $json_string =~ $image_version_pattern ]]; then
+              image_version="${BASH_REMATCH[1]}"
+              echo "Image_Version_is: $image_version"
+            fi
+    
+            if [[ $json_string =~ $image_vulnerability_pattern ]]; then
+              vulnerability_list="${BASH_REMATCH[1]}"
+              echo "Vulnerability_List_is: $vulnerability_list"
+    
+              # Count the occurrences of LOW, MEDIUM, and HIGH
+              while IFS= read -r line; do
+                if [[ $line == *'"Severity": "LOW"'* ]]; then
+                  ((count_low++))
+                elif [[ $line == *'"Severity": "MEDIUM"'* ]]; then
+                  ((count_medium++))
+                elif [[ $line == *'"Severity": "HIGH"'* ]]; then
+                  ((count_high++))
+                fi
+              done
+    
+              echo "Count of LOW: $count_low"
+              echo "Count of MEDIUM: $count_medium"
+              echo "Count of HIGH: $count_high"
+            fi
           fi
         done
       shell: bash
+
       #   image_name_pattern = r'ArtifactName: (.*?),'
       #   image_version_pattern = r'"RUBY_VERSION= (.*?)",'
       #   image_Vulnerability_pattern = r'"Vulnerabilities": [{ (.*?)},{'
