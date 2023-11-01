@@ -94,8 +94,7 @@ jobs:
                 ((count_medium++))
               elif [[ $line == *"HIGH"* ]]; then
                 ((count_high++))
-              fi
-              
+
             echo "Count of LOW: $count_low"
             echo "Count of MEDIUM: $count_medium"
             echo "Count of HIGH: $count_high"
