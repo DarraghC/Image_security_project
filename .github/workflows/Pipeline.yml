@@ -59,27 +59,27 @@ jobs:
         for report in trivy-reports/*.json; do
           if [ -f "$report" ]; then
             data=$(cat "$report")
-            echo "data is $data"
+            # echo "data is $data"
   
           # Convert JSON to a single-line string
           json_string=$(echo "$data" | tr -d '\n')
   
-          echo "string without spaces and newlines: $json_string"
+          # echo "string without spaces and newlines: $json_string"
   
           # Extract data using regular expressions
           if [[ $json_string =~ $image_name_pattern ]]; then
             image_name="${BASH_REMATCH[1]}"
-            echo "Image Name: $image_name"
+            echo "Image_Name_is: $image_name"
           fi
   
           if [[ $json_string =~ $image_version_pattern ]]; then
             image_version="${BASH_REMATCH[1]}"
-            echo "Image Version: $image_version"
+            echo "Image_Version_is: $image_version"
           fi
   
           if [[ $json_string =~ $image_vulnerability_pattern ]]; then
             vulnerability_list="${BASH_REMATCH[1]}"
-            echo "Vulnerability List: $vulnerability_list"
+            echo "Vulnerability_List_is: $vulnerability_list"
           fi
         fi
         done
