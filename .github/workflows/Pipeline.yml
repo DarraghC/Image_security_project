@@ -53,7 +53,8 @@ jobs:
     - name: Python manipulation
       run: |
         image_name_pattern='"ArtifactName": "(.*?)",'
-        image_version_pattern='"Env": \[(.*?)\],'
+        image_version_pattern_start='"Env": \[(.*?)\],'
+        image_version_pattern_end='VERSION= \[(.*?)\],'
         image_vulnerability_pattern='"Vulnerabilities": \[(.*?)\]'
     
         for report in trivy-reports/*.json; do
@@ -73,9 +74,12 @@ jobs:
               echo "Image_Name_is: $image_name"
             fi
     
-            if [[ $json_string =~ $image_version_pattern ]]; then
+            if [[ $json_string =~ $image_version_pattern_start ]]; then
               image_version="${BASH_REMATCH[1]}"
-              echo "Image_Version_is: $image_version"
+              if [[ $image_version =~ $image_version_pattern_end ]]; then
+                image_version="${BASH_REMATCH[1]}"
+                echo "Image_Version_is: $image_version"
+              fi
             fi
     
             if [[ $json_string =~ $image_vulnerability_pattern ]]; then
