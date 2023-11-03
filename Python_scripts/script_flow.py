@@ -32,7 +32,8 @@ def parse_string_data(json_string_data):
     image_name = re.findall(IMAGE_NAME_PATTERN, str(json_string_data))
     image_name = str(set(image_name))
     image_name = image_name.replace('{', '').replace('}', '').replace("'", '')
-    print("image_name_type: {0}".format(type(image_name)))
+    image_name = image_name.upper()
+    # the_version_patter = VERSION_PATTERN.format(image_name)
     print(VERSION_PATTERN.format(image_name))
     image_version = re.findall(VERSION_PATTERN.format(image_name), str(json_string_data))
 
