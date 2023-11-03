@@ -83,6 +83,9 @@ def execute_flow():
     """
     json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
 
+    print("json_files_list {0}".format(json_files_list))
+    print("json_files_list_type {0}".format(type(json_files_list)))
+
     for json_file in json_files_list:
         json_string_data = get_json(json_file)
 
