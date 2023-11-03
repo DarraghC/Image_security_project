@@ -40,7 +40,7 @@ jobs:
     - name: Upload Trivy Reports
       uses: actions/upload-artifact@v2
       with:
-        name: trivy-reports
+        name: trivy-repotrs
         path: trivy-reports
 
     - name: Set up AWS CLI
@@ -49,107 +49,44 @@ jobs:
         aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws configure set region eu-north-1
       shell: bash
+
+    - name: Create csv directory
+      run: mkdir -p csv-data
+      shell: bash
     
-    - name: Python manipulation
+    - name: Check if project_data.csv exists if not create
       run: |
-        image_name_pattern='"ArtifactName": "(.*?)",'
-        image_version_pattern_start='"Env": \[(.*?)\],'
-        image_version_pattern_end='VERSION= \[(.*?)\],'
-        image_vulnerability_pattern='"Vulnerabilities": \[(.*?)\]'
+        if aws s3 ls s3://imagereportbucket/data_folder/project_data.csv; then
+          echo "File exists"
+          aws s3 cp s3://imagereportbucket/data_folder/project_data.csv csv-data/
+        else
+          echo "File does not exist"
+          echo "Creating project_data.csv"
+          echo "Your data" > csv-data/project_data.csv  # Create your data file locally
+          # aws s3 cp csv-data/project_data.csv s3://imagereportbucket/data_folder/  # Upload the file to S3
+        fi
     
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8  # You can specify the Python version you need
+
+    - name: Run Python script
+      run: Python_scripts/python_main.py  # Replace with the actual name of your Python script
+
+
+    - name: Upload Trivy Reports to Amazon S3
+      run: |
+        # Define the S3 bucket and folder (prefix) where you want to upload the reports
+        s3_bucket="imagereportbucket"
+        current_date=$(date +'%Y-%m-%d')
+        # Define the S3 prefix, including the current date
+        s3_prefix="trivy-reports-${current_date}/"
+  
+        # Loop through the reports and upload them to S3
         for report in trivy-reports/*.json; do
-          if [ -f "$report" ]; then
-            data=$(cat "$report")
-    
-            count_low=0
-            count_medium=0
-            count_high=0
-    
-            # Convert JSON to a single-line string
-            json_string=$(echo "$data" | tr -d '\n')
-    
-            # Extract data using regular expressions
-            if [[ $json_string =~ $image_name_pattern ]]; then
-              image_name="${BASH_REMATCH[1]}"
-              echo "Image_Name_is: $image_name"
-            fi
-    
-            if [[ $json_string =~ $image_version_pattern_start ]]; then
-              image_version="${BASH_REMATCH[1]}"
-              if [[ $image_version =~ $image_version_pattern_end ]]; then
-                image_version="${BASH_REMATCH[1]}"
-                echo "Image_Version_is: $image_version"
-              fi
-            fi
-    
-            if [[ $json_string =~ $image_vulnerability_pattern ]]; then
-              vulnerability_list="${BASH_REMATCH[1]}"
-              echo "Vulnerability_List_is: $vulnerability_list"
-    
-              # Count the occurrences of LOW, MEDIUM, and HIGH
-              while IFS= read -r line; do
-                if [[ $line == *'"Severity": "LOW"'* ]]; then
-                  ((count_low++))
-                elif [[ $line == *'"Severity": "MEDIUM"'* ]]; then
-                  ((count_medium++))
-                elif [[ $line == *'"Severity": "HIGH"'* ]]; then
-                  ((count_high++))
-                fi
-              done
-    
-              echo "Count of LOW: $count_low"
-              echo "Count of MEDIUM: $count_medium"
-              echo "Count of HIGH: $count_high"
-            fi
-          fi
+          aws s3 cp "$report" "s3://$s3_bucket/$s3_prefix$(basename $report)"
+          aws s3 cp csv-data/project_data.csv s3://imagereportbucket/data_folder/  # Upload the file to S3
         done
       shell: bash
-
-      #   image_name_pattern = r'ArtifactName: (.*?),'
-      #   image_version_pattern = r'"RUBY_VERSION= (.*?)",'
-      #   image_Vulnerability_pattern = r'"Vulnerabilities": [{ (.*?)},{'
-
-      #   for report in trivy-reports/*.json; do
-      #     with open(report, 'r') as json_file:
-      #       data = json.load(json_file)
-      #       echo "data is {0}".format(data)
-            
-      #       # convert to a string
-      #       json_string = json.dumps(data)
-      #       echo json_string
-
-          
-      #       # prepares string for regular expressions
-            
-      #       json_string = json_string.replace(" ", "")
-      #       echo "string without spaces {0}".format(json_string)
-      #       json_string = json_string.replace("\n ", "")
-      #       echo "string without spaces and newlines{0}".format(json_string)
-            
-      #       # Gets our data to populate CSV File
-
-      #       image_name = re.findall(image_name_pattern, json_string)
-      #       echo image_name
-      #       image_version = re.findall(image_version_pattern, json_string)
-      #       echo image_version
-      #       vulnerability_list = re.findall(image_Vulnerability_pattern, json_string)
-      #       echo vulnerability_list
-
-
-      #   done
-      # shell: bash
-
-
-    # - name: Upload Trivy Reports to Amazon S3
-    #   run: |
-    #     # Define the S3 bucket and folder (prefix) where you want to upload the reports
-    #     s3_bucket="imagereportbucket"
-    #     current_date=$(date +'%Y-%m-%d')
-    #     # Define the S3 prefix, including the current date
-    #     s3_prefix="trivy-reports-${current_date}/"
-  
-    #     # Loop through the reports and upload them to S3
-    #     for report in trivy-reports/*.json; do
-    #       aws s3 cp "$report" "s3://$s3_bucket/$s3_prefix$(basename $report)"
-    #     done
-    #   shell: bash
+      
