@@ -36,6 +36,25 @@ jobs:
 
         done
       shell: bash
+    
+    - name: Inspect Docker Images
+      run: |
+        # Iterate through the images array and perform docker inspect
+        images=("alpine:latest" "nginx:latest" "ubuntu:latest" "python:latest" "redis:latest" "postgres:latest" "node:latest" "httpd:latest" "memcached:latest" "mongo:latest" "mysql:latest" "traefik:latest" "mariadb:latest" "docker:latest" "rabbitmq:latest" "golang:latest" "wordpress:latest" "php:latest" "sonarqube:latest" "ruby:latest" "haproxy:latest" "tomcat:latest" "kong:latest" "neo4j:latest")
+        for image in "${images[@]}"; do
+          # Define the JSON file path for the current image
+          sanitized_name="${image//:/_}"
+          json_file="trivy-reports/$sanitized_name-docker-inspect.json"
+
+          # Perform docker inspect and save the output to the JSON file
+          docker inspect "$image" > "$json_file"
+
+          # You can optionally capture and process the output as needed
+          # For example, if you want to extract specific information from the JSON
+          # Example: image_id=$(jq -r '.[0].Id' "$json_file")
+
+          echo "Docker inspect for $image completed, results saved to $json_file"
+        done
 
     - name: Upload Trivy Reports
       uses: actions/upload-artifact@v2
