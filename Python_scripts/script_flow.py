@@ -18,10 +18,8 @@ def get_json(json_file):
     """
     with open(json_file, 'r') as file:
         json_data = json.load(file)
-        print("json_data1 : {0}".format(json_data))
-
-        json_data2 = json.read(file)
-        print("json_data2 : {0}".format(json_data2))
+        print("json_data : {0}".format(json_data))
+        print("json_data_type : {0}".format(type(json_data)))
 
     return json_data
 
