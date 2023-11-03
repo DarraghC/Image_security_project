@@ -1,7 +1,7 @@
-from Python_scripts.script_flow import execute_flow
+from Python_scripts import script_flow
 
 def main():
-    execute_flow()
+    script_flow.execute_flow()
 
 if __name__ == "__main__":
     main()
