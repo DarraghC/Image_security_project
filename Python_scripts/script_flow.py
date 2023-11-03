@@ -18,6 +18,11 @@ def get_json(json_file):
     """
     with open(json_file, 'r') as file:
         json_data = json.load(file)
+        print("json_data1 : {0}".format(json_data))
+
+        json_data2 = json.read(file)
+        print("json_data2 : {0}".format(json_data2))
+
     return json_data
 
 def parse_string_data(json_string_data):
@@ -83,8 +88,8 @@ def execute_flow():
     """
     json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
 
-    print("json_files_list {0}".format(json_files_list))
-    print("json_files_list_type {0}".format(type(json_files_list)))
+    # print("json_files_list {0}".format(json_files_list))
+    # print("json_files_list_type {0}".format(type(json_files_list)))
 
     for json_file in json_files_list:
         json_string_data = get_json(json_file)
