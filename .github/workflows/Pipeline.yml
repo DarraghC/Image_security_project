@@ -9,6 +9,9 @@ jobs:
   scan:
     runs-on: ubuntu-latest
 
+    env:
+      VERSION_DICT: '{}'
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -32,6 +35,9 @@ jobs:
           trivy image -f json -o "trivy-reports/$sanitized_name.json" "$image"
           jq 'del(.Metadata.DiffIDs)' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name-no-diffid.json" && mv "trivy-reports/$sanitized_name-no-diffid.json" "trivy-reports/$sanitized_name.json"
 
+          # docker inspect "$image" > "$json_file"
+
+
           # jq -c '.' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name.ndjson" && mv "trivy-reports/$sanitized_name.ndjson" "trivy-reports/$sanitized_name.json"
 
         done
@@ -47,6 +53,7 @@ jobs:
           json_file="trivy-reports/$sanitized_name-docker-inspect.json"
 
           # Perform docker inspect and save the output to the JSON file
+          docker pull "$image"
           docker inspect "$image" > "$json_file"
 
           # You can optionally capture and process the output as needed

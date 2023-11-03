@@ -2,7 +2,7 @@ import re
 import json
 import csv
 import glob
-import subprocess
+import os
 
 #TODO These need to be tested 
 IMAGE_NAME_PATTERN = r"'([^']+):latest'"
@@ -11,6 +11,9 @@ RESULTS_PATTERN = '"Vulnerabilities": \[(.*?)\]'
 
 TRIVY_DIR_PATH = "trivy-reports"
 CSV_FILE_PATH = "csv-data/project_data.csv"
+
+IMAGE_VERSION_DICT = os.getenv("VERSION_DICT")
+
 
 def get_json(json_file):
     """
@@ -82,19 +85,19 @@ def count_error_in_results(results_data):
 
     return low_count, medium_count, high_count
 
-def testing_something(my_image_name):
-    # Specify the image name
-    image_name = "{0}:latest"
+# def testing_something(my_image_name):
+#     # Specify the image name
+#     image_name = "{0}:latest"
 
-    # Run the 'docker inspect' command to get image details
-    command = f'docker inspect --format="{{.Id}} {{.Created}}" {image_name.format(my_image_name)}'
-    output = subprocess.check_output(command, shell=True, universal_newlines=True)
+#     # Run the 'docker inspect' command to get image details
+#     command = f'docker inspect --format="{{.Id}} {{.Created}}" {image_name.format(my_image_name)}'
+#     output = subprocess.check_output(command, shell=True, universal_newlines=True)
 
-    # Extract the image ID and created date
-    image_id, created_date = output.strip().split()
+#     # Extract the image ID and created date
+#     image_id, created_date = output.strip().split()
 
-    print(f"Image ID: {image_id}")
-    print(f"Created Date: {created_date}")
+#     print(f"Image ID: {image_id}")
+#     print(f"Created Date: {created_date}")
     
 
 def execute_flow():
@@ -112,7 +115,7 @@ def execute_flow():
         # print("json_string_data_type {0}".format(type(json_string_data)))
 
         image_name, image_version, results_data = parse_string_data(json_string_data)
-        testing_something(image_name)
+        # testing_something(image_name)
 
         # print("image_name is : {0}".format(image_name))
         print("image_version is : {0}".format(image_version))
