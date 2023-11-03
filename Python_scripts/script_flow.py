@@ -32,7 +32,7 @@ def parse_string_data(json_string_data):
     :type json_string_data: string
     """
     image_name = re.findall(IMAGE_NAME_PATTERN, str(json_string_data))
-
+    image_name = str(set(image_name))
     image_version = re.findall(VERSION_PATTERN.format(image_name), str(json_string_data))
 
     results_data = re.findall(RESULTS_PATTERN, str(json_string_data))
