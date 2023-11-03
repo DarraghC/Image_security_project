@@ -73,8 +73,7 @@ jobs:
 
     - name: Run Python script
       run: |
-       chmod +x /home/runner/work/_temp/3609e61f-8ba3-4a10-8a23-8fd2a5df812c.sh
-       chmod +x /path/to/Python_scripts/python_main.py
+       chmod +x Python_scripts/python_main.py
        Python_scripts/python_main.py  # Replace with the actual name of your Python script
 
 
