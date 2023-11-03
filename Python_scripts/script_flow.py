@@ -4,8 +4,8 @@ import csv
 import glob
 
 #TODO These need to be tested 
-IMAGE_NAME_PATTERN = '"ArtifactName": "(.*?)",'
-VERSION_PATTERN = '"Env": \[(.*?)\],"'
+IMAGE_NAME_PATTERN = r"'([^']+):latest'"
+VERSION_PATTERN = r'"{0}_VERSION=([0-9.]+)"'
 RESULTS_PATTERN = '"Vulnerabilities": \[(.*?)\]'
 
 TRIVY_DIR_PATH = "trivy-reports"
@@ -33,7 +33,7 @@ def parse_string_data(json_string_data):
     """
     image_name = re.findall(IMAGE_NAME_PATTERN, str(json_string_data))
 
-    image_version = re.findall(VERSION_PATTERN, str(json_string_data))
+    image_version = re.findall(VERSION_PATTERN.format(image_name), str(json_string_data))
 
     results_data = re.findall(RESULTS_PATTERN, str(json_string_data))
 
@@ -92,8 +92,8 @@ def execute_flow():
 
     for json_file in json_files_list:
         json_string_data = get_json(json_file)
-        print("json_string_data {0}".format(json_string_data))
-        print("json_string_data_type {0}".format(type(json_string_data)))
+        # print("json_string_data {0}".format(json_string_data))
+        # print("json_string_data_type {0}".format(type(json_string_data)))
 
         image_name, image_version, results_data = parse_string_data(json_string_data)
 
