@@ -92,7 +92,7 @@ def execute_flow():
 
     for json_file in json_files_list:
         json_string_data = get_json(json_file)
-        print("json_string_data".format(json_string_data))
+        print("json_string_data {0}".format(json_string_data))
         print("json_string_data_type {0}".format(type(json_string_data)))
 
         image_name, image_version, results_data = parse_string_data(json_string_data)
