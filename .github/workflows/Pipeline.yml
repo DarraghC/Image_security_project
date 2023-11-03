@@ -69,12 +69,12 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.8  # You can specify the Python version you need
+        python-version: 3.8  
 
     - name: Run Python script
       run: |
        chmod +x Python_scripts/python_main.py
-       Python_scripts/python_main.py  # Replace with the actual name of your Python script
+       python Python_scripts/python_main.py  # Replace with the actual name of your Python script
 
 
     - name: Upload Trivy Reports to Amazon S3
