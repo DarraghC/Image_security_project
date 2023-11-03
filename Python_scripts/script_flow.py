@@ -18,8 +18,6 @@ def get_json(json_file):
     """
     with open(json_file, 'r') as file:
         json_data = json.load(file)
-        # print("json_data : {0}".format(json_data))
-        # print("json_data_type : {0}".format(type(json_data)))
         json_data_string = str(json_data)
 
     return json_data_string
@@ -33,6 +31,7 @@ def parse_string_data(json_string_data):
     """
     image_name = re.findall(IMAGE_NAME_PATTERN, str(json_string_data))
     image_name = str(set(image_name))
+    image_name = image_name.replace('{', '').replace('}', '').replace("'", '')
     print("image_name_type: {0}".format(type(image_name)))
     print(VERSION_PATTERN.format(image_name))
     image_version = re.findall(VERSION_PATTERN.format(image_name), str(json_string_data))
