@@ -34,9 +34,8 @@ def parse_string_data(json_string_data):
     image_name = image_name.replace('{', '').replace('}', '').replace("'", '')
     image_name = image_name.upper()
     # the_version_patter = VERSION_PATTERN.format(image_name)
-    print(VERSION_PATTERN.format(image_name))
+    print(str(json_string_data))
     image_version = re.findall(VERSION_PATTERN.format(image_name), str(json_string_data))
-
     results_data = re.findall(RESULTS_PATTERN, str(json_string_data))
 
     return image_name, image_version, results_data
@@ -99,7 +98,7 @@ def execute_flow():
 
         image_name, image_version, results_data = parse_string_data(json_string_data)
 
-        print("image_name is : {0}".format(image_name))
+        # print("image_name is : {0}".format(image_name))
         print("image_version is : {0}".format(image_version))
         print("results_data is : {0}".format(results_data))
 
