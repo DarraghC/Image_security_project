@@ -141,7 +141,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.11
+        python-version: 3.11.3
         
     - name: Debug Python Environment
       run: |
