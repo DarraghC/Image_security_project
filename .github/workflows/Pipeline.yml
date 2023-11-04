@@ -143,11 +143,15 @@ jobs:
       with:
         python-version: 3.11.3
         
-    - name: Debug Python Environment
+    - name: Verify Python Environment
       run: |
         python --version
         python -c "import requests; print(requests.__file__)"
-      shell: bash
+    # - name: Debug Python Environment
+    #   run: |
+    #     python --version
+    #     python -c "import requests; print(requests.__file__)"
+    #   shell: bash
 
     - name: Run Python script
       run: |
