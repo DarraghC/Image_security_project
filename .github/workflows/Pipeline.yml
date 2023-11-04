@@ -143,10 +143,10 @@ jobs:
       with:
         python-version: 3.11.3
         
-    - name: Verify Python Environment
-      run: |
-        python --version
-        python -c "import requests; print(requests.__file__)"
+    # - name: Verify Python Environment
+    #   run: |
+    #     python --version
+    #     python -c "import requests; print(requests.__file__)"
     # - name: Debug Python Environment
     #   run: |
     #     python --version
@@ -155,6 +155,7 @@ jobs:
 
     - name: Run Python script
       run: |
+       pip install requests
        chmod +x Python_scripts/python_main.py
        python Python_scripts/python_main.py  # Replace with the actual name of your Python script
 
