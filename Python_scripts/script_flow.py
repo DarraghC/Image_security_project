@@ -13,7 +13,7 @@ TRIVY_DIR_PATH = "trivy-reports"
 INSPECT_JSON_DIR_PATH = "trivy-version-reports"
 CSV_FILE_PATH = "csv-data/project_data.csv"
 
-IMAGE_VERSION_DICT = os.getenv("VERSION_DICT")
+# IMAGE_VERSION_DICT = os.getenv("VERSION_DICT")
 
 
 def get_json(json_file):
@@ -128,21 +128,23 @@ def execute_flow():
         image_name, results_data = parse_string_data(json_string_data)
 
         for file in json_inspect_file_list:
-            json_inspect_string_data = get_json(file)
-            # print("inspect_data : {0}".format(json_inspect_string_data))
-            image_version = parse_version_data(json_inspect_string_data, image_name)
-            # testing_something(image_name)
+            print(json_inspect_file_list)
+            if image_name in file:
+                json_inspect_string_data = get_json(file)
+                # print("inspect_data : {0}".format(json_inspect_string_data))
+                image_version = parse_version_data(json_inspect_string_data, image_name)
+                # testing_something(image_name)
 
-            # print("image_name is : {0}".format(image_name))
-            print("image_version_is : {0}".format(image_version))
-            print("results_data is : {0}".format(results_data))
+                # print("image_name is : {0}".format(image_name))
+                print("image_version_is : {0}".format(image_version))
+                print("results_data is : {0}".format(results_data))
 
-            low_count, medium_count, high_count = count_error_in_results(results_data)
+                low_count, medium_count, high_count = count_error_in_results(results_data)
 
-            if check_csv_file_empty():
-                write_headers_to_file()
+                if check_csv_file_empty():
+                    write_headers_to_file()
 
 
 
-            write_parsed_data(image_name, image_version, results_data, low_count, medium_count, high_count)
+                write_parsed_data(image_name, image_version, results_data, low_count, medium_count, high_count)
 

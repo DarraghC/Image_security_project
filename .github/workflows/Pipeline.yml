@@ -9,8 +9,8 @@ jobs:
   scan:
     runs-on: ubuntu-latest
 
-    env:
-      VERSION_DICT: '{}'
+    # env:
+    #   VERSION_DICT: '{}'
 
     steps:
     - name: Checkout code
@@ -21,7 +21,9 @@ jobs:
         curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.45.1
 
     - name: Create trivy-reports directory
-      run: mkdir -p trivy-reports
+      run: |
+        mkdir -p trivy-reports
+        mkdir -p trivy-version-reports
       shell: bash
 
     - name: Scan images and generate reports
@@ -50,7 +52,7 @@ jobs:
         for image in "${images[@]}"; do
           # Define the JSON file path for the current image
           sanitized_name="${image//:/_}"
-          json_file="trivy-reports/$sanitized_name-docker-inspect.json"
+          json_file="trivy-version-reports/$sanitized_name-docker-inspect.json"
 
           # Perform docker inspect and save the output to the JSON file
           docker pull "$image"
@@ -103,18 +105,18 @@ jobs:
        python Python_scripts/python_main.py  # Replace with the actual name of your Python script
 
 
-    - name: Upload Trivy Reports to Amazon S3
-      run: |
-        # Define the S3 bucket and folder (prefix) where you want to upload the reports
-        s3_bucket="imagereportbucket"
-        current_date=$(date +'%Y-%m-%d')
-        # Define the S3 prefix, including the current date
-        s3_prefix="trivy-reports-${current_date}/"
+    # - name: Upload Trivy Reports to Amazon S3
+    #   run: |
+    #     # Define the S3 bucket and folder (prefix) where you want to upload the reports
+    #     s3_bucket="imagereportbucket"
+    #     current_date=$(date +'%Y-%m-%d')
+    #     # Define the S3 prefix, including the current date
+    #     s3_prefix="trivy-reports-${current_date}/"
   
-        # Loop through the reports and upload them to S3
-        for report in trivy-reports/*.json; do
-          aws s3 cp "$report" "s3://$s3_bucket/$s3_prefix$(basename $report)"
-          aws s3 cp csv-data/project_data.csv s3://imagereportbucket/data_folder/  # Upload the file to S3
-        done
-      shell: bash
+    #     # Loop through the reports and upload them to S3
+    #     for report in trivy-reports/*.json; do
+    #       aws s3 cp "$report" "s3://$s3_bucket/$s3_prefix$(basename $report)"
+    #       aws s3 cp csv-data/project_data.csv s3://imagereportbucket/data_folder/  # Upload the file to S3
+    #     done
+    #   shell: bash
       
