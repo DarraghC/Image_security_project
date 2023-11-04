@@ -20,7 +20,10 @@ def get_version_tags():
             for tag_info in results:
                 tag_name = tag_info["name"]
                 last_updated = tag_info["last_updated"]
-                version_release_dict[tag_info] = last_updated
+                print("tag_name_type : {0}".format(type(tag_name)))
+                print("last_updated_type : {0}".format(type(last_updated)))
+                version_release_dict[tag_info] = []
+                version_release_dict[tag_info].append(last_updated)
                 version_dict[image].append(tag_name)
 
 
