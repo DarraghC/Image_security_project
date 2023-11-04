@@ -16,31 +16,31 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Scipt to Download and install Trivy
-      run: |
-        curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.45.1
+    # - name: Scipt to Download and install Trivy
+    #   run: |
+    #     curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.45.1
 
-    - name: Create trivy-reports directory
-      run: |
-        mkdir -p trivy-reports
-        mkdir -p trivy-version-reports
-      shell: bash
+    # - name: Create trivy-reports directory
+    #   run: |
+    #     mkdir -p trivy-reports
+    #     mkdir -p trivy-version-reports
+    #   shell: bash
 
-    - name: Define image names dictionary
-      run: |
-        images=("alpine" "nginx" "ubuntu" "python" "redis" "postgres" "node" "httpd" "memcached" "mongo" "mysql" "traefik" "mariadb" "docker" "rabbitmq" "golang" "wordpress" "php" "sonarqube" "ruby" "haproxy" "tomcat" "kong" "neo4j")
+    # - name: Define image names dictionary
+    #   run: |
+    #     images=("alpine" "nginx" "ubuntu" "python" "redis" "postgres" "node" "httpd" "memcached" "mongo" "mysql" "traefik" "mariadb" "docker" "rabbitmq" "golang" "wordpress" "php" "sonarqube" "ruby" "haproxy" "tomcat" "kong" "neo4j")
 
-        # Create an associative array (dictionary) with image names as keys and empty arrays as values
-        declare -A image_dict=()
-        for image_name in "${images[@]}"; do
-          image_dict["$image_name"]=()
-        done
+    #     # Create an associative array (dictionary) with image names as keys and empty arrays as values
+    #     declare -A image_dict=()
+    #     for image_name in "${images[@]}"; do
+    #       image_dict["$image_name"]=()
+    #     done
     
-        # Print the dictionary for testing
-        for key in "${!image_dict[@]}"; do
-          echo "Key: $key, Value: ${image_dict[$key]}"
-        done
-      shell: bash
+    #     # Print the dictionary for testing
+    #     for key in "${!image_dict[@]}"; do
+    #       echo "Key: $key, Value: ${image_dict[$key]}"
+    #     done
+    #   shell: bash
 
     # - name: Scan images and generate reports
     #   run: |
@@ -138,15 +138,15 @@ jobs:
     #       # aws s3 cp csv-data/project_data.csv s3://imagereportbucket/data_folder/  # Upload the file to S3
     #     fi
     
-    # - name: Set up Python
-    #   uses: actions/setup-python@v2
-    #   with:
-    #     python-version: 3.8  
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8  
 
-    # - name: Run Python script
-    #   run: |
-    #    chmod +x Python_scripts/python_main.py
-    #    python Python_scripts/python_main.py  # Replace with the actual name of your Python script
+    - name: Run Python script
+      run: |
+       chmod +x Python_scripts/python_main.py
+       python Python_scripts/python_main.py  # Replace with the actual name of your Python script
 
 
     # - name: Upload Trivy Reports to Amazon S3

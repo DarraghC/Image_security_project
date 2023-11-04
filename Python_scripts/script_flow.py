@@ -2,7 +2,7 @@ import re
 import json
 import csv
 import glob
-# import requests
+import requests
 
 #TODO These need to be tested 
 IMAGE_NAME_PATTERN = r"'([^']+):latest'"
@@ -15,6 +15,26 @@ CSV_FILE_PATH = "csv-data/project_data.csv"
 
 # IMAGE_VERSION_DICT = os.getenv("VERSION_DICT")
 
+def get_version_tags():
+    repository_list = ["alpine", "nginx", "ubuntu", "python", "redis", "postgres", "node", "httpd", "memcached", "mongo", "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby", "haproxy", "tomcat", "kong", "neo4j"]  # Replace with your desired repository and image name
+
+    # Make a GET request to the Docker Hub API
+    for image in repository_list:
+        tags_url = f"https://hub.docker.com/v2/repositories/library/{image}/tags/"
+        response = requests.get(tags_url)
+
+        # Check if the request was successful
+        if response.status_code == 200:
+            data = response.json()
+            results = data.get("results", [])
+
+            # Extract and print the tags and last updated dates
+            for tag_info in results:
+                tag_name = tag_info["name"]
+                last_updated = tag_info["last_updated"]
+                print(f"Tag: {tag_name}, Last Updated: {last_updated}")
+        else:
+            print(f"Failed to retrieve tags. Status code: {response.status_code}")
 
 def get_json(json_file):
     """
@@ -117,40 +137,41 @@ def execute_flow():
     """
     This is the main function that will call every other function
     """
-    json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
-    json_inspect_file_list = glob.glob(f'{INSPECT_JSON_DIR_PATH}/*.json')
+    get_version_tags()
+    # json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
+    # json_inspect_file_list = glob.glob(f'{INSPECT_JSON_DIR_PATH}/*.json')
 
-    # print("json_files_list {0}".format(json_files_list))
-    # print("json_files_list_type {0}".format(type(json_files_list)))
+    # # print("json_files_list {0}".format(json_files_list))
+    # # print("json_files_list_type {0}".format(type(json_files_list)))
 
-    for json_file in json_files_list:
-        json_string_data = get_json(json_file)
-        # print("json_string_data {0}".format(json_string_data))
-        # print("json_string_data_type {0}".format(type(json_string_data)))
+    # for json_file in json_files_list:
+    #     json_string_data = get_json(json_file)
+    #     # print("json_string_data {0}".format(json_string_data))
+    #     # print("json_string_data_type {0}".format(type(json_string_data)))
 
-        image_name, results_data = parse_string_data(json_string_data)
+    #     image_name, results_data = parse_string_data(json_string_data)
 
-        for file in json_inspect_file_list:
+    #     for file in json_inspect_file_list:
 
-            inspect_file_string = "{0}_latest"
-            # print(json_inspect_file_list)
-            # print(inspect_file_string.format(image_name))
-            # print(file)
-            if inspect_file_string.format(image_name) in file:
-                print("got here")
-                json_inspect_string_data = get_json(file)
-                # print("inspect_data : {0}".format(json_inspect_string_data))
-                image_version = parse_version_data(json_inspect_string_data, image_name)
-                # testing_something(image_name)
+    #         inspect_file_string = "{0}_latest"
+    #         # print(json_inspect_file_list)
+    #         # print(inspect_file_string.format(image_name))
+    #         # print(file)
+    #         if inspect_file_string.format(image_name) in file:
+    #             print("got here")
+    #             json_inspect_string_data = get_json(file)
+    #             # print("inspect_data : {0}".format(json_inspect_string_data))
+    #             image_version = parse_version_data(json_inspect_string_data, image_name)
+    #             # testing_something(image_name)
 
-                # print("image_name is : {0}".format(image_name))
-                print("image_version_is : {0}".format(image_version))
-                print("results_data is : {0}".format(results_data))
+    #             # print("image_name is : {0}".format(image_name))
+    #             print("image_version_is : {0}".format(image_version))
+    #             print("results_data is : {0}".format(results_data))
 
-                low_count, medium_count, high_count = count_error_in_results(results_data)
+    #             low_count, medium_count, high_count = count_error_in_results(results_data)
 
-                if check_csv_file_empty():
-                    write_headers_to_file()
+    #             if check_csv_file_empty():
+    #                 write_headers_to_file()
 
 
 
