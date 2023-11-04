@@ -65,12 +65,13 @@ jobs:
           echo "Docker inspect for $image completed, results saved to $json_file"
         done
 
-    - name: Upload Trivy Reports
-      uses: actions/upload-artifact@v2
-      with:
-        name: trivy-repotrs
-        path: trivy-reports
+    # - name: Upload Trivy Reports
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: trivy-repotrs
+    #     path: trivy-reports
 
+    
     - name: Set up AWS CLI
       run: |
         aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -93,16 +94,34 @@ jobs:
           echo "Your data" > csv-data/project_data.csv  # Create your data file locally
           # aws s3 cp csv-data/project_data.csv s3://imagereportbucket/data_folder/  # Upload the file to S3
         fi
-    
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8  
 
-    - name: Run Python script
+    - name: Execute a command in the container
       run: |
-       chmod +x Python_scripts/python_main.py
-       python Python_scripts/python_main.py  # Replace with the actual name of your Python script
+        for image in "${images[@]}"; do
+          # Run a command inside the container
+          docker run -d --name my_temp_container image
+          docker exec my_temp_container sh -c "echo \$MY_VERSION_VARIABLE"
+
+          docker stop my_temp_container
+          docker rm my_temp_container
+      shell: bash
+
+    # - name: Stop and remove the container
+    #   run: |
+    #     # Stop and remove the container
+    #     docker stop my_temp_container
+    #     docker rm my_temp_container
+    #   shell: bash
+    
+    # - name: Set up Python
+    #   uses: actions/setup-python@v2
+    #   with:
+    #     python-version: 3.8  
+
+    # - name: Run Python script
+    #   run: |
+    #    chmod +x Python_scripts/python_main.py
+    #    python Python_scripts/python_main.py  # Replace with the actual name of your Python script
 
 
     # - name: Upload Trivy Reports to Amazon S3
