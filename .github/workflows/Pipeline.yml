@@ -79,32 +79,59 @@ jobs:
         aws configure set region eu-north-1
       shell: bash
 
-    - name: Create csv directory
-      run: mkdir -p csv-data
-      shell: bash
+    - name: Install requests library
+      run: pip install requests
+
+    - name: Get Docker Hub Image Tags
+      run: |
+        # Define the Docker Hub repository and image name
+        repository="library/alpine"  # Replace with your desired repository and image name
+
+        # Use Docker Hub API to get tags
+        tags_url="https://hub.docker.com/v2/repositories/${repository}/tags/"
+        response=$(curl -s ${tags_url})
+
+        # Parse JSON response to extract tags
+        tags=$(echo ${response} | jq -r '.results[].name')
+
+        # Print the tags
+        echo "Tags for ${repository}:"
+        echo "${tags}"
+      env:
+        DOCKER_LOGIN_USERNAME: ${{ secrets.DOCKER_LOGIN_USERNAME }}
+        DOCKER_LOGIN_PASSWORD: ${{ secrets.DOCKER_LOGIN_PASSWORD }}
+
+    - name: Display Docker Tags
+      run: |
+        echo "Tags for Docker Hub image:"
+        echo ${{ steps.get_docker_tags.outputs.tags }}
+
+    # - name: Create csv directory
+    #   run: mkdir -p csv-data
+    #   shell: bash
     
-    - name: Check if project_data.csv exists if not create
-      run: |
-        if aws s3 ls s3://imagereportbucket/data_folder/project_data.csv; then
-          echo "File exists"
-          aws s3 cp s3://imagereportbucket/data_folder/project_data.csv csv-data/
-        else
-          echo "File does not exist"
-          echo "Creating project_data.csv"
-          echo "Your data" > csv-data/project_data.csv  # Create your data file locally
-          # aws s3 cp csv-data/project_data.csv s3://imagereportbucket/data_folder/  # Upload the file to S3
-        fi
+    # - name: Check if project_data.csv exists if not create
+    #   run: |
+    #     if aws s3 ls s3://imagereportbucket/data_folder/project_data.csv; then
+    #       echo "File exists"
+    #       aws s3 cp s3://imagereportbucket/data_folder/project_data.csv csv-data/
+    #     else
+    #       echo "File does not exist"
+    #       echo "Creating project_data.csv"
+    #       echo "Your data" > csv-data/project_data.csv  # Create your data file locally
+    #       # aws s3 cp csv-data/project_data.csv s3://imagereportbucket/data_folder/  # Upload the file to S3
+    #     fi
 
-    - name: Execute a command in the container
-      run: |
-        for image in "${images[@]}"; do
-          # Run a command inside the container
-          docker run -d --name my_temp_container image
-          docker exec my_temp_container sh -c "echo \$MY_VERSION_VARIABLE"
+    # - name: Execute a command in the container
+    #   run: |
+    #     for image in "${images[@]}"; do
+    #       # Run a command inside the container
+    #       docker run -d --name my_temp_container image
+    #       docker exec my_temp_container sh -c "echo \$MY_VERSION_VARIABLE"
 
-          docker stop my_temp_container
-          docker rm my_temp_container
-      shell: bash
+    #       docker stop my_temp_container
+    #       docker rm my_temp_container
+    #   shell: bash
 
     # - name: Stop and remove the container
     #   run: |
