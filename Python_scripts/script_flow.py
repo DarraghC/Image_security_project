@@ -128,8 +128,13 @@ def execute_flow():
         image_name, results_data = parse_string_data(json_string_data)
 
         for file in json_inspect_file_list:
-            print(json_inspect_file_list)
-            if image_name in file:
+
+            inspect_file_string = "{0}_latest"
+            # print(json_inspect_file_list)
+            print(inspect_file_string.format(image_name))
+            print(file)
+            if inspect_file_string.format(image_name) in file:
+                print("got here")
                 json_inspect_string_data = get_json(file)
                 # print("inspect_data : {0}".format(json_inspect_string_data))
                 image_version = parse_version_data(json_inspect_string_data, image_name)
