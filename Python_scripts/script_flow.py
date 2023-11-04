@@ -33,6 +33,7 @@ def parse_version_data(json_inspect_string_data, image_name):
     """
     print("my_version_pattern : {0}".format(VERSION_PATTERN.format(image_name)))
     image_version = re.findall(VERSION_PATTERN.format(image_name), str(json_inspect_string_data))
+    print("meh : {0}".format(image_version))
     image_version = str(image_version[0])
     image_version = image_version.replace("'", '').replace(',', '')
     
