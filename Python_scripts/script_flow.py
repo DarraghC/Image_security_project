@@ -32,7 +32,7 @@ def get_version_tags():
             for tag_info in results:
                 tag_name = tag_info["name"]
                 last_updated = tag_info["last_updated"]
-                print(f"Tag: {tag_name}, Last Updated: {last_updated}")
+                print(f"Image_Name: {image}, Tag: {tag_name}, Last Updated: {last_updated}")
         else:
             print(f"Failed to retrieve tags. Status code: {response.status_code}")
 
