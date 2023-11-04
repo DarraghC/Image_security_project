@@ -138,6 +138,7 @@ def execute_flow():
     This is the main function that will call every other function
     """
     get_version_tags()
+
     # json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
     # json_inspect_file_list = glob.glob(f'{INSPECT_JSON_DIR_PATH}/*.json')
 
