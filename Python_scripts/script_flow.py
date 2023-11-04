@@ -6,10 +6,11 @@ import os
 
 #TODO These need to be tested 
 IMAGE_NAME_PATTERN = r"'([^']+):latest'"
-VERSION_PATTERN = r'"{0}_VERSION=([0-9.]+)"'
+VERSION_PATTERN = r'{0}:(\S+)'
 RESULTS_PATTERN = '"Vulnerabilities": \[(.*?)\]'
 
 TRIVY_DIR_PATH = "trivy-reports"
+INSPECT_JSON_DIR_PATH = "trivy-version-reports"
 CSV_FILE_PATH = "csv-data/project_data.csv"
 
 IMAGE_VERSION_DICT = os.getenv("VERSION_DICT")
@@ -26,6 +27,15 @@ def get_json(json_file):
 
     return json_data_string
 
+def parse_version_data(json_inspect_string_data, image_name):
+    """
+    Gets image version from 
+    """
+    print("my version pattern : {0}".format(VERSION_PATTERN.format(image_name)))
+    image_version = re.findall(VERSION_PATTERN.format(image_name), str(json_inspect_string_data))
+    return image_version
+
+
 def parse_string_data(json_string_data):
     """
     This function will pick the data I want from the json string data
@@ -39,10 +49,9 @@ def parse_string_data(json_string_data):
     image_name = image_name.upper()
     # the_version_patter = VERSION_PATTERN.format(image_name)
     print(str(json_string_data))
-    image_version = re.findall(VERSION_PATTERN.format(image_name), str(json_string_data))
     results_data = re.findall(RESULTS_PATTERN, str(json_string_data))
 
-    return image_name, image_version, results_data
+    return image_name, results_data
 
 def check_csv_file_empty():
     """
@@ -105,6 +114,7 @@ def execute_flow():
     This is the main function that will call every other function
     """
     json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
+    json_inspect_file_list = glob.glob(f'{INSPECT_JSON_DIR_PATH}/*.json')
 
     # print("json_files_list {0}".format(json_files_list))
     # print("json_files_list_type {0}".format(type(json_files_list)))
@@ -114,19 +124,24 @@ def execute_flow():
         # print("json_string_data {0}".format(json_string_data))
         # print("json_string_data_type {0}".format(type(json_string_data)))
 
-        image_name, image_version, results_data = parse_string_data(json_string_data)
-        # testing_something(image_name)
+        image_name, results_data = parse_string_data(json_string_data)
 
-        # print("image_name is : {0}".format(image_name))
-        print("image_version is : {0}".format(image_version))
-        print("results_data is : {0}".format(results_data))
+        for file in json_inspect_file_list:
+            json_inspect_string_data = get_json(file)
+            print("inspect_data : {0}".format(json_inspect_string_data))
+            image_version = parse_version_data(json_inspect_string_data, image_name)
+            # testing_something(image_name)
 
-        low_count, medium_count, high_count = count_error_in_results(results_data)
+            # print("image_name is : {0}".format(image_name))
+            print("image_version is : {0}".format(image_version))
+            print("results_data is : {0}".format(results_data))
 
-        if check_csv_file_empty():
-            write_headers_to_file()
+            low_count, medium_count, high_count = count_error_in_results(results_data)
+
+            if check_csv_file_empty():
+                write_headers_to_file()
 
 
 
-        write_parsed_data(image_name, image_version, results_data, low_count, medium_count, high_count)
+            write_parsed_data(image_name, image_version, results_data, low_count, medium_count, high_count)
 
