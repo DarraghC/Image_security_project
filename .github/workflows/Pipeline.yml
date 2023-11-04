@@ -32,9 +32,10 @@ jobs:
 
         # Create a dictionary with image names as keys and empty lists as values
         image_dict = {image_name: [] for image_name in images}
+        echo "testing $image_dict"
 
         # Export the dictionary as an environment variable
-        echo "::set-env name=IMAGE_DICT::$(echo '$image_dict' | base64)"
+        # echo "::set-env name=IMAGE_DICT::$(echo '$image_dict' | base64)"
       shell: bash
 
     # - name: Scan images and generate reports
