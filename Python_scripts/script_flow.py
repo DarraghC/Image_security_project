@@ -33,6 +33,8 @@ def parse_version_data(json_inspect_string_data, image_name):
     """
     print("my_version_pattern : {0}".format(VERSION_PATTERN.format(image_name)))
     image_version = re.findall(VERSION_PATTERN.format(image_name), str(json_inspect_string_data))
+    image_version = str(image_version[0])
+    image_version.replace("'", '').replace(',', '')
     
     return image_version
 
@@ -131,8 +133,8 @@ def execute_flow():
 
             inspect_file_string = "{0}_latest"
             # print(json_inspect_file_list)
-            print(inspect_file_string.format(image_name))
-            print(file)
+            # print(inspect_file_string.format(image_name))
+            # print(file)
             if inspect_file_string.format(image_name) in file:
                 print("got here")
                 json_inspect_string_data = get_json(file)
