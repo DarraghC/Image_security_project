@@ -9,8 +9,8 @@ jobs:
   scan:
     runs-on: ubuntu-latest
 
-    # env:
-    #   VERSION_DICT: '{}'
+    env:
+      VERSION_DICT: '{"alpine": [], }'
 
     steps:
     - name: Checkout code
@@ -26,44 +26,55 @@ jobs:
         mkdir -p trivy-version-reports
       shell: bash
 
-    - name: Scan images and generate reports
+    - name: Define image names dictionary
       run: |
-        # Define the list of image names you want to scan
-        images=("alpine:latest" "nginx:latest" "ubuntu:latest" "python:latest" "redis:latest" "postgres:latest" "node:latest" "httpd:latest" "memcached:latest" "mongo:latest" "mysql:latest" "traefik:latest" "mariadb:latest" "docker:latest" "rabbitmq:latest" "golang:latest" "wordpress:latest" "php:latest" "sonarqube:latest" "ruby:latest" "haproxy:latest" "tomcat:latest" "kong:latest" "neo4j:latest")
-        current_date=$(date +'%Y-%m-%d')
-        for image in "${images[@]}"; do
-          sanitized_name="${image//:/_}"
-          echo "Scanning $image"
-          trivy image -f json -o "trivy-reports/$sanitized_name.json" "$image"
-          jq 'del(.Metadata.DiffIDs)' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name-no-diffid.json" && mv "trivy-reports/$sanitized_name-no-diffid.json" "trivy-reports/$sanitized_name.json"
+        images=("alpine" "nginx" "ubuntu" "python" "redis" "postgres" "node" "httpd" "memcached" "mongo" "mysql" "traefik" "mariadb" "docker" "rabbitmq" "golang" "wordpress" "php" "sonarqube" "ruby" "haproxy" "tomcat" "kong" "neo4j")
 
-          # docker inspect "$image" > "$json_file"
+        # Create a dictionary with image names as keys and empty lists as values
+        image_dict = {image_name: [] for image_name in images}
 
-
-          # jq -c '.' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name.ndjson" && mv "trivy-reports/$sanitized_name.ndjson" "trivy-reports/$sanitized_name.json"
-
-        done
+        # Export the dictionary as an environment variable
+        echo "::set-env name=IMAGE_DICT::$(echo '$image_dict' | base64)"
       shell: bash
+
+    # - name: Scan images and generate reports
+    #   run: |
+    #     # Define the list of image names you want to scan
+    #     images=("alpine:latest" "nginx:latest" "ubuntu:latest" "python:latest" "redis:latest" "postgres:latest" "node:latest" "httpd:latest" "memcached:latest" "mongo:latest" "mysql:latest" "traefik:latest" "mariadb:latest" "docker:latest" "rabbitmq:latest" "golang:latest" "wordpress:latest" "php:latest" "sonarqube:latest" "ruby:latest" "haproxy:latest" "tomcat:latest" "kong:latest" "neo4j:latest")
+    #     current_date=$(date +'%Y-%m-%d')
+    #     for image in "${images[@]}"; do
+    #       sanitized_name="${image//:/_}"
+    #       echo "Scanning $image"
+    #       trivy image -f json -o "trivy-reports/$sanitized_name.json" "$image"
+    #       jq 'del(.Metadata.DiffIDs)' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name-no-diffid.json" && mv "trivy-reports/$sanitized_name-no-diffid.json" "trivy-reports/$sanitized_name.json"
+
+    #       # docker inspect "$image" > "$json_file"
+
+
+    #       # jq -c '.' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name.ndjson" && mv "trivy-reports/$sanitized_name.ndjson" "trivy-reports/$sanitized_name.json"
+
+    #     done
+    #   shell: bash
     
-    - name: Inspect Docker Images
-      run: |
-        # Iterate through the images array and perform docker inspect
-        images=("alpine:latest" "nginx:latest" "ubuntu:latest" "python:latest" "redis:latest" "postgres:latest" "node:latest" "httpd:latest" "memcached:latest" "mongo:latest" "mysql:latest" "traefik:latest" "mariadb:latest" "docker:latest" "rabbitmq:latest" "golang:latest" "wordpress:latest" "php:latest" "sonarqube:latest" "ruby:latest" "haproxy:latest" "tomcat:latest" "kong:latest" "neo4j:latest")
-        for image in "${images[@]}"; do
-          # Define the JSON file path for the current image
-          sanitized_name="${image//:/_}"
-          json_file="trivy-version-reports/$sanitized_name-docker-inspect.json"
+    # - name: Inspect Docker Images
+    #   run: |
+    #     # Iterate through the images array and perform docker inspect
+    #     images=("alpine:latest" "nginx:latest" "ubuntu:latest" "python:latest" "redis:latest" "postgres:latest" "node:latest" "httpd:latest" "memcached:latest" "mongo:latest" "mysql:latest" "traefik:latest" "mariadb:latest" "docker:latest" "rabbitmq:latest" "golang:latest" "wordpress:latest" "php:latest" "sonarqube:latest" "ruby:latest" "haproxy:latest" "tomcat:latest" "kong:latest" "neo4j:latest")
+    #     for image in "${images[@]}"; do
+    #       # Define the JSON file path for the current image
+    #       sanitized_name="${image//:/_}"
+    #       json_file="trivy-version-reports/$sanitized_name-docker-inspect.json"
 
-          # Perform docker inspect and save the output to the JSON file
-          docker pull "$image"
-          docker inspect "$image" > "$json_file"
+    #       # Perform docker inspect and save the output to the JSON file
+    #       docker pull "$image"
+    #       docker inspect "$image" > "$json_file"
 
-          # You can optionally capture and process the output as needed
-          # For example, if you want to extract specific information from the JSON
-          # Example: image_id=$(jq -r '.[0].Id' "$json_file")
+    #       # You can optionally capture and process the output as needed
+    #       # For example, if you want to extract specific information from the JSON
+    #       # Example: image_id=$(jq -r '.[0].Id' "$json_file")
 
-          echo "Docker inspect for $image completed, results saved to $json_file"
-        done
+    #       echo "Docker inspect for $image completed, results saved to $json_file"
+    #     done
 
     # - name: Upload Trivy Reports
     #   uses: actions/upload-artifact@v2
@@ -72,39 +83,39 @@ jobs:
     #     path: trivy-reports
 
     
-    - name: Set up AWS CLI
-      run: |
-        aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws configure set region eu-north-1
-      shell: bash
+    # - name: Set up AWS CLI
+    #   run: |
+    #     aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #     aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #     aws configure set region eu-north-1
+    #   shell: bash
 
-    - name: Install requests library
-      run: pip install requests
+    # - name: Install requests library
+    #   run: pip install requests
 
-    - name: Get Docker Hub Image Tags
-      run: |
-        # Define the Docker Hub repository and image name
-        repository="library/alpine"  # Replace with your desired repository and image name
+    # - name: Get Docker Hub Image Tags
+    #   run: |
+    #     # Define the Docker Hub repository and image name
+    #     repository="library/alpine"  # Replace with your desired repository and image name
 
-        # Use Docker Hub API to get tags
-        tags_url="https://hub.docker.com/v2/repositories/${repository}/tags/"
-        response=$(curl -s ${tags_url})
+    #     # Use Docker Hub API to get tags
+    #     tags_url="https://hub.docker.com/v2/repositories/${repository}/tags/"
+    #     response=$(curl -s ${tags_url})
 
-        # Parse JSON response to extract tags
-        tags=$(echo ${response} | jq -r '.results[].name')
+    #     # Parse JSON response to extract tags
+    #     tags=$(echo ${response} | jq -r '.results[].name')
 
-        # Print the tags
-        echo "Tags for ${repository}:"
-        echo "${tags}"
-      env:
-        DOCKER_LOGIN_USERNAME: ${{ secrets.DOCKER_LOGIN_USERNAME }}
-        DOCKER_LOGIN_PASSWORD: ${{ secrets.DOCKER_LOGIN_PASSWORD }}
+    #     # Print the tags
+    #     echo "Tags for ${repository}:"
+    #     echo "${tags}"
+    #   env:
+    #     DOCKER_LOGIN_USERNAME: ${{ secrets.DOCKER_LOGIN_USERNAME }}
+    #     DOCKER_LOGIN_PASSWORD: ${{ secrets.DOCKER_LOGIN_PASSWORD }}
 
-    - name: Display Docker Tags
-      run: |
-        echo "Tags for Docker Hub image:"
-        echo ${{ steps.get_docker_tags.outputs.tags }}
+    # - name: Display Docker Tags
+    #   run: |
+    #     echo "Tags for Docker Hub image:"
+    #     echo ${{ steps.get_docker_tags.outputs.tags }}
 
     # - name: Create csv directory
     #   run: mkdir -p csv-data
@@ -121,24 +132,6 @@ jobs:
     #       echo "Your data" > csv-data/project_data.csv  # Create your data file locally
     #       # aws s3 cp csv-data/project_data.csv s3://imagereportbucket/data_folder/  # Upload the file to S3
     #     fi
-
-    # - name: Execute a command in the container
-    #   run: |
-    #     for image in "${images[@]}"; do
-    #       # Run a command inside the container
-    #       docker run -d --name my_temp_container image
-    #       docker exec my_temp_container sh -c "echo \$MY_VERSION_VARIABLE"
-
-    #       docker stop my_temp_container
-    #       docker rm my_temp_container
-    #   shell: bash
-
-    # - name: Stop and remove the container
-    #   run: |
-    #     # Stop and remove the container
-    #     docker stop my_temp_container
-    #     docker rm my_temp_container
-    #   shell: bash
     
     # - name: Set up Python
     #   uses: actions/setup-python@v2

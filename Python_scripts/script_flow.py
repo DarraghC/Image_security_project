@@ -2,7 +2,7 @@ import re
 import json
 import csv
 import glob
-import os
+# import requests
 
 #TODO These need to be tested 
 IMAGE_NAME_PATTERN = r"'([^']+):latest'"
