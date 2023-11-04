@@ -31,8 +31,9 @@ def parse_version_data(json_inspect_string_data, image_name):
     """
     Gets image version from 
     """
-    print("my version pattern : {0}".format(VERSION_PATTERN.format(image_name)))
+    print("my_version_pattern : {0}".format(VERSION_PATTERN.format(image_name)))
     image_version = re.findall(VERSION_PATTERN.format(image_name), str(json_inspect_string_data))
+    
     return image_version
 
 
@@ -48,7 +49,7 @@ def parse_string_data(json_string_data):
     image_name = image_name.replace('{', '').replace('}', '').replace("'", '')
     image_name = image_name.upper()
     # the_version_patter = VERSION_PATTERN.format(image_name)
-    print(str(json_string_data))
+    # print(str(json_string_data))
     results_data = re.findall(RESULTS_PATTERN, str(json_string_data))
 
     return image_name, results_data
@@ -128,12 +129,12 @@ def execute_flow():
 
         for file in json_inspect_file_list:
             json_inspect_string_data = get_json(file)
-            print("inspect_data : {0}".format(json_inspect_string_data))
+            # print("inspect_data : {0}".format(json_inspect_string_data))
             image_version = parse_version_data(json_inspect_string_data, image_name)
             # testing_something(image_name)
 
             # print("image_name is : {0}".format(image_name))
-            print("image_version is : {0}".format(image_version))
+            print("image_version_is : {0}".format(image_version))
             print("results_data is : {0}".format(results_data))
 
             low_count, medium_count, high_count = count_error_in_results(results_data)
