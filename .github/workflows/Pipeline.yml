@@ -9,8 +9,8 @@ jobs:
   scan:
     runs-on: ubuntu-latest
 
-    env:
-      VERSION_DICT: '{"alpine": [], }'
+    # env:
+    #   VERSION_DICT: '{"alpine": [], }'
 
     steps:
     - name: Checkout code
