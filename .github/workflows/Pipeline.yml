@@ -142,22 +142,19 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.11.3
-        
-    # - name: Verify Python Environment
-    #   run: |
-    #     python --version
-    #     python -c "import requests; print(requests.__file__)"
-    # - name: Debug Python Environment
-    #   run: |
-    #     python --version
-    #     python -c "import requests; print(requests.__file__)"
-    #   shell: bash
 
-    - name: Run Python script
+    - name: Run Python script for version tags/dates
       run: |
-       pip install requests
-       chmod +x Python_scripts/python_main.py
-       python Python_scripts/python_main.py  # Replace with the actual name of your Python script
+        pip install requests
+        chmod +x Python_scripts/main.py
+        python Python_scripts/main.py  # Replace with the actual name of your Python script
+        
+    
+    # - name: Run Python script
+    #   run: |
+    #    pip install requests
+    #    chmod +x Python_scripts/python_main.py
+    #    python Python_scripts/python_main.py  # Replace with the actual name of your Python script
 
 
     # - name: Upload Trivy Reports to Amazon S3

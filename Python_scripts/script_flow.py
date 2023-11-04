@@ -2,7 +2,6 @@ import re
 import json
 import csv
 import glob
-import requests
 
 #TODO These need to be tested 
 IMAGE_NAME_PATTERN = r"'([^']+):latest'"
@@ -15,26 +14,6 @@ CSV_FILE_PATH = "csv-data/project_data.csv"
 
 # IMAGE_VERSION_DICT = os.getenv("VERSION_DICT")
 
-def get_version_tags():
-    repository_list = ["alpine", "nginx", "ubuntu", "python", "redis", "postgres", "node", "httpd", "memcached", "mongo", "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby", "haproxy", "tomcat", "kong", "neo4j"]  # Replace with your desired repository and image name
-
-    # Make a GET request to the Docker Hub API
-    for image in repository_list:
-        tags_url = f"https://hub.docker.com/v2/repositories/library/{image}/tags/"
-        response = requests.get(tags_url)
-
-        # Check if the request was successful
-        if response.status_code == 200:
-            data = response.json()
-            results = data.get("results", [])
-
-            # Extract and print the tags and last updated dates
-            for tag_info in results:
-                tag_name = tag_info["name"]
-                last_updated = tag_info["last_updated"]
-                print(f"Image_Name: {image}, Tag: {tag_name}, Last Updated: {last_updated}")
-        else:
-            print(f"Failed to retrieve tags. Status code: {response.status_code}")
 
 def get_json(json_file):
     """
@@ -137,7 +116,6 @@ def execute_flow():
     """
     This is the main function that will call every other function
     """
-    get_version_tags()
 
     # json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
     # json_inspect_file_list = glob.glob(f'{INSPECT_JSON_DIR_PATH}/*.json')
