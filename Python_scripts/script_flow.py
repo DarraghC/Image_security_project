@@ -175,5 +175,5 @@ def execute_flow():
 
 
 
-                write_parsed_data(image_name, image_version, results_data, low_count, medium_count, high_count)
+                # write_parsed_data(image_name, image_version, results_data, low_count, medium_count, high_count)
 
