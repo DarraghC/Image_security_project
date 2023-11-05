@@ -153,7 +153,7 @@ jobs:
     - name: Get Dictionary from first Python Script
       id: python-script
       run: |
-        version_dict_output=$(python Python_scripts/main.py)
+        version_dict_output=$(python Python_scripts/version_tags_and_dates_flow.py)
         echo "::set-output name=version_dict::$version_dict_output"
     
     - name: Use version_dict
