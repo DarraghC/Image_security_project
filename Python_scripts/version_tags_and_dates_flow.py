@@ -6,9 +6,6 @@ VERSION_RELEASE_DIR = "version_release_dict_txt"
 version_dict = {}
 version_release_dict = {}
 
-my_dict = {version_dict: VERSION_RESULTS_DIR, version_release_dict: VERSION_RELEASE_DIR}
-
-dict_to_txt_list = [version_dict, version_release_dict]
 
 def get_version_tags():
     repository_list = ["alpine", "nginx", "ubuntu", "python", "redis", "postgres", "node", "httpd", "memcached", "mongo", "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby", "haproxy", "tomcat", "kong", "neo4j"]  # Replace with your desired repository and image name
