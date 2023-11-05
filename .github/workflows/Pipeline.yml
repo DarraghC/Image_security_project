@@ -152,20 +152,23 @@ jobs:
         chmod +x Python_scripts/main.py
         python Python_scripts/main.py  # Replace with the actual name of your Python script
     
-    - name: Use the text file
+    - name: Read and process my_dict.txt
+      id: process-my-dict
       run: |
-        # You can access the text file here
-        # cat version_dict_file.txt  # For example, print the content
-
-        with open("version_dict_file.txt", "r") as file:
-          content = file.read()
-          my_dict = eval(content)
-
-        # Now you can iterate through the dictionary and its elements
-        for image, versions in my_dict.items():
-          for version in versions:
-            print(f"Image: {image}, Version: {version}")
-            # You can perform actions with each version here
+        version_dict = {}
+        with open('my_dict.txt', 'r') as file:
+            for line in file:
+                key, value = line.strip().split(': ')
+                # Parse the value part as a list (assuming it's formatted as a Python list)
+                value = eval(value)
+                version_dict[key] = value
+        
+        # Now you have the version_dict in your workflow
+        # You can access it using ${{ steps.process-my-dict.outputs.version_dict }}
+        
+        # Perform actions with version_dict here
+        # Example: echo the alpine versions
+        echo "Alpine versions: ${version_dict['alpine']}"
 
 
     # - name: Read and process my_dict.txt
