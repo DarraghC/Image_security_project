@@ -1,7 +1,7 @@
 import requests
 
 VERSION_RESULTS_DIR = "version_dict_file.txt"
-VERSION_RELEASE_DIR = "version_release_dict_txt"
+VERSION_RELEASE_DIR = "version_release_dict.txt"
 
 version_dict = {}
 version_release_dict = {}
@@ -9,7 +9,7 @@ version_release_dict = {}
 
 def get_version_tags():
     # repository_list = ["alpine", "nginx", "ubuntu", "python", "redis", "postgres", "node", "httpd", "memcached", "mongo", "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby", "haproxy", "tomcat", "kong", "neo4j"]  # Replace with your desired repository and image name
-      repository_list = ["alpine"]
+    repository_list = ["neo4j"]
     # Make a GET request to the Docker Hub API
     for image in repository_list:
         tags_url = f"https://hub.docker.com/v2/repositories/library/{image}/tags/"
