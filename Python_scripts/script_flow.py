@@ -9,7 +9,6 @@ VERSION_PATTERN = r'{0}:(\S+)'
 RESULTS_PATTERN = '"Vulnerabilities": \[(.*?)\]'
 
 TRIVY_DIR_PATH = "trivy-reports"
-INSPECT_JSON_DIR_PATH = "trivy-version-reports"
 CSV_FILE_PATH = "csv-data/project_data.csv"
 
 
@@ -36,7 +35,7 @@ def get_version_dict():
     
     """  
     # reading the data from the file 
-    with open('VERSION_RESULTS_DIR') as f: 
+    with open(VERSION_RESULTS_DIR) as f: 
         data = f.read() 
     
     print("Data type before reconstruction : ", type(data)) 
@@ -141,7 +140,6 @@ def execute_flow():
 
     get_version_dict()
     # json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
-    # json_inspect_file_list = glob.glob(f'{INSPECT_JSON_DIR_PATH}/*.json')
 
     # # print("json_files_list {0}".format(json_files_list))
     # # print("json_files_list_type {0}".format(type(json_files_list)))
