@@ -35,28 +35,58 @@ jobs:
         chmod +x Python_scripts/main.py
         python Python_scripts/main.py  # Replace with the actual name of your Python script
 
-
     - name: Open and extract data
       run: | 
         file_path="version_dict_file.txt"
         if [ -f "$file_path" ]; then
-        # Iterate through each line in the file
-        while IFS= read -r line; do
-          # Print the current line (You can replace this with your processing logic)
-          echo "Line: $line"
-          
-          # Example: Split the line into key and value
-          IFS=":" read -r key value <<< "$line"
-          echo "Key: $key, Value: $value"
-
-          for item in "$value"; do
-            echo "Item_is: $item"
-          done
-        done < "$file_path"
+          # Iterate through each line in the file
+          while IFS= read -r line; do
+            # Print the current line (You can replace this with your processing logic)
+            echo "Line: $line"
+    
+            # Example: Split the line into key and value
+            IFS=":" read -r key value <<< "$line"
+            echo "Key: $key, Value: $value"
+    
+            # Remove leading and trailing spaces
+            value="${value#"['"}"
+            value="${value%"']"}"
+    
+            # Split the value into an array
+            IFS="', '" read -r -a items <<< "$value"
+    
+            # Iterate through the items
+            for item in "${items[@]}"; do
+              echo "Item is: $item"
+              # You can perform your desired actions here for each item
+            done
+          done < "$file_path"
         else
           echo "File not found: $file_path"
         fi
       shell: bash
+      
+    # - name: Open and extract data
+    #   run: | 
+    #     file_path="version_dict_file.txt"
+    #     if [ -f "$file_path" ]; then
+    #     # Iterate through each line in the file
+    #     while IFS= read -r line; do
+    #       # Print the current line (You can replace this with your processing logic)
+    #       echo "Line: $line"
+          
+    #       # Example: Split the line into key and value
+    #       IFS=":" read -r key value <<< "$line"
+    #       echo "Key: $key, Value: $value"
+
+    #       for item in "$value"; do
+    #         echo "Item_is: $item"
+    #       done
+    #     done < "$file_path"
+    #     else
+    #       echo "File not found: $file_path"
+    #     fi
+    #   shell: bash
 
     # - name: Scan images and generate reports
     #   run: |
