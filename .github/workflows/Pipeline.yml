@@ -162,7 +162,7 @@ jobs:
     - name: Use version_dict
       run: |
         # Access the version_dict pipeline variable
-        my_version_dict="${{ variables.version_dict }}"
+        my_version_dict="$version_dict"
     
         # You can use my_version_dict in your workflow
         echo "Version Dictionary: $my_version_dict"
