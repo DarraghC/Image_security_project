@@ -30,8 +30,6 @@ def get_version_tags():
         
         else:
             print(f"Failed to retrieve tags. Status code: {response.status_code}")
-    print("version_dict : {0}".format(version_dict))
-    print("version_release_dict : {0}".format(version_release_dict))
 
 
 def execute_flow():

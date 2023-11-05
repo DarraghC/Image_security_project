@@ -150,6 +150,14 @@ jobs:
         python Python_scripts/main.py  # Replace with the actual name of your Python script
         
     
+    - name: Get Dictionary from first Python Script
+      id: python-script
+      run: |
+        # Run the Python script and capture its output
+        output=$(python Python_scripts/version_tags_and_dates_flow.py)
+        echo "::set-output name=my_dict::$output"
+      shell: bash
+
     # - name: Run Python script
     #   run: |
     #    pip install requests
