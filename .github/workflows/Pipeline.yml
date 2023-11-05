@@ -155,7 +155,7 @@ jobs:
 
     - name: Open and extract data
       run: | 
-        file_path = "version_dict_file.txt"
+        file_path="version_dict_file.txt"
         if [ -f "$file_path" ]; then
         # Iterate through each line in the file
         while IFS= read -r line; do
