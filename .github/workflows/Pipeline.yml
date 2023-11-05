@@ -155,8 +155,40 @@ jobs:
     - name: Use the text file
       run: |
         # You can access the text file here
-        cat version_dict_file.txt  # For example, print the content
-    
+        # cat version_dict_file.txt  # For example, print the content
+
+        with open("version_dict_file.txt", "r") as file:
+          content = file.read()
+          my_dict = eval(content)
+
+        # Now you can iterate through the dictionary and its elements
+        for image, versions in my_dict.items():
+          for version in versions:
+            print(f"Image: {image}, Version: {version}")
+            # You can perform actions with each version here
+
+
+    # - name: Read and process my_dict.txt
+    #   id: process-my-dict
+    #   run: |
+    #     # Read the file and split it into individual dictionaries
+    #     while IFS= read -r line; do
+    #       # Parse the JSON data into a Python dictionary
+    #       image_dict=$(echo "$line" | jq -r .)
+          
+    #       # Extract the image name
+    #       image_name=$(echo "$image_dict" | jq -r 'keys[0]')
+
+    #       # Extract the list of versions for the image
+    #       versions=$(echo "$image_dict" | jq -r ".$image_name[]")
+
+    #       # Now you can iterate through the versions for each image
+    #       for version in $versions; do
+    #         echo "Image: $image_name, Version: $version"
+    #         # You can perform actions with each version here
+    #       done
+    #     done < my_dict.txt
+  
     # - name: Get Dictionary from first Python Script
     #   id: python-script
     #   run: |
