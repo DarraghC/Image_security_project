@@ -3,144 +3,27 @@ name: Image Security Pipeline
 on:
   push:
     branches:
-      - main  # Adjust the branch as needed
+      - main  
 
 jobs:
   scan:
     runs-on: ubuntu-latest
 
-    # env:
-    #   VERSION_DICT: '{"alpine": [], }'
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    # - name: Scipt to Download and install Trivy
-    #   run: |
-    #     curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.45.1
+    - name: Scipt to Download and install Trivy
+      run: |
+        curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.45.1
 
-    # - name: Create trivy-reports directory
-    #   run: |
-    #     mkdir -p trivy-reports
-    #     mkdir -p trivy-version-reports
-    #   shell: bash
-
-    # - name: Define image names dictionary
-    #   run: |
-    #     images=("alpine" "nginx" "ubuntu" "python" "redis" "postgres" "node" "httpd" "memcached" "mongo" "mysql" "traefik" "mariadb" "docker" "rabbitmq" "golang" "wordpress" "php" "sonarqube" "ruby" "haproxy" "tomcat" "kong" "neo4j")
-
-    #     # Create an associative array (dictionary) with image names as keys and empty arrays as values
-    #     declare -A image_dict=()
-    #     for image_name in "${images[@]}"; do
-    #       image_dict["$image_name"]=()
-    #     done
-    
-    #     # Print the dictionary for testing
-    #     for key in "${!image_dict[@]}"; do
-    #       echo "Key: $key, Value: ${image_dict[$key]}"
-    #     done
-    #   shell: bash
-
-    # - name: Scan images and generate reports
-    #   run: |
-    #     # Define the list of image names you want to scan
-    #     images=("alpine:latest" "nginx:latest" "ubuntu:latest" "python:latest" "redis:latest" "postgres:latest" "node:latest" "httpd:latest" "memcached:latest" "mongo:latest" "mysql:latest" "traefik:latest" "mariadb:latest" "docker:latest" "rabbitmq:latest" "golang:latest" "wordpress:latest" "php:latest" "sonarqube:latest" "ruby:latest" "haproxy:latest" "tomcat:latest" "kong:latest" "neo4j:latest")
-    #     current_date=$(date +'%Y-%m-%d')
-    #     for image in "${images[@]}"; do
-    #       sanitized_name="${image//:/_}"
-    #       echo "Scanning $image"
-    #       trivy image -f json -o "trivy-reports/$sanitized_name.json" "$image"
-    #       jq 'del(.Metadata.DiffIDs)' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name-no-diffid.json" && mv "trivy-reports/$sanitized_name-no-diffid.json" "trivy-reports/$sanitized_name.json"
-
-    #       # docker inspect "$image" > "$json_file"
-
-
-    #       # jq -c '.' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name.ndjson" && mv "trivy-reports/$sanitized_name.ndjson" "trivy-reports/$sanitized_name.json"
-
-    #     done
-    #   shell: bash
-    
-    # - name: Inspect Docker Images
-    #   run: |
-    #     # Iterate through the images array and perform docker inspect
-    #     images=("alpine:latest" "nginx:latest" "ubuntu:latest" "python:latest" "redis:latest" "postgres:latest" "node:latest" "httpd:latest" "memcached:latest" "mongo:latest" "mysql:latest" "traefik:latest" "mariadb:latest" "docker:latest" "rabbitmq:latest" "golang:latest" "wordpress:latest" "php:latest" "sonarqube:latest" "ruby:latest" "haproxy:latest" "tomcat:latest" "kong:latest" "neo4j:latest")
-    #     for image in "${images[@]}"; do
-    #       # Define the JSON file path for the current image
-    #       sanitized_name="${image//:/_}"
-    #       json_file="trivy-version-reports/$sanitized_name-docker-inspect.json"
-
-    #       # Perform docker inspect and save the output to the JSON file
-    #       docker pull "$image"
-    #       docker inspect "$image" > "$json_file"
-
-    #       # You can optionally capture and process the output as needed
-    #       # For example, if you want to extract specific information from the JSON
-    #       # Example: image_id=$(jq -r '.[0].Id' "$json_file")
-
-    #       echo "Docker inspect for $image completed, results saved to $json_file"
-    #     done
-
-    # - name: Upload Trivy Reports
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: trivy-repotrs
-    #     path: trivy-reports
+    - name: Create trivy-reports directory
+      run: |
+        mkdir -p trivy-reports
+      shell: bash
 
     
-    # - name: Set up AWS CLI
-    #   run: |
-    #     aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #     aws configure set region eu-north-1
-    #   shell: bash
-
-    # - name: Install requests library
-    #   run: pip install requests
-
-    # - name: Get Docker Hub Image Tags
-    #   run: |
-    #     # Define the Docker Hub repository and image name
-    #     repository="library/alpine"  # Replace with your desired repository and image name
-
-    #     # Use Docker Hub API to get tags
-    #     tags_url="https://hub.docker.com/v2/repositories/${repository}/tags/"
-    #     response=$(curl -s ${tags_url})
-
-    #     # Parse JSON response to extract tags
-    #     tags=$(echo ${response} | jq -r '.results[].name')
-
-    #     # Print the tags
-    #     echo "Tags for ${repository}:"
-    #     echo "${tags}"
-    #   env:
-    #     DOCKER_LOGIN_USERNAME: ${{ secrets.DOCKER_LOGIN_USERNAME }}
-    #     DOCKER_LOGIN_PASSWORD: ${{ secrets.DOCKER_LOGIN_PASSWORD }}
-
-    # - name: Display Docker Tags
-    #   run: |
-    #     echo "Tags for Docker Hub image:"
-    #     echo ${{ steps.get_docker_tags.outputs.tags }}
-
-    # - name: Create csv directory
-    #   run: mkdir -p csv-data
-    #   shell: bash
-    
-    # - name: Check if project_data.csv exists if not create
-    #   run: |
-    #     if aws s3 ls s3://imagereportbucket/data_folder/project_data.csv; then
-    #       echo "File exists"
-    #       aws s3 cp s3://imagereportbucket/data_folder/project_data.csv csv-data/
-    #     else
-    #       echo "File does not exist"
-    #       echo "Creating project_data.csv"
-    #       echo "Your data" > csv-data/project_data.csv  # Create your data file locally
-    #       # aws s3 cp csv-data/project_data.csv s3://imagereportbucket/data_folder/  # Upload the file to S3
-    #     fi
-    # - name: Create csv directory
-    #   run: mkdir -p txt_file_dir
-    #   shell: bash
-
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -165,74 +48,73 @@ jobs:
           # Example: Split the line into key and value
           IFS=":" read -r key value <<< "$line"
           echo "Key: $key, Value: $value"
+
+          for item in $value:
+            echo "item: $item"
         done < "$file_path"
         else
           echo "File not found: $file_path"
         fi
       shell: bash
-    
-    # - name: Read and extract Python dictionary
-    #   id: extract-dictionary
+
+    # - name: Scan images and generate reports
     #   run: |
-    #     # Read the content of the text file into a variable
-    #     dictionary_text=$(cat version_dict_file.txt)
-    #     print($dictionary_text)
-        
-    #     # Extract the Python dictionary from the text
-    #     python - <<EOF
-    #     import ast
-    #     dictionary = ast.literal_eval('$dictionary_text')
-    #     print(dictionary)
-    #     EOF
+    #     # Define the list of image names you want to scan
+    #     images=("alpine:latest" "nginx:latest" "ubuntu:latest" "python:latest" "redis:latest" "postgres:latest" "node:latest" "httpd:latest" "memcached:latest" "mongo:latest" "mysql:latest" "traefik:latest" "mariadb:latest" "docker:latest" "rabbitmq:latest" "golang:latest" "wordpress:latest" "php:latest" "sonarqube:latest" "ruby:latest" "haproxy:latest" "tomcat:latest" "kong:latest" "neo4j:latest")
+    #     current_date=$(date +'%Y-%m-%d')
+    #     for image in "${images[@]}"; do
+    #       sanitized_name="${image//:/_}"
+    #       echo "Scanning $image"
+    #       trivy image -f json -o "trivy-reports/$sanitized_name.json" "$image"
+    #       jq 'del(.Metadata.DiffIDs)' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name-no-diffid.json" && mv "trivy-reports/$sanitized_name-no-diffid.json" "trivy-reports/$sanitized_name.json"
 
-    #   env:
-    #     dictionary_text: ${{ steps.extract-dictionary.outputs.stdout }}
-
-    # - name: Use the extracted Python dictionary
-    #   run: |
-    #     # Access the extracted Python dictionary
-    #     my_dict="${{ env.dictionary }}"
-        
-    #     # You can now use the dictionary in your workflow
-    #     # For example, print the 'alpine' key and its values
-    #     echo "Alpine versions: ${my_dict['alpine']}"
-    #   env:
-    #     dictionary: ${{ steps.extract-dictionary.outputs.stdout }}
+    #       # docker inspect "$image" > "$json_file"
 
 
-    # - name: Read and process my_dict.txt
-    #   id: process-my-dict
-    #   run: |
-    #     # Read the file and split it into individual dictionaries
-    #     while IFS= read -r line; do
-    #       # Parse the JSON data into a Python dictionary
-    #       image_dict=$(echo "$line" | jq -r .)
-          
-    #       # Extract the image name
-    #       image_name=$(echo "$image_dict" | jq -r 'keys[0]')
+    #       # jq -c '.' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name.ndjson" && mv "trivy-reports/$sanitized_name.ndjson" "trivy-reports/$sanitized_name.json"
 
-    #       # Extract the list of versions for the image
-    #       versions=$(echo "$image_dict" | jq -r ".$image_name[]")
-
-    #       # Now you can iterate through the versions for each image
-    #       for version in $versions; do
-    #         echo "Image: $image_name, Version: $version"
-    #         # You can perform actions with each version here
-    #       done
-    #     done < my_dict.txt
-  
-    # - name: Get Dictionary from first Python Script
-    #   id: python-script
-    #   run: |
-    #     version_dict_output=$(python Python_scripts/version_tags_and_dates_flow.py)
-    #     echo "::set-output name=version_dict::$version_dict_output"
-    
-    # - name: Use version_dict
-    #   run: |
-    #     my_version_dict="${{ steps.python-script.outputs.version_dict }}"
-    #     echo "Version Dictionary: $my_version_dict"
+    #     done
     #   shell: bash
+    
+  
+    - name: Upload Trivy Reports
+      uses: actions/upload-artifact@v2
+      with:
+        name: trivy-reports
+        path: trivy-reports
 
+    
+    - name: Set up AWS CLI
+      run: |
+        aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws configure set region eu-north-1
+      shell: bash
+
+    # - name: Install requests library
+    #   run: pip install requests
+
+    - name: Create csv directory
+      run: mkdir -p csv-data
+      shell: bash
+    
+    - name: Check if project_data.csv exists if not create
+      run: |
+        if aws s3 ls s3://imagereportbucket/data_folder/project_data.csv; then
+          echo "File exists"
+          aws s3 cp s3://imagereportbucket/data_folder/project_data.csv csv-data/
+        else
+          echo "File does not exist"
+          echo "Creating project_data.csv"
+          echo "Your data" > csv-data/project_data.csv  # Create your data file locally
+          # aws s3 cp csv-data/project_data.csv s3://imagereportbucket/data_folder/  # Upload the file to S3
+        fi
+
+    # - name: Create csv directory
+    #   run: mkdir -p txt_file_dir
+    #   shell: bash
+    
+    
     # - name: Run Python script
     #   run: |
     #    pip install requests
