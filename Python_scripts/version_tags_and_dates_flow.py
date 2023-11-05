@@ -11,6 +11,7 @@ def get_version_tags():
         tags_url = f"https://hub.docker.com/v2/repositories/library/{image}/tags/"
         response = requests.get(tags_url)
         version_dict[image] = []
+        version_release_dict[image] = []
         # Check if the request was successful
         if response.status_code == 200:
             data = response.json()
@@ -20,8 +21,8 @@ def get_version_tags():
             for tag_info in results:
                 tag_name = tag_info["name"]
                 last_updated = tag_info["last_updated"]
-                version_release_dict[tag_name] = last_updated
-                # version_release_dict[tag_info].append(last_updated)
+                # version_release_dict[tag_name] = last_updated
+                version_release_dict[image].append("{0}, {1}".format(tag_name, last_updated))
                 version_dict[image].append(tag_name)
 
 
