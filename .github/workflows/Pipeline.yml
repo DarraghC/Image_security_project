@@ -156,7 +156,7 @@ jobs:
       id: extract-dictionary
       run: |
         # Read the content of the text file into a variable
-        dictionary_text=$(cat my_dict.txt)
+        dictionary_text=$(cat version_dict_file.txt)
         
         # Extract the Python dictionary from the text
         python - <<EOF
