@@ -1,7 +1,14 @@
 import requests
 
+VERSION_RESULTS_DIR = "version_dict_file.txt"
+VERSION_RELEASE_DIR = "version_release_dict_txt"
+
 version_dict = {}
 version_release_dict = {}
+
+my_dict = {version_dict: VERSION_RESULTS_DIR, version_release_dict: VERSION_RELEASE_DIR}
+
+dict_to_txt_list = [version_dict, version_release_dict]
 
 def get_version_tags():
     repository_list = ["alpine", "nginx", "ubuntu", "python", "redis", "postgres", "node", "httpd", "memcached", "mongo", "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby", "haproxy", "tomcat", "kong", "neo4j"]  # Replace with your desired repository and image name
@@ -31,9 +38,25 @@ def get_version_tags():
         else:
             print(f"Failed to retrieve tags. Status code: {response.status_code}")
 
+def write_dict_to_file(file):
+    """
+    Writes the dicts to text files so they can be used by the pipeline
+    """
+    for key, value in my_dict.items():
+        print("file: {0}".format(file))
+        print("key: {0}".format(key))
+        print("value: {0}".format(value))
+        if file == key:
+            with open(value, 'w') as my_file:
+                print("got_here {0}".format(key.items()))
+                for key, value in key.items():
+                    my_file.write(f'{key}: {value}\n')
+
 
 def execute_flow():
     """
     This is the main function that will call every other function
     """
     get_version_tags()
+    for file in dict_to_txt_list:
+        write_dict_to_file(file)

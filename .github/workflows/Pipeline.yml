@@ -137,7 +137,10 @@ jobs:
     #       echo "Your data" > csv-data/project_data.csv  # Create your data file locally
     #       # aws s3 cp csv-data/project_data.csv s3://imagereportbucket/data_folder/  # Upload the file to S3
     #     fi
-    
+    # - name: Create csv directory
+    #   run: mkdir -p txt_file_dir
+    #   shell: bash
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -150,17 +153,17 @@ jobs:
         python Python_scripts/main.py  # Replace with the actual name of your Python script
         
     
-    - name: Get Dictionary from first Python Script
-      id: python-script
-      run: |
-        version_dict_output=$(python Python_scripts/version_tags_and_dates_flow.py)
-        echo "::set-output name=version_dict::$version_dict_output"
+    # - name: Get Dictionary from first Python Script
+    #   id: python-script
+    #   run: |
+    #     version_dict_output=$(python Python_scripts/version_tags_and_dates_flow.py)
+    #     echo "::set-output name=version_dict::$version_dict_output"
     
-    - name: Use version_dict
-      run: |
-        my_version_dict="${{ steps.python-script.outputs.version_dict }}"
-        echo "Version Dictionary: $my_version_dict"
-      shell: bash
+    # - name: Use version_dict
+    #   run: |
+    #     my_version_dict="${{ steps.python-script.outputs.version_dict }}"
+    #     echo "Version Dictionary: $my_version_dict"
+    #   shell: bash
 
     # - name: Run Python script
     #   run: |
