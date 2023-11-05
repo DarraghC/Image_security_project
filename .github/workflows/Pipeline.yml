@@ -154,17 +154,11 @@ jobs:
       id: python-script
       run: |
         version_dict_output=$(python Python_scripts/version_tags_and_dates_flow.py)
-
-        # Set version_dict as a pipeline variable
-        echo "##vso[task.setvariable variable=version_dict;isOutput=true]$version_dict_output"
-      shell: bash
-
+        echo "::set-output name=version_dict::$version_dict_output"
+    
     - name: Use version_dict
       run: |
-        # Access the version_dict pipeline variable
-        my_version_dict="$version_dict"
-    
-        # You can use my_version_dict in your workflow
+        my_version_dict="${{ steps.python-script.outputs.version_dict }}"
         echo "Version Dictionary: $my_version_dict"
       shell: bash
 
