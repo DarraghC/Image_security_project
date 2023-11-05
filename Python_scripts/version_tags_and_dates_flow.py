@@ -38,25 +38,26 @@ def get_version_tags():
         else:
             print(f"Failed to retrieve tags. Status code: {response.status_code}")
 
-def write_dict_to_file(file):
+def write_version_release_dict_to_file(file_path):
     """
     Writes the dicts to text files so they can be used by the pipeline
-    """
-    for key, value in my_dict.items():
-        print("file: {0}".format(file))
-        print("key: {0}".format(key))
-        print("value: {0}".format(value))
-        if file == key:
-            with open(value, 'w') as my_file:
-                print("got_here {0}".format(key.items()))
-                for key, value in key.items():
-                    my_file.write(f'{key}: {value}\n')
+    """        
+    with open(file_path, 'w') as file:
+        for key, value in version_release_dict.items():
+            file.write(f'{key}: {value}\n')
 
+def write_version_dict_to_file(file_path):
+    """
+    Writes the dicts to text files so they can be used by the pipeline
+    """        
+    with open(file_path, 'w') as file:
+        for key, value in version_dict.items():
+            file.write(f'{key}: {value}\n')
 
 def execute_flow():
     """
     This is the main function that will call every other function
     """
     get_version_tags()
-    for file in dict_to_txt_list:
-        write_dict_to_file(file)
+    write_version_release_dict_to_file(VERSION_RELEASE_DIR)
+    write_version_dict_to_file(VERSION_RESULTS_DIR)

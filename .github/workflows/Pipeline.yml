@@ -151,7 +151,11 @@ jobs:
         pip install requests
         chmod +x Python_scripts/main.py
         python Python_scripts/main.py  # Replace with the actual name of your Python script
-        
+    
+    - name: Use the text file
+      run: |
+        # You can access the text file here
+        cat version_dict_file.txt  # For example, print the content
     
     # - name: Get Dictionary from first Python Script
     #   id: python-script
