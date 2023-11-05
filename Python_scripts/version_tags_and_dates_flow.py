@@ -20,10 +20,6 @@ def get_version_tags():
             for tag_info in results:
                 tag_name = tag_info["name"]
                 last_updated = tag_info["last_updated"]
-                print("tag_name : {0}".format(tag_name))
-                print("tag_name_type : {0}".format(type(tag_name)))
-                print("last_updated : {0}".format(last_updated))
-                print("last_updated_type : {0}".format(type(last_updated)))
                 version_release_dict[tag_name] = last_updated
                 # version_release_dict[tag_info].append(last_updated)
                 version_dict[image].append(tag_name)
@@ -33,8 +29,8 @@ def get_version_tags():
         
         else:
             print(f"Failed to retrieve tags. Status code: {response.status_code}")
-        print("version_dict : {0}".format(version_dict))
-        print("version_release_dict : {0}".format(version_release_dict))
+    print("version_dict : {0}".format(version_dict))
+    print("version_release_dict : {0}".format(version_release_dict))
 
 
 def execute_flow():
