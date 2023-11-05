@@ -157,6 +157,7 @@ jobs:
       run: |
         # Read the content of the text file into a variable
         dictionary_text=$(cat version_dict_file.txt)
+        print($dictionary_text)
         
         # Extract the Python dictionary from the text
         python - <<EOF
