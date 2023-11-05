@@ -153,9 +153,10 @@ jobs:
     - name: Get Dictionary from first Python Script
       id: python-script
       run: |
-        # Run the Python script and capture its output
-        output=$(python Python_scripts/version_tags_and_dates_flow.py)
-        echo "::set-output name=version_dict::$output"
+        version_dict_output=$(python Python_scripts/version_tags_and_dates_flow.py)
+
+        # Set version_dict as a pipeline variable
+        echo "##vso[task.setvariable variable=version_dict;isOutput=true]$version_dict_output"
       shell: bash
 
     # - name: Run Python script
