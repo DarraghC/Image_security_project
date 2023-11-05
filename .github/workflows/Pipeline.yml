@@ -151,34 +151,53 @@ jobs:
         pip install requests
         chmod +x Python_scripts/main.py
         python Python_scripts/main.py  # Replace with the actual name of your Python script
+
+
+    - name: Open and extract data
+      run: | 
+        file_path = "version_dict_file.txt"
+        if [ -f "$file_path" ]; then
+        # Iterate through each line in the file
+        while IFS= read -r line; do
+          # Print the current line (You can replace this with your processing logic)
+          echo "Line: $line"
+          
+          # Example: Split the line into key and value
+          IFS=":" read -r key value <<< "$line"
+          echo "Key: $key, Value: $value"
+        done < "$file_path"
+        else
+          echo "File not found: $file_path"
+        fi
+      shell: bash
     
-    - name: Read and extract Python dictionary
-      id: extract-dictionary
-      run: |
-        # Read the content of the text file into a variable
-        dictionary_text=$(cat version_dict_file.txt)
-        print($dictionary_text)
+    # - name: Read and extract Python dictionary
+    #   id: extract-dictionary
+    #   run: |
+    #     # Read the content of the text file into a variable
+    #     dictionary_text=$(cat version_dict_file.txt)
+    #     print($dictionary_text)
         
-        # Extract the Python dictionary from the text
-        python - <<EOF
-        import ast
-        dictionary = ast.literal_eval('$dictionary_text')
-        print(dictionary)
-        EOF
+    #     # Extract the Python dictionary from the text
+    #     python - <<EOF
+    #     import ast
+    #     dictionary = ast.literal_eval('$dictionary_text')
+    #     print(dictionary)
+    #     EOF
 
-      env:
-        dictionary_text: ${{ steps.extract-dictionary.outputs.stdout }}
+    #   env:
+    #     dictionary_text: ${{ steps.extract-dictionary.outputs.stdout }}
 
-    - name: Use the extracted Python dictionary
-      run: |
-        # Access the extracted Python dictionary
-        my_dict="${{ env.dictionary }}"
+    # - name: Use the extracted Python dictionary
+    #   run: |
+    #     # Access the extracted Python dictionary
+    #     my_dict="${{ env.dictionary }}"
         
-        # You can now use the dictionary in your workflow
-        # For example, print the 'alpine' key and its values
-        echo "Alpine versions: ${my_dict['alpine']}"
-      env:
-        dictionary: ${{ steps.extract-dictionary.outputs.stdout }}
+    #     # You can now use the dictionary in your workflow
+    #     # For example, print the 'alpine' key and its values
+    #     echo "Alpine versions: ${my_dict['alpine']}"
+    #   env:
+    #     dictionary: ${{ steps.extract-dictionary.outputs.stdout }}
 
 
     # - name: Read and process my_dict.txt
