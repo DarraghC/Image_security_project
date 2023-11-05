@@ -1,5 +1,6 @@
 import re 
 import json
+import ast
 import csv
 import glob
 
@@ -41,10 +42,10 @@ def get_version_dict():
     print("Data type before reconstruction : ", type(data)) 
         
     # reconstructing the data as a dictionary 
-    js = json.loads(data) 
-    
-    print("Data type after reconstruction : ", type(js)) 
-    print(js) 
+    d = ast.literal_eval(data) 
+  
+    print("Data type after reconstruction : ", type(d)) 
+    print(d) 
 
 
 def parse_version_data(json_inspect_string_data, image_name):
