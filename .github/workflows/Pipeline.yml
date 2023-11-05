@@ -58,8 +58,11 @@ jobs:
             # Iterate through the items
             for item in "${items[@]}"; do
               if [ -n "$item" ]; then
-                echo "Item is: $item"
-              fi
+                # echo "Item is: $item"
+                echo "Scanning $key"
+                trivy image -f json -o "trivy-reports/$key_$item.json" "$key"
+                # jq 'del(.Metadata.DiffIDs)' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name-no-diffid.json" && mv "trivy-reports/$sanitized_name-no-diffid.json" "trivy-reports/$sanitized_name.json"
+              fi 
               # You can perform your desired actions here for each item
             done
           done < "$file_path"
