@@ -155,7 +155,7 @@ jobs:
       run: |
         # Run the Python script and capture its output
         output=$(python Python_scripts/version_tags_and_dates_flow.py)
-        echo "::set-output name=my_dict::$output"
+        echo "::set-output name=version_dict::$output"
       shell: bash
 
     # - name: Run Python script
