@@ -49,8 +49,9 @@ jobs:
           IFS=":" read -r key value <<< "$line"
           echo "Key: $key, Value: $value"
 
-          for item in $value:
+          for item in "${value[@]}"; do
             echo "Item_is: $item"
+          done
         done < "$file_path"
         else
           echo "File not found: $file_path"
