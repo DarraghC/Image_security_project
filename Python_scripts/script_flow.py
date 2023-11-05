@@ -12,6 +12,11 @@ TRIVY_DIR_PATH = "trivy-reports"
 INSPECT_JSON_DIR_PATH = "trivy-version-reports"
 CSV_FILE_PATH = "csv-data/project_data.csv"
 
+
+VERSION_RESULTS_DIR = "version_dict_file.txt"
+VERSION_RELEASE_DIR = "version_release_dict.txt"
+
+
 # IMAGE_VERSION_DICT = os.getenv("VERSION_DICT")
 
 
@@ -25,6 +30,23 @@ def get_json(json_file):
         json_data_string = str(json_data)
 
     return json_data_string
+
+def get_version_dict():
+    """
+    
+    """  
+    # reading the data from the file 
+    with open('VERSION_RESULTS_DIR') as f: 
+        data = f.read() 
+    
+    print("Data type before reconstruction : ", type(data)) 
+        
+    # reconstructing the data as a dictionary 
+    js = json.loads(data) 
+    
+    print("Data type after reconstruction : ", type(js)) 
+    print(js) 
+
 
 def parse_version_data(json_inspect_string_data, image_name):
     """
@@ -117,6 +139,7 @@ def execute_flow():
     This is the main function that will call every other function
     """
 
+    get_version_dict()
     # json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
     # json_inspect_file_list = glob.glob(f'{INSPECT_JSON_DIR_PATH}/*.json')
 

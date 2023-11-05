@@ -28,6 +28,9 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.11.3
+    
+    - name: Install requests library
+      run: pip install requests
 
     - name: Run Python script for version tags/dates
       run: |
@@ -71,28 +74,6 @@ jobs:
         fi
       shell: bash
       
-    # - name: Open and extract data
-    #   run: | 
-    #     file_path="version_dict_file.txt"
-    #     if [ -f "$file_path" ]; then
-    #     # Iterate through each line in the file
-    #     while IFS= read -r line; do
-    #       # Print the current line (You can replace this with your processing logic)
-    #       echo "Line: $line"
-          
-    #       # Example: Split the line into key and value
-    #       IFS=":" read -r key value <<< "$line"
-    #       echo "Key: $key, Value: $value"
-
-    #       for item in "$value"; do
-    #         echo "Item_is: $item"
-    #       done
-    #     done < "$file_path"
-    #     else
-    #       echo "File not found: $file_path"
-    #     fi
-    #   shell: bash
-
     # - name: Scan images and generate reports
     #   run: |
     #     # Define the list of image names you want to scan
@@ -127,8 +108,7 @@ jobs:
         aws configure set region eu-north-1
       shell: bash
 
-    # - name: Install requests library
-    #   run: pip install requests
+
 
     - name: Create csv directory
       run: mkdir -p csv-data
@@ -145,17 +125,13 @@ jobs:
           echo "Your data" > csv-data/project_data.csv  # Create your data file locally
           # aws s3 cp csv-data/project_data.csv s3://imagereportbucket/data_folder/  # Upload the file to S3
         fi
-
-    # - name: Create csv directory
-    #   run: mkdir -p txt_file_dir
-    #   shell: bash
     
     
-    # - name: Run Python script
-    #   run: |
-    #    pip install requests
-    #    chmod +x Python_scripts/python_main.py
-    #    python Python_scripts/python_main.py  # Replace with the actual name of your Python script
+    - name: Run Python script to update data csv file
+      run: |
+       pip install requests
+       chmod +x Python_scripts/python_main.py
+       python Python_scripts/python_main.py  # Replace with the actual name of your Python script
 
 
     # - name: Upload Trivy Reports to Amazon S3
