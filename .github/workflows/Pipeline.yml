@@ -50,7 +50,7 @@ jobs:
           echo "Key: $key, Value: $value"
 
           for item in $value:
-            echo "item: $item"
+            echo "Item_is: $item"
         done < "$file_path"
         else
           echo "File not found: $file_path"
