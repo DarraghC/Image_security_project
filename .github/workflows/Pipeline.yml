@@ -100,17 +100,17 @@ jobs:
         name: trivy-reports
         path: trivy-reports
     
-    # - name: Upload version_dict_file text 
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: version-dict-text
-    #     path: version_dict_file.txt
+    - name: Upload version_dict_file text 
+      uses: actions/upload-artifact@v2
+      with:
+        name: version-dict-text
+        path: version_dict_file.txt
 
-    # - name: Upload version-release-dict-text
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: version-release-dict-text
-    #     path: version_release_dict.txt
+    - name: Upload version-release-dict-text
+      uses: actions/upload-artifact@v2
+      with:
+        name: version-release-dict-text
+        path: version_release_dict.txt
 
     - name: Set up AWS CLI
       run: |
