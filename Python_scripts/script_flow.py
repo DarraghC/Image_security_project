@@ -85,7 +85,11 @@ def version_release_dict():
             print(line)
             split_data  = line.split(":")
             if split_data[0] in image_dicts.keys():
-                image_dicts[split_data[0]] = split_data[1]
+                split_data[1] =split_data[1].replace('"', '').replace("\n", "").replace("]", "").replace("[", "")
+                version_data = split_data[1]
+                version_list = [item.strip() for item in version_data.split(',')]
+                version_list = [item.strip("' ") for item in version_list]
+                image_dicts[split_data[0]] = version_list
     print("here: {0}".format(image_dicts))
 
 def parse_version_data(json_inspect_string_data, image_name):

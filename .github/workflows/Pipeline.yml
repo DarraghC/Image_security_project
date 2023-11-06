@@ -34,7 +34,6 @@ jobs:
 
     - name: Run Python script for version tags/dates
       run: |
-        pip install requests
         chmod +x Python_scripts/main.py
         python Python_scripts/main.py  # Replace with the actual name of your Python script
 
@@ -140,7 +139,6 @@ jobs:
     
     - name: Run Python script to update data csv file
       run: |
-       pip install requests
        chmod +x Python_scripts/python_main.py
        python Python_scripts/python_main.py  # Replace with the actual name of your Python script
 
