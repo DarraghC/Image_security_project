@@ -45,7 +45,7 @@ def get_version_dict():
             split_data  = line.split(":")
             print(type(split_data[0]))
             split_data[0] =split_data[0].replace('"', '').replace("/n", "").replace("]", "").replace("[", "")
-            split_data[0] = list(split_data[0])
+            # split_data[0] = list(split_data[0])
             print(type(split_data[0]))
             version_dict[split_data[0]] = split_data[1]
         print(type(version_dict))
