@@ -15,6 +15,7 @@ CSV_FILE_PATH = "csv-data/project_data.csv"
 
 VERSION_RESULTS_DIR = "version_dict_file.txt"
 VERSION_RELEASE_DIR = "version_release_dict.txt"
+version_dict = {}
 
 
 # IMAGE_VERSION_DICT = os.getenv("VERSION_DICT")
@@ -41,6 +42,11 @@ def get_version_dict():
 
         for line in Lines:
             print("blah : {0}".format(line))
+            split_data  = line.split(":")
+            version_dict[split_data[0]] = split_data[1]
+        print(type(version_dict))
+        print(version_dict)
+
     
     # print("Data type before reconstruction : ", type(data)) 
         
