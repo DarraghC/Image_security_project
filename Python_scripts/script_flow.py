@@ -34,22 +34,28 @@ def get_json(json_file):
 
 def get_version_dict():
     """
-    
+    opens a text file and puts the data into a dictionary for easier use
     """  
     # reading the data from the file 
     with open(VERSION_RESULTS_DIR) as file: 
         Lines = file.readlines() 
-
         for line in Lines:
-            print("blah : {0}".format(line))
             split_data  = line.split(":")
             split_data[1] =split_data[1].replace('"', '').replace("\n", "").replace("]", "").replace("[", "")
             version_data = split_data[1]
             version_list = [item.strip() for item in version_data.split(',')]
             version_list = [item.strip("' ") for item in version_list]
-            
             version_dict[split_data[0]] = version_list
         print(version_dict)
+
+def version_release_dict():
+    """
+    
+    """
+    with open(VERSION_RELEASE_DIR) as file: 
+        Lines = file.readlines() 
+        for line in Lines:
+            print(line)
 
     
     # print("Data type before reconstruction : ", type(data)) 
@@ -153,6 +159,7 @@ def execute_flow():
     """
 
     get_version_dict()
+    version_release_dict()
     # json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
 
     # # print("json_files_list {0}".format(json_files_list))
