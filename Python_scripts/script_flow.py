@@ -84,7 +84,9 @@ def version_release_dict():
         for line in Lines:
             print(line)
             split_data  = line.split(":")
-            split_data[0] =
+            if split_data[0] in image_dicts.keys():
+                image_dicts[split_data[0]] = split_data[1]
+    print("here: {0}".format(image_dicts))
 
 def parse_version_data(json_inspect_string_data, image_name):
     """
@@ -176,7 +178,7 @@ def execute_flow():
     """
     This is the main function that will call every other function
     """
-
+    create_image_dicts()
     get_version_dict()
     version_release_dict()
     # json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
