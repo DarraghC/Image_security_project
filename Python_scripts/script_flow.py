@@ -82,27 +82,38 @@ def version_release_dict():
     with open(VERSION_RELEASE_DIR) as file: 
         Lines = file.readlines() 
         for line in Lines:
+            key, value = line.split(':', 1)
+            for image_name in image_dicts.keys():
+                if image_name == key:
+                    new_value = value.replace('"', '').replace("\n", "").replace("]", "").replace("[", "")
+                    updated_list = new_value.split("',")
+                    new_list = []
+                    for item in updated_list:
+                        item = item.replace("'", "")
+                        new_list.append(item)
+                    image_dicts[key] = new_list
+    print("image_dicts : {0}".format(image_dicts))
             # result_list = [substring.strip() for substring in line.split("neo4j:") if substring.strip()]
 
             # print(result_list)
-            print("line : {0}".format(line))
+            # print("line : {0}".format(line))
 
-            key, value = line.split(':', 1)
-            result_dict = {key.strip(): value_list}
-            print(result_dict)
+            # key, value = line.split(':', 1)
+            # result_dict = {key.strip(): value_list}
+            # print(result_dict)
             # Remove leading and trailing whitespace and parse the value as a list
-            value_list = eval(value.strip())
-            for image_name, V in image_dicts.items():
-                split_pattern = "'{0}':"
-                split_data = line.split(split_pattern.format(image_name), 1)
-                print("got here {0}".format(image_name))
-                print("got here2 {0}".format(split_data[1]))
-                if split_data[0] == image_name:
-                    print("data 1: {0}".format(split_data))
-                    print("data 1 type: {0}".format(type(split_data)))
-                    split_data[1] =split_data[1].replace('"', '').replace("\n", "").replace("]", "").replace("[", "")
-                    print("data2".format(split_data[1]))
-                    print("data2".format(type(split_data[1])))
+            # value_list = eval(value.strip())
+            # for image_name, V in image_dicts.items():
+            #     split_pattern = "'{0}':"
+            #     split_data = line.split(split_pattern.format(image_name), 1)
+            #     print("got here {0}".format(image_name))
+            #     print("got here2 {0}".format(split_data[1]))
+            #     if split_data[0] == image_name:
+            #         print("data 1: {0}".format(split_data))
+            #         print("data 1 type: {0}".format(type(split_data)))
+            #         split_data[1] =split_data[1].replace('"', '').replace("\n", "").replace("]", "").replace("[", "")
+            #         print("data2".format(split_data[1]))
+            #         print("data2".format(type(split_data[1])))
         #             version_data = split_data[1]
         #             version_list = [item.strip() for item in version_data.split(',')]
         #             version_list = [item.strip("' ") for item in version_list]
