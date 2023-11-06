@@ -36,16 +36,19 @@ def get_version_dict():
     
     """  
     # reading the data from the file 
-    with open(VERSION_RESULTS_DIR) as f: 
-        data = f.read() 
+    with open(VERSION_RESULTS_DIR) as file: 
+        Lines = file.readlines() 
+
+        for line in Lines:
+            print("blah : {0}".format(line))
     
-    print("Data type before reconstruction : ", type(data)) 
+    # print("Data type before reconstruction : ", type(data)) 
         
-    # reconstructing the data as a dictionary 
-    d = ast.literal_eval(data) 
+    # # reconstructing the data as a dictionary 
+    # d = ast.literal_eval(data) 
   
-    print("Data type after reconstruction : ", type(d)) 
-    print(d) 
+    # print("Data type after reconstruction : ", type(d)) 
+    # print(d) 
 
 
 def parse_version_data(json_inspect_string_data, image_name):
