@@ -87,7 +87,8 @@ def version_release_dict():
             # print(result_list)
             print(line)
             for image_name, V in image_dicts.items():
-                split_data = line.split("{0}:".format(image_name), 1)
+                # split_pattern = "{0}':"
+                split_data = line.split("{0}':".format(image_name), 1)
                 print("got here {0}".format(image_name))
                 print("got here2 {0}".format(split_data[1]))
                 if split_data[0] == image_name:
