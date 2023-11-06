@@ -88,12 +88,12 @@ def version_release_dict():
         #     print(line)
             for image_name, V in image_dicts.items():
                 split_data  = line.split("{0}:".format(image_name))
-                print("data 1" + split_data)
-                print("data 1 type" + type(split_data))
+                print("data 1: {0}".format(split_data))
+                print("data 1 type: {0}".format(type(split_data)))
                 if split_data[0] == image_name:
                     split_data[1] =split_data[1].replace('"', '').replace("\n", "").replace("]", "").replace("[", "")
-                    print("data2" +  split_data[1])
-                    print("data2" +  type(split_data[1]))
+                    print("data2".format(split_data[1]))
+                    print("data2".format(type(split_data[1])))
         #             version_data = split_data[1]
         #             version_list = [item.strip() for item in version_data.split(',')]
         #             version_list = [item.strip("' ") for item in version_list]
