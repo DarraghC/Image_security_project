@@ -46,13 +46,9 @@ def get_version_dict():
             split_data[1] =split_data[1].replace('"', '').replace("\n", "").replace("]", "").replace("[", "")
             version_data = split_data[1]
             version_list = [item.strip() for item in version_data.split(',')]
-
-            # Remove the single quotes from each element
             version_list = [item.strip("' ") for item in version_list]
-            print(version_list)
-            print(type(version_list))
-            version_dict[split_data[0]] = split_data[1]
-        print(type(version_dict))
+            
+            version_dict[split_data[0]] = version_list
         print(version_dict)
 
     
