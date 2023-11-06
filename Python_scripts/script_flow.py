@@ -85,11 +85,11 @@ def version_release_dict():
             # result_list = [substring.strip() for substring in line.split("neo4j:") if substring.strip()]
 
             # print(result_list)
-        #     print(line)
+            print(line)
             for image_name, V in image_dicts.items():
-                split_data  = line.split("{0}:".format(image_name))
+                split_data = line.split("{0}:".format(image_name))
                 print("got here {0}".format(image_name))
-                print("got here2 {0}".format( split_data[0]))
+                print("got here2 {0}".format(split_data[0]))
                 if split_data[0] == image_name:
                     print("data 1: {0}".format(split_data))
                     print("data 1 type: {0}".format(type(split_data)))
