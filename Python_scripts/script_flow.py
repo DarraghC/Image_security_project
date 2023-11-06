@@ -43,10 +43,14 @@ def get_version_dict():
         for line in Lines:
             print("blah : {0}".format(line))
             split_data  = line.split(":")
-            print(type(split_data[0]))
-            split_data[1] =split_data[1].replace('"', '').replace("/n", "").replace("]", "").replace("[", "")
-            # split_data[0] = list(split_data[0])
-            print(type(split_data[0]))
+            split_data[1] =split_data[1].replace('"', '').replace("\n", "").replace("]", "").replace("[", "")
+            version_data = split_data[1]
+            version_list = [item.strip() for item in version_data.split(',')]
+
+            # Remove the single quotes from each element
+            version_list = [item.strip("' ") for item in version_list]
+            print(version_list)
+            print(type(version_list))
             version_dict[split_data[0]] = split_data[1]
         print(type(version_dict))
         print(version_dict)
