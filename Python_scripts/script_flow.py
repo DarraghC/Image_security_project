@@ -18,8 +18,24 @@ VERSION_RELEASE_DIR = "version_release_dict.txt"
 version_dict = {}
 
 
-# IMAGE_VERSION_DICT = os.getenv("VERSION_DICT")
+image_list = ["alpine", "nginx", "ubuntu", "python", "redis", "postgres", "node", "httpd", "memcached", "mongo", "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby", "haproxy", "tomcat", "kong", "neo4j"]
 
+# alpine_dict = {}
+# nginx_dict = {}
+# ubuntu_dict = {}
+# python_dict = {}
+# redis_dict = {}
+# postgres_dict = {}
+# node_dict = {}
+# httpd_dict = {}
+# memcached_dict = {}
+# mongo_dict = {}
+# mysql_dict = {}
+# traefik_dict = {}
+# alpine_dict = {}
+# alpine_dict = {}
+# alpine_dict = {}
+image_dicts ={}
 
 def get_json(json_file):
     """
@@ -31,6 +47,17 @@ def get_json(json_file):
         json_data_string = str(json_data)
 
     return json_data_string
+
+def create_image_dicts():
+    """
+    
+    """
+    # global image_dicts
+    for image in image_list:
+        image_dicts[image]= []
+
+    print(image_dicts)
+
 
 def get_version_dict():
     """
@@ -56,16 +83,8 @@ def version_release_dict():
         Lines = file.readlines() 
         for line in Lines:
             print(line)
-
-    
-    # print("Data type before reconstruction : ", type(data)) 
-        
-    # # reconstructing the data as a dictionary 
-    # d = ast.literal_eval(data) 
-  
-    # print("Data type after reconstruction : ", type(d)) 
-    # print(d) 
-
+            split_data  = line.split(":")
+            split_data[0] =
 
 def parse_version_data(json_inspect_string_data, image_name):
     """
