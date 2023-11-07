@@ -15,26 +15,10 @@ CSV_FILE_PATH = "csv-data/project_data.csv"
 
 VERSION_RESULTS_DIR = "version_dict_file.txt"
 VERSION_RELEASE_DIR = "version_release_dict.txt"
+
+
 version_dict = {}
-
-
 image_list = ["alpine", "nginx", "ubuntu", "python", "redis", "postgres", "node", "httpd", "memcached", "mongo", "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby", "haproxy", "tomcat", "kong", "neo4j"]
-
-# alpine_dict = {}
-# nginx_dict = {}
-# ubuntu_dict = {}
-# python_dict = {}
-# redis_dict = {}
-# postgres_dict = {}
-# node_dict = {}
-# httpd_dict = {}
-# memcached_dict = {}
-# mongo_dict = {}
-# mysql_dict = {}
-# traefik_dict = {}
-# alpine_dict = {}
-# alpine_dict = {}
-# alpine_dict = {}
 image_dicts ={}
 
 def get_json(json_file):
@@ -75,9 +59,9 @@ def get_version_dict():
             version_dict[split_data[0]] = version_list
         print(version_dict)
 
-def version_release_dict():
+def get_version_release_dict():
     """
-    
+    opens a text file and puts the data into a dictionary for easier use
     """
     with open(VERSION_RELEASE_DIR) as file: 
         Lines = file.readlines() 
@@ -93,32 +77,7 @@ def version_release_dict():
                         new_list.append(item)
                     image_dicts[key] = new_list
     print("image_dicts : {0}".format(image_dicts))
-            # result_list = [substring.strip() for substring in line.split("neo4j:") if substring.strip()]
-
-            # print(result_list)
-            # print("line : {0}".format(line))
-
-            # key, value = line.split(':', 1)
-            # result_dict = {key.strip(): value_list}
-            # print(result_dict)
-            # Remove leading and trailing whitespace and parse the value as a list
-            # value_list = eval(value.strip())
-            # for image_name, V in image_dicts.items():
-            #     split_pattern = "'{0}':"
-            #     split_data = line.split(split_pattern.format(image_name), 1)
-            #     print("got here {0}".format(image_name))
-            #     print("got here2 {0}".format(split_data[1]))
-            #     if split_data[0] == image_name:
-            #         print("data 1: {0}".format(split_data))
-            #         print("data 1 type: {0}".format(type(split_data)))
-            #         split_data[1] =split_data[1].replace('"', '').replace("\n", "").replace("]", "").replace("[", "")
-            #         print("data2".format(split_data[1]))
-            #         print("data2".format(type(split_data[1])))
-        #             version_data = split_data[1]
-        #             version_list = [item.strip() for item in version_data.split(',')]
-        #             version_list = [item.strip("' ") for item in version_list]
-        #             image_dicts[split_data[0]] = version_list
-        # print("here: {0}".format(image_dicts))
+            
 
 def parse_version_data(json_inspect_string_data, image_name):
     """
@@ -190,20 +149,6 @@ def count_error_in_results(results_data):
     print("count_is : {0}, {1}, {2}".format(low_count, medium_count, high_count))
 
     return low_count, medium_count, high_count
-
-# def testing_something(my_image_name):
-#     # Specify the image name
-#     image_name = "{0}:latest"
-
-#     # Run the 'docker inspect' command to get image details
-#     command = f'docker inspect --format="{{.Id}} {{.Created}}" {image_name.format(my_image_name)}'
-#     output = subprocess.check_output(command, shell=True, universal_newlines=True)
-
-#     # Extract the image ID and created date
-#     image_id, created_date = output.strip().split()
-
-#     print(f"Image ID: {image_id}")
-#     print(f"Created Date: {created_date}")
     
 
 def execute_flow():
@@ -212,42 +157,31 @@ def execute_flow():
     """
     create_image_dicts()
     get_version_dict()
-    version_release_dict()
-    # json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
+    get_version_release_dict()
+    json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
 
-    # # print("json_files_list {0}".format(json_files_list))
-    # # print("json_files_list_type {0}".format(type(json_files_list)))
+    print("json_files_list {0}".format(json_files_list))
 
-    # for json_file in json_files_list:
-    #     json_string_data = get_json(json_file)
-    #     # print("json_string_data {0}".format(json_string_data))
-    #     # print("json_string_data_type {0}".format(type(json_string_data)))
+    for json_file in json_files_list:
 
-    #     image_name, results_data = parse_string_data(json_string_data)
+        json_string_data = get_json(json_file)
+        print("json_string_data {0}".format(json_string_data))
+        # print("json_string_data_type {0}".format(type(json_string_data)))
 
-    #     for file in json_inspect_file_list:
+        image_name, results_data = parse_string_data(json_string_data)
+        print("image_name: {0}".format(image_name))
+        # json_inspect_string_data = get_json(file)
+        # print("inspect_data : {0}".format(json_inspect_string_data))
+        # image_version = parse_version_data(json_inspect_string_data, image_name)
 
-    #         inspect_file_string = "{0}_latest"
-    #         # print(json_inspect_file_list)
-    #         # print(inspect_file_string.format(image_name))
-    #         # print(file)
-    #         if inspect_file_string.format(image_name) in file:
-    #             print("got here")
-    #             json_inspect_string_data = get_json(file)
-    #             # print("inspect_data : {0}".format(json_inspect_string_data))
-    #             image_version = parse_version_data(json_inspect_string_data, image_name)
-    #             # testing_something(image_name)
+        print("results_data is : {0}".format(results_data))
 
-    #             # print("image_name is : {0}".format(image_name))
-    #             print("image_version_is : {0}".format(image_version))
-    #             print("results_data is : {0}".format(results_data))
+        low_count, medium_count, high_count = count_error_in_results(results_data)
 
-    #             low_count, medium_count, high_count = count_error_in_results(results_data)
-
-    #             if check_csv_file_empty():
-    #                 write_headers_to_file()
+        if check_csv_file_empty():
+            write_headers_to_file()
 
 
 
-                # write_parsed_data(image_name, image_version, results_data, low_count, medium_count, high_count)
+    #   write_parsed_data(image_name, image_version, results_data, low_count, medium_count, high_count)
 
