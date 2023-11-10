@@ -142,6 +142,7 @@ def count_error_in_results(results_data):
     """
     This function checks the different Severitys 
     """
+    low_count, medium_count, high_count = 0
     low_count = results_data.count("LOW")
     medium_count = results_data.count("MEDIUM")
     high_count = results_data.count("HIGH") 
@@ -178,14 +179,14 @@ def execute_flow():
                                 for image_dicts_image, versions_dates_list in image_dicts.items():
                                     if image == image_dicts_image:
                                         for item in versions_dates_list:
-                                            print("blah: {0}".format(versions_dates_list))
-                                            print("version is: {0} , item is {1}".format(version, item))
+                                            # print("blah: {0}".format(versions_dates_list))
+                                            # print("version is: {0} , item is {1}".format(version, item))
                                             if version in item:
                                                 version_and_date_list = item.split(',')
-                                                print("here: {0}".format(version_and_date_list))
+                                                # print("here: {0}".format(version_and_date_list))
                                                 version_date_published = version_and_date_list[1]
 
-                                                print("image_name: {0}".format(image_name))
+                                                # print("image_name: {0}".format(image_name))
                                                 # print("image {0}".format(image))
                                                 print("Version is: {0}, Published: {1}".format(version, version_date_published))
 
