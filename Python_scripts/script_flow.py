@@ -179,7 +179,8 @@ def execute_flow():
                                     if image == image_dicts_image:
                                         for item in versions_dates_list:
                                             if version in item:
-                                                version_and_date_list = version.split(', ')
+                                                version_and_date_list = version.split(',')
+                                                print(version_and_date_list)
                                                 version_date_published = version_and_date_list[1]
 
                                                 print("image_name: {0}".format(image_name))
