@@ -164,12 +164,13 @@ def execute_flow():
 
     for json_file in json_files_list:
         for image in image_list:
-            print("json file {0}:type {1}  Image is {2} : type{3}".format(json_file, type(json_file), image, type(image)))
+            # print("json file {0}:type {1}  Image is {2} : type{3}".format(json_file, type(json_file), image, type(image)))
             if image in json_file:
-                print("got here")
+                # print("got here")
                 json_string_data = get_json(json_file)
                 print("json_string_data {0}".format(json_string_data))
                 image_name, results_data = parse_string_data(json_string_data)
+
                 print("image_name: {0}".format(image_name))
                 print("image {0}".format(image))
                 
@@ -179,7 +180,7 @@ def execute_flow():
 
                 print("results_data is : {0}".format(results_data))
 
-                low_count, medium_count, high_count = count_error_in_results(results_data)
+                low_count, medium_count, high_count = count_error_in_results(json_string_data)
 
                 if check_csv_file_empty():
                     write_headers_to_file()
