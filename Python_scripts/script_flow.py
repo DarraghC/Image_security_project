@@ -164,6 +164,7 @@ def execute_flow():
 
     for json_file in json_files_list:
         for image in image_list:
+            print("json file {0}:type {1}  Image is {2} : type{3}".format(json_file, type(json_file), image, type(image)))
             if image in json_file:
                 print("got here")
                 json_string_data = get_json(json_file)
