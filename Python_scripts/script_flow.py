@@ -40,7 +40,7 @@ def create_image_dicts():
     for image in image_list:
         image_dicts[image]= []
 
-    print(image_dicts)
+    print("Image dict is : {0}".format(image_dicts))
 
 
 def get_version_dict():
@@ -57,7 +57,7 @@ def get_version_dict():
             version_list = [item.strip() for item in version_data.split(',')]
             version_list = [item.strip("' ") for item in version_list]
             version_dict[split_data[0]] = version_list
-        print(version_dict)
+        print("version_dict : {0}".format(version_dict))
 
 def get_version_release_dict():
     """
@@ -163,23 +163,25 @@ def execute_flow():
     print("json_files_list {0}".format(json_files_list))
 
     for json_file in json_files_list:
+        for image in image_list:
+            if image in json_file:
+                print("got here")
+                json_string_data = get_json(json_file)
+                print("json_string_data {0}".format(json_string_data))
+                image_name, results_data = parse_string_data(json_string_data)
+                print("image_name: {0}".format(image_name))
+                print("image {0}".format(image))
+                
+                print("Get image version from dict")
 
-        json_string_data = get_json(json_file)
-        print("json_string_data {0}".format(json_string_data))
-        # print("json_string_data_type {0}".format(type(json_string_data)))
+                print("Get the release date for the version")
 
-        image_name, results_data = parse_string_data(json_string_data)
-        print("image_name: {0}".format(image_name))
-        # json_inspect_string_data = get_json(file)
-        # print("inspect_data : {0}".format(json_inspect_string_data))
-        # image_version = parse_version_data(json_inspect_string_data, image_name)
+                print("results_data is : {0}".format(results_data))
 
-        print("results_data is : {0}".format(results_data))
+                low_count, medium_count, high_count = count_error_in_results(results_data)
 
-        low_count, medium_count, high_count = count_error_in_results(results_data)
-
-        if check_csv_file_empty():
-            write_headers_to_file()
+                if check_csv_file_empty():
+                    write_headers_to_file()
 
 
 
