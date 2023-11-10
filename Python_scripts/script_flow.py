@@ -168,7 +168,7 @@ def execute_flow():
             if image in json_file:
                 # print("got here")
                 json_string_data = get_json(json_file)
-                print("json_string_data {0}".format(json_string_data))
+                # print("json_string_data {0}".format(json_string_data))
                 image_name, results_data = parse_string_data(json_string_data)
 
                 for version_dict_image_key, version_list in version_dict.items():
@@ -179,6 +179,7 @@ def execute_flow():
                                     if image == image_dicts_image:
                                         for item in versions_dates_list:
                                             print("blah: {0}".format(versions_dates_list))
+                                            print("version is: {0} , item is {1}".format(version, item))
                                             if version in item:
                                                 version_and_date_list = version.split(',')
                                                 print("here: {0}".format(version_and_date_list))
