@@ -142,7 +142,6 @@ def count_error_in_results(results_data):
     """
     This function checks the different Severitys 
     """
-    low_count, medium_count, high_count = 0
     low_count = results_data.count("LOW")
     medium_count = results_data.count("MEDIUM")
     high_count = results_data.count("HIGH") 
