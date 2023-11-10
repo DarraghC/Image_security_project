@@ -181,7 +181,7 @@ def execute_flow():
                                             print("blah: {0}".format(versions_dates_list))
                                             print("version is: {0} , item is {1}".format(version, item))
                                             if version in item:
-                                                version_and_date_list = version.split(',')
+                                                version_and_date_list = item.split(',')
                                                 print("here: {0}".format(version_and_date_list))
                                                 version_date_published = version_and_date_list[1]
 
