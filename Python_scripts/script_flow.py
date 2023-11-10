@@ -171,19 +171,27 @@ def execute_flow():
                 print("json_string_data {0}".format(json_string_data))
                 image_name, results_data = parse_string_data(json_string_data)
 
-                print("image_name: {0}".format(image_name))
-                print("image {0}".format(image))
-                
-                print("Get image version from dict")
+                for version_dict_image_key, version_list in version_dict.items():
+                    if image == version_dict_image_key:
+                        for version in version_list:
+                            if "trivy-reports/{0}_{1}.json".format(image, version) in json_file:
+                                for image_dicts_image, versions_dates_list in image_dicts.items():
+                                    if image == image_dicts_image:
+                                        for item in versions_dates_list:
+                                            if version in item:
+                                                version_and_date_list = version.split(', ')
+                                                version_date_published = version_and_date_list[1]
 
-                print("Get the release date for the version")
+                                                print("image_name: {0}".format(image_name))
+                                                # print("image {0}".format(image))
+                                                print("Version is: {0}, Published: {1}".format(version, version_date_published))
 
-                print("results_data is : {0}".format(results_data))
+                                                # print("results_data is : {0}".format(results_data))
 
-                low_count, medium_count, high_count = count_error_in_results(json_string_data)
+                                                low_count, medium_count, high_count = count_error_in_results(json_string_data)
 
-                if check_csv_file_empty():
-                    write_headers_to_file()
+                                                if check_csv_file_empty():
+                                                    write_headers_to_file()
 
 
 
