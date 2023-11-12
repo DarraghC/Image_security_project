@@ -155,6 +155,6 @@ jobs:
         # for report in trivy-reports/*.json; do
         #   aws s3 cp "$report" "s3://$s3_bucket/$s3_prefix$(basename $report)"
         aws s3 cp csv-data/project_data.csv s3://$s3_bucket/data_folder/  # Upload the file to S3
-        done
+        # done
       shell: bash
       
