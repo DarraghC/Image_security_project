@@ -195,8 +195,5 @@ def execute_flow():
 
                                                 if check_csv_file_empty():
                                                     write_headers_to_file()
-
-
-
-    #   write_parsed_data(image_name, image_version, results_data, low_count, medium_count, high_count)
+                                                write_parsed_data(image_name, version, version_date_published, low_count, medium_count, high_count)
 

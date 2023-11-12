@@ -143,18 +143,18 @@ jobs:
        python Python_scripts/python_main.py  # Replace with the actual name of your Python script
 
 
-    # - name: Upload Trivy Reports to Amazon S3
-    #   run: |
-    #     # Define the S3 bucket and folder (prefix) where you want to upload the reports
-    #     s3_bucket="imagereportbucket"
-    #     current_date=$(date +'%Y-%m-%d')
-    #     # Define the S3 prefix, including the current date
-    #     s3_prefix="trivy-reports-${current_date}/"
+    - name: Upload CSV file to Amazon S3
+      run: |
+        # Define the S3 bucket and folder (prefix) where you want to upload the reports
+        s3_bucket="imagereportbucket"
+        # current_date=$(date +'%Y-%m-%d')
+        # Define the S3 prefix, including the current date
+        # s3_prefix="trivy-reports-${current_date}/"
   
-    #     # Loop through the reports and upload them to S3
-    #     for report in trivy-reports/*.json; do
-    #       aws s3 cp "$report" "s3://$s3_bucket/$s3_prefix$(basename $report)"
-    #       aws s3 cp csv-data/project_data.csv s3://imagereportbucket/data_folder/  # Upload the file to S3
-    #     done
-    #   shell: bash
+        # Loop through the reports and upload them to S3
+        # for report in trivy-reports/*.json; do
+        #   aws s3 cp "$report" "s3://$s3_bucket/$s3_prefix$(basename $report)"
+        aws s3 cp csv-data/project_data.csv s3://$s3_bucket/data_folder/  # Upload the file to S3
+        done
+      shell: bash
       
