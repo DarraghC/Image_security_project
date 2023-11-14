@@ -10,7 +10,7 @@ version_release_dict = {}
 def get_version_tags():
     repository_list = ["alpine", "nginx", "ubuntu", "python", "redis", "postgres", "node", "httpd", "memcached", "mongo",
                         "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby",
-                          "haproxy", "tomcat", "kong", "neo4j", "amazonlinux", "caddy", "bash", "gradle", "logstash", "fedora",
+                          "haproxy", "tomcat", "kong", "neo4j", "amazonlinux", "caddy", "bash", "gradle", "plone", "fedora",
                           "groovy", "rust", "redmine", "amazoncorretto", "erlang", "elixir", "jruby", "jetty", "odoo", "xwiki",
                           "swift", "haxe", "hylang", "archlinux", "tomee", "gcc", "monica", "varnish","orientdb", "julia"] 
     
