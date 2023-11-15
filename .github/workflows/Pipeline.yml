@@ -66,7 +66,7 @@ jobs:
             for item in "${items[@]}"; do
               if [ -n "$item" ]; then
                 echo "key is: $key , version is: $item"
-                trivy image -f json -o "trivy-reports/${key}_${item}.json" "$key:$item"
+                trivy image -f json -o "trivy-reports/${key}_${item}.json" "$key:$item" 2>/dev/null              
               fi 
               # You can perform your desired actions here for each item
             done
