@@ -60,13 +60,10 @@ jobs:
             # Iterate through the items
             for item in "${items[@]}"; do
               if [ -n "$item" ]; then
-                echo "Item is: $item"
+                echo "versions is: $items"
+                echo "version is: $item"
                 echo "Value2 is: $value"
-                for image_version in $value;do
-                  echo "Scanning $key"
-                  echo "version $image_version"
-                  trivy image -f json -o "trivy-reports/${key}_${value}.json" "$key:$image_version"
-                done
+                trivy image -f json -o "trivy-reports/${key}_${value}.json" "$key:$item"
               fi 
               # You can perform your desired actions here for each item
             done
