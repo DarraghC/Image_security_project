@@ -53,6 +53,11 @@ jobs:
             # Remove leading and trailing spaces
             value="${value#"['"}"
             value="${value%"']"}"
+
+            cleaned_value=$(echo "$value" | tr -d "'\"[]")
+
+            # Print the cleaned value
+            echo "Cleaned Value: $cleaned_value"
     
             # Split the value into an array
             IFS="', '" read -r -a items <<< "$value"
