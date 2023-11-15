@@ -61,7 +61,7 @@ jobs:
             for item in "${items[@]}"; do
               if [ -n "$item" ]; then
                 echo "Item is: $item"
-                echo "Key is: $item"
+                echo "Value2 is: $value"
                 echo "Scanning $key"
                 trivy image -f json -o "trivy-reports/${key}_${item}.json" "$key"
               fi 
