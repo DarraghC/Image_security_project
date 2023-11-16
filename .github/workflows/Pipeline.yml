@@ -60,13 +60,14 @@ jobs:
             echo "Cleaned Value: $cleaned_value"
     
             # Split the value into an array
-            IFS="', '" read -r -a items <<< "$cleaned_value"
+            IFS="', '" read -r -a versions <<< "$cleaned_value"
     
-            # Iterate through the items
-            for item in "${items[@]}"; do
-              if [ -n "$item" ]; then
-                echo "key is: $key , version is: $item"
-                trivy image -f json -o "trivy-reports/${key}_${item}.json" "$key:$item" 2>/dev/null              
+            # Iterate through the versions list
+            for version in "${versions[@]}"; do
+              if [ -n "$version" ]; then
+                echo "key is: $key , version is: $version"
+                trap 'echo "Error occurred for $key:$item"; continue' ERR
+                trivy image -f json -o "trivy-reports/${key}_${version}.json" "$key:$version" 2>/dev/null              
               fi 
               # You can perform your desired actions here for each item
             done
