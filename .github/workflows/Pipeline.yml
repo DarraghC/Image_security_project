@@ -62,7 +62,7 @@ jobs:
             # Split the value into an array
             IFS="', '" read -r -a versions <<< "$cleaned_value"
 
-            echo "versions: $versions"
+            echo "versions: ${versions[@]}"
             # Iterate through the versions list
             for version in "${versions[@]}"; do
               if [ -n "$version" ]; then
