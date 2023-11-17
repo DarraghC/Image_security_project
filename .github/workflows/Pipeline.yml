@@ -65,11 +65,11 @@ jobs:
             echo "versions: ${versions[@]}"
             # Iterate through the versions list
             for version in "${versions[@]}"; do
-              if [ -n "$version" ] && [ "$version" != "windowsservercore-ltsc2022" ]; then
+              if [ -n "$version" ]; then
                 echo "key is: $key , version is: $version"
                 # trap 'echo "Error occurred for $key:$item"; continue' ERR
                 
-                trivy image -f json -o "trivy-reports/${key}_${version}.json" "$key:$version"
+                trivy image --image-source docker-hub -f json -o "trivy-reports/${key}_${version}.json" "$key:$version"
               
               fi 
               # You can perform your desired actions here for each item
