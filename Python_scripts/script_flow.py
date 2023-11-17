@@ -18,7 +18,7 @@ VERSION_RELEASE_DIR = "version_release_dict.txt"
 
 
 version_dict = {}
-image_list = ["alpine", "nginx", "ubuntu", "redis", "postgres", "node", "httpd", "memcached", "mongo",
+image_list = ["alpine", "nginx", "ubuntu", "redis", "postgres", "node", "httpd", "memcached",
               "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby",
               "haproxy", "tomcat", "kong", "neo4j", "amazonlinux", "caddy", "bash", "gradle", "plone", "fedora",
               "groovy", "rust", "redmine", "amazoncorretto", "erlang", "elixir", "jruby", "jetty", "odoo", "xwiki",
