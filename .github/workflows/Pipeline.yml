@@ -65,7 +65,7 @@ jobs:
             echo "versions: ${versions[@]}"
             # Iterate through the versions list
             for version in "${versions[@]}"; do
-              if [ -n "$version" ] && [ "$version" != "windowsservercore-ltsc2022" ] && ["$version" != "windowsservercore-1809"]; then
+              if [ -n "$version" ] && [ "$version" != "windowsservercore-ltsc2022" ]; then
                 echo "key is: $key , version is: $version"
                 # trap 'echo "Error occurred for $key:$item"; continue' ERR
                 
