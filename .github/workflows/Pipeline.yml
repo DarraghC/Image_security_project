@@ -11,7 +11,7 @@ jobs:
 
     env:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKER_LOGIN_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKER_LOGIN_PASSWORD }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
 
     steps:
