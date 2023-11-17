@@ -68,8 +68,13 @@ jobs:
               if [ -n "$version" ]; then
                 echo "key is: $key , version is: $version"
                 # trap 'echo "Error occurred for $key:$item"; continue' ERR
-                trivy image -f json -o "trivy-reports/${key}_${version}.json" "$key:$version" 2>/dev/null
-                trap 'echo "Error occurred for $key:$item"; continue' ERR
+                
+                trivy image -f json -o "trivy-reports/${key}_${version}.json" "$key:$version"
+
+                if [ $? -ne 0 ]; then
+                  echo "Trivy scan failed, handling the error..."
+                fi
+                # trap 'echo "Error occurred for $key:$item"; continue' ERR
               
               fi 
               # You can perform your desired actions here for each item
