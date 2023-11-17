@@ -65,7 +65,7 @@ jobs:
             echo "versions: ${versions[@]}"
             # Iterate through the versions list
             for version in "${versions[@]}"; do
-              if [ -n "$version" ]; then
+              if [ -n "$version" ] && [ "$version" != "windowsservercore-ltsc2022" ]; then
                 echo "key is: $key , version is: $version"
                 # trap 'echo "Error occurred for $key:$item"; continue' ERR
                 
@@ -84,25 +84,6 @@ jobs:
           echo "File not found: $file_path"
         fi
       shell: bash
-      
-    # - name: Scan images and generate reports
-    #   run: |
-    #     # Define the list of image names you want to scan
-    #     images=("alpine:latest" "nginx:latest" "ubuntu:latest" "python:latest" "redis:latest" "postgres:latest" "node:latest" "httpd:latest" "memcached:latest" "mongo:latest" "mysql:latest" "traefik:latest" "mariadb:latest" "docker:latest" "rabbitmq:latest" "golang:latest" "wordpress:latest" "php:latest" "sonarqube:latest" "ruby:latest" "haproxy:latest" "tomcat:latest" "kong:latest" "neo4j:latest")
-    #     current_date=$(date +'%Y-%m-%d')
-    #     for image in "${images[@]}"; do
-    #       sanitized_name="${image//:/_}"
-    #       echo "Scanning $image"
-    #       trivy image -f json -o "trivy-reports/$sanitized_name.json" "$image"
-    #       jq 'del(.Metadata.DiffIDs)' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name-no-diffid.json" && mv "trivy-reports/$sanitized_name-no-diffid.json" "trivy-reports/$sanitized_name.json"
-
-    #       # docker inspect "$image" > "$json_file"
-
-
-    #       # jq -c '.' "trivy-reports/$sanitized_name.json" > "trivy-reports/$sanitized_name.ndjson" && mv "trivy-reports/$sanitized_name.ndjson" "trivy-reports/$sanitized_name.json"
-
-    #     done
-    #   shell: bash
     
   
     - name: Upload Trivy Reports
