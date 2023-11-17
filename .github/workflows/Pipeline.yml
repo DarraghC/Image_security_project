@@ -9,6 +9,10 @@ jobs:
   scan:
     runs-on: ubuntu-latest
 
+    env:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKER_LOGIN_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKER_LOGIN_PASSWORD }}
+
 
     steps:
     - name: Checkout code
