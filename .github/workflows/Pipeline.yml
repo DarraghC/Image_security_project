@@ -43,6 +43,8 @@ jobs:
 
     - name: Open and extract data
       run: | 
+        echo "Checking Docker version..."
+        echo "Trivy Version: $(docker version)"
         echo "Checking Trivy version..."
         echo "Trivy Version: $(trivy --version)"
         file_path="version_dict_file.txt"
@@ -75,7 +77,7 @@ jobs:
                 echo "key is: $key , version is: $version"
                 # trap 'echo "Error occurred for $key:$item"; continue' ERR
                 
-                trivy image --image-src "docker-hub" -f json -o "trivy-reports/${key}_${version}.json" "$key:$version"
+                trivy image --image-src "docker" -f json -o "trivy-reports/${key}_${version}.json" "$key:$version"
                 # --db-repository "docker.io/library/"
               
               fi 
