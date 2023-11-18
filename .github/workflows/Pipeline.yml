@@ -69,8 +69,10 @@ jobs:
             echo "versions: ${versions[@]}"
             # Iterate through the versions list
             for version in "${versions[@]}"; do
-              if [ -n "$version" ]; then
+              if [ -n "$version" ] && [[ ! "$version" == *"windows"* ]]; then
                 echo "key is: $key , version is: $version"
+
+
                 # trap 'echo "Error occurred for $key:$item"; continue' ERR
                 
                 trivy image -f json -o "trivy-reports/${key}_${version}.json" "docker.io/$key:$version"

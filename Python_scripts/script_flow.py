@@ -126,20 +126,20 @@ def write_headers_to_file():
     """
     This function writes the first line to the csv
     """
-    headers = ['Image Name, Version, Low Severity, Medium Severity, High Severity, Results']
+    headers = ['Image Name, Version, Low Severity, Medium Severity, High Severity, Critical Severity']
 
     with open(CSV_FILE_PATH, "w") as csv_file:
         csv_file.write(",".join(header.strip() for header in headers[0].split(',')))
 
 
 
-def write_parsed_data(image_name, image_version, low_count, medium_count, high_count, results_data):
+def write_parsed_data(image_name, image_version, low_count, medium_count, high_count, critical_count):
     """
     Writes data to csv_file
     """
     with open(CSV_FILE_PATH, "a") as csv_file:
         csv_file.write("\n")
-        csv_file.write("{0},{1},{2},{3},{4},{5}".format(image_name, image_version, low_count, medium_count, high_count, results_data))
+        csv_file.write("{0},{1},{2},{3},{4},{5}".format(image_name, image_version, low_count, medium_count, high_count, critical_count))
 
 
 def count_error_in_results(results_data):
@@ -149,10 +149,12 @@ def count_error_in_results(results_data):
     low_count = results_data.count("LOW")
     medium_count = results_data.count("MEDIUM")
     high_count = results_data.count("HIGH") 
+    critical_count = results_data.count("CRITICAL") 
 
-    print("count_is : {0}, {1}, {2}".format(low_count, medium_count, high_count))
 
-    return low_count, medium_count, high_count
+    print("count_is : {0}, {1}, {2}, {3}".format(low_count, medium_count, high_count, critical_count))
+
+    return low_count, medium_count, high_count, critical_count
     
 
 def execute_flow():
@@ -195,9 +197,9 @@ def execute_flow():
 
                                                 # print("results_data is : {0}".format(results_data))
 
-                                                low_count, medium_count, high_count = count_error_in_results(json_string_data)
+                                                low_count, medium_count, high_count, critical_count = count_error_in_results(json_string_data)
 
                                                 if check_csv_file_empty():
                                                     write_headers_to_file()
-                                                write_parsed_data(image_name, version, version_date_published, low_count, medium_count, high_count)
+                                                write_parsed_data(image_name, version, version_date_published, low_count, medium_count, high_count, critical_count)
 

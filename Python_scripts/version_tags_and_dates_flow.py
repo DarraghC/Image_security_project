@@ -46,7 +46,6 @@ def get_version_tags():
         else:
             print(f"Failed to retrieve tags for {image}. Status code: {response.status_code}")
 
-    return version_dict, version_release_dict
 
 def write_version_release_dict_to_file(file_path):
     """
