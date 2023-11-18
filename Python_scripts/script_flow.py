@@ -133,13 +133,13 @@ def write_headers_to_file():
 
 
 
-def write_parsed_data(image_name, image_version, low_count, medium_count, high_count, critical_count):
+def write_parsed_data(image_name, image_version, version_date_published, low_count, medium_count, high_count, critical_count):
     """
     Writes data to csv_file
     """
     with open(CSV_FILE_PATH, "a") as csv_file:
         csv_file.write("\n")
-        csv_file.write("{0},{1},{2},{3},{4},{5}".format(image_name, image_version, low_count, medium_count, high_count, critical_count))
+        csv_file.write("{0},{1},{2},{3},{4},{5},{6}".format(image_name, image_version, version_date_published, low_count, medium_count, high_count, critical_count))
 
 
 def count_error_in_results(results_data):
