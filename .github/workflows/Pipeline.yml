@@ -43,10 +43,6 @@ jobs:
 
     - name: Open and extract data
       run: | 
-        echo "Checking Docker version..."
-        echo "Trivy Version: $(docker version)"
-        echo "Checking Trivy version..."
-        echo "Trivy Version: $(trivy --version)"
         file_path="version_dict_file.txt"
         if [ -f "$file_path" ]; then
           # Iterate through each line in the file

@@ -33,6 +33,7 @@ def get_version_tags():
             # Extract and print the tags and last updated dates for Linux images
             for tag_info in results:
                 tag_name = tag_info["name"]
+                print(tag_info)
                 # Check if the tag is for Linux (amd64)
                 if tag_info.get("architecture") == "amd64":
                     last_updated = tag_info["last_updated"]
