@@ -177,6 +177,10 @@ def execute_flow():
                 json_string_data = get_json(json_file)
                 # print("json_string_data {0}".format(json_string_data))
                 image_name, results_data = parse_string_data(json_string_data)
+                print("image name is {0} and type is {1}".format(image_name, type(image_name)))
+
+
+                print("image is {0} and type is {1}".format(image, type(image)))
 
                 for version_dict_image_key, version_list in version_dict.items():
                     if image == version_dict_image_key:
