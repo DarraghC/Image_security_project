@@ -139,6 +139,7 @@ def write_parsed_data(image_name, image_version, version_date_published, low_cou
     """
     with open(CSV_FILE_PATH, "a") as csv_file:
         csv_file.write("\n")
+        print(image_name, image_version, version_date_published)
         csv_file.write("{0},{1},{2},{3},{4},{5},{6}".format(image_name, image_version, version_date_published, low_count, medium_count, high_count, critical_count))
 
 

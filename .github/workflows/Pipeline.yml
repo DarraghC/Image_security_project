@@ -9,11 +9,6 @@ jobs:
   scan:
     runs-on: ubuntu-latest
 
-    env:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKER_LOGIN_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKER_ACCESS_TOKEN }}
-
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -71,12 +66,8 @@ jobs:
             for version in "${versions[@]}"; do
               if [ -n "$version" ] && [[ ! "$version" == *"windows"* ]] && [[ ! "$version" == *"nanoserver"* ]] && [[ ! "$version" == *"3.12.9-management-alpine"* ]]; then
                 echo "key is: $key , version is: $version"
-
-
-                # trap 'echo "Error occurred for $key:$item"; continue' ERR
-                
-                trivy image -f json -o "trivy-reports/${key}_${version}.json" "docker.io/$key:$version"
-                # --db-repository "docker.io/library/"
+                                
+                trivy image -f json -o "trivy-reports/${key}_${version}.json" "$key:$version"
               
               fi 
               # You can perform your desired actions here for each item
@@ -135,8 +126,7 @@ jobs:
     - name: Run Python script to update data csv file
       run: |
        chmod +x Python_scripts/python_main.py
-       python Python_scripts/python_main.py  # Replace with the actual name of your Python script
-
+       python Python_scripts/python_main.py  
 
     - name: Upload CSV file to Amazon S3
       run: |
