@@ -75,7 +75,7 @@ jobs:
                 echo "key is: $key , version is: $version"
                 # trap 'echo "Error occurred for $key:$item"; continue' ERR
                 
-                trivy image --image-source docker-hub -f json -o "trivy-reports/${key}_${version}.json" "$key:$version"
+                trivy image --image-src docker-hub -f json -o "trivy-reports/${key}_${version}.json" "$key:$version"
                 # --db-repository "docker.io/library/"
               
               fi 
