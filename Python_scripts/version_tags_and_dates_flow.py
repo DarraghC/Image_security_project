@@ -15,9 +15,6 @@ def get_version_tags():
                         "groovy", "rust", "redmine", "amazoncorretto", "erlang", "elixir", "jruby", "jetty", "odoo", "xwiki",
                         "swift", "haxe", "hylang", "archlinux", "tomee", "gcc", "monica", "varnish","orientdb", "julia"]
 
-    version_dict = {}
-    version_release_dict = {}
-
     # Make a GET request to the Docker Hub API
     for image in repository_list:
         tags_url = f"https://hub.docker.com/v2/repositories/library/{image}/tags/"
@@ -43,8 +40,6 @@ def get_version_tags():
                     print(last_updated)
                     version_release_dict[image].append("{0}, {1}".format(tag_name, last_updated))
                     version_dict[image].append(tag_name)
-                    print("version release dict : {0}".format(version_release_dict))
-                    print("version_dict  : {0}".format(version_dict))
 
 
                     # print(f"Image_Name: {image}, Tag: {tag_name}, Last Updated: {last_updated}")
