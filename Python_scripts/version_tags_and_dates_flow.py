@@ -37,8 +37,9 @@ def get_version_tags():
                 # Check if the tag is for Linux (amd64)
                 if 'linux' or 'arm' or 'amd64' in string_tag_info:
                     last_updated = tag_info["last_updated"]
-                    print(last_updated)
-                    version_release_dict[image].append("{0}, {1}".format(tag_name, last_updated))
+                    just_version_date = last_updated.split('T')[0]
+                    print(just_version_date)
+                    version_release_dict[image].append("{0}, {1}".format(tag_name, just_version_date))
                     version_dict[image].append(tag_name)
 
 

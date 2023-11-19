@@ -18,11 +18,11 @@ VERSION_RELEASE_DIR = "version_release_dict.txt"
 
 
 version_dict = {}
-image_list = ["alpine", "nginx", "ubuntu", "redis", "postgres", "node", "httpd", "memcached", "python", "mongo",
-              "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby",
-              "haproxy", "tomcat", "kong", "neo4j", "amazonlinux", "caddy", "bash", "gradle", "plone", "fedora",
-              "groovy", "rust", "redmine", "amazoncorretto", "erlang", "elixir", "jruby", "jetty", "odoo", "xwiki",
-              "swift", "haxe", "hylang", "archlinux", "tomee", "gcc", "monica", "varnish","orientdb", "julia"] 
+image_list = ["alpine", "nginx", "ubuntu", "redis", "postgres", "node", "httpd", "memcached", "python", "mongo"]
+            #   "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby",
+            #   "haproxy", "tomcat", "kong", "neo4j", "amazonlinux", "caddy", "bash", "gradle", "plone", "fedora",
+            #   "groovy", "rust", "redmine", "amazoncorretto", "erlang", "elixir", "jruby", "jetty", "odoo", "xwiki",
+            #   "swift", "haxe", "hylang", "archlinux", "tomee", "gcc", "monica", "varnish","orientdb", "julia"] 
 image_dicts ={}
 
 def get_json(json_file):
@@ -132,16 +132,26 @@ def write_headers_to_file():
         csv_file.write(",".join(header.strip() for header in headers[0].split(',')))
 
 
+def values_exist_in_file(image_name, image_version, version_date_published):
+    """
+    Checks if values already exist in the CSV file
+    """
+    with open(CSV_FILE_PATH, "r", newline='') as read_file:
+        csv_reader = csv.reader(read_file)
+        return any(row[0] == image_name and row[1] == image_version and row[2] == version_date_published for row in csv_reader)
+    
 
 def write_parsed_data(image_name, image_version, version_date_published, low_count, medium_count, high_count, critical_count):
     """
     Writes data to csv_file
     """
-    with open(CSV_FILE_PATH, "a") as csv_file:
-        csv_file.write("\n")
-        print(image_name, image_version, version_date_published)
-        csv_file.write("{0},{1},{2},{3},{4},{5},{6}".format(image_name, image_version, version_date_published, low_count, medium_count, high_count, critical_count))
-
+    if not values_exist_in_file(image_name, image_version, version_date_published):
+        with open(CSV_FILE_PATH, "a") as csv_file:
+            csv_file.write("\n")
+            print(image_name, image_version, version_date_published)
+            csv_file.write("{0},{1},{2},{3},{4},{5},{6}".format(image_name, image_version, version_date_published, low_count, medium_count, high_count, critical_count))
+    else:
+        print("Values already exist {0}, {1}. {2}:".format(image_name, image_version, version_date_published))
 
 def count_error_in_results(results_data):
     """
