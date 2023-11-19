@@ -21,7 +21,7 @@ image_list = ["alpine", "nginx", "ubuntu", "redis", "postgres", "node", "httpd",
               "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby",
               "haproxy", "tomcat", "kong", "neo4j", "amazonlinux", "caddy", "bash", "gradle", "plone", "fedora",
               "groovy", "rust", "redmine", "amazoncorretto", "erlang", "elixir", "jruby", "jetty", "odoo", "xwiki",
-              "swift", "haxe", "hylang", "archlinux", "tomee", "gcc", "monica", "varnish","orientdb", "julia"] 
+              "swift", "hylang", "archlinux", "tomee", "gcc", "monica", "varnish","orientdb", "julia"] 
 image_dicts ={}
 
 def get_json(json_file):
