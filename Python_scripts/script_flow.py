@@ -4,7 +4,6 @@ import ast
 import csv
 import glob
 
-#TODO These need to be tested 
 IMAGE_NAME_PATTERN = r"'([^']+):latest'"
 VERSION_PATTERN = r'{0}:(\S+)'
 RESULTS_PATTERN = '"Vulnerabilities": \[(.*?)\]'
