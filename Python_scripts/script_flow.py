@@ -136,8 +136,7 @@ def values_exist_in_file(image_name, image_version, version_date_published):
     Checks if values already exist in the CSV file
     """
     with open(CSV_FILE_PATH, "r", newline='') as read_file:
-        csv_reader = csv.reader(read_file)
-        return any(row[0] == image_name and row[1] == image_version and row[2] == version_date_published for row in csv_reader)
+        return any(image_name in line and image_version in line and version_date_published in line for line in read_file)
     
 
 def write_parsed_data(image_name, image_version, version_date_published, low_count, medium_count, high_count, critical_count):
