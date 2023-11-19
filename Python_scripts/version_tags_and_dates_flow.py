@@ -8,12 +8,11 @@ version_release_dict = {}
 
 
 def get_version_tags():
-    repository_list = ["alpine" ]
-    # , "nginx", "ubuntu", "redis", "postgres", "node", "httpd", "memcached", "python", "mongo",
-    #                     "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby",
-    #                     "haproxy", "tomcat", "kong", "neo4j", "amazonlinux", "caddy", "bash", "gradle", "plone", "fedora",
-    #                     "groovy", "rust", "redmine", "amazoncorretto", "erlang", "elixir", "jruby", "jetty", "odoo", "xwiki",
-    #                     "swift", "hylang", "archlinux", "tomee", "gcc", "monica", "varnish","orientdb", "julia"]
+    repository_list = ["alpine", "nginx", "ubuntu", "redis", "postgres", "node", "httpd", "memcached", "python", "mongo",
+                        "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby",
+                        "haproxy", "tomcat", "kong", "neo4j", "amazonlinux", "caddy", "bash", "gradle", "plone", "fedora",
+                        "groovy", "rust", "redmine", "amazoncorretto", "erlang", "elixir", "jruby", "jetty", "odoo", "xwiki",
+                        "swift", "hylang", "archlinux", "tomee", "gcc", "monica", "varnish","orientdb", "julia"]
 
     # Make a GET request to the Docker Hub API
     for image in repository_list:
