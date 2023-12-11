@@ -33,13 +33,13 @@ def get_version_tags():
                 tag_name = tag_info["name"]
                 # print(tag_info)
                 string_tag_info = str(tag_info)
-                print(type(string_tag_info))
-                print(string_tag_info)
+                # print(type(string_tag_info))
+                # print(string_tag_info)
                 # Check if the tag is for Linux (amd64)
                 if 'linux' or 'arm' or 'amd64' in string_tag_info:
                     last_updated = tag_info["last_updated"]
                     # just_version_date = last_updated.split('T')[0]
-                    print(last_updated)
+                    # print(last_updated)
                     version_release_dict[image].append("{0}, {1}".format(tag_name, last_updated))
                     version_dict[image].append(tag_name)
 
@@ -47,7 +47,8 @@ def get_version_tags():
                     # print(f"Image_Name: {image}, Tag: {tag_name}, Last Updated: {last_updated}")
         else:
             print(f"Failed to retrieve tags for {image}. Status code: {response.status_code}")
-
+    print("version_release_dict".format(version_release_dict))  
+    print("version_dict".format(version_dict))
 # def get_oldest_if_duplicates():
 #     """
 #     Getting the oldest version on a day if multiple are put out in a day 
@@ -79,8 +80,6 @@ def execute_flow():
     This is the main function that will call every other function
     """
     get_version_tags()
-    print("version_release_dict".format(version_release_dict))  
-    print("version_dict".format(version_dict))
 
     # get_oldest_if_duplicates()
     write_version_release_dict_to_file(VERSION_RELEASE_DIR)
