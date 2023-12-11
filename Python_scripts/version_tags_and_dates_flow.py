@@ -62,14 +62,17 @@ def get_oldest_if_duplicates():
         version_release_dict[project] = sorted((release.split(', ') for release in releases), key=lambda x: datetime.fromisoformat(x[1]))
 
     # Create a dictionary to store the oldest version for each day
-    oldest_versions_dict = defaultdict(list)
+    oldest_versions_dict = {}
 
     # Iterate through the sorted releases and store the oldest version for each day
     for project, releases in version_release_dict.items():
         for release in releases:
             date = release[1].split('T')[0]
-            if date not in oldest_versions_dict[project]:
-                oldest_versions_dict[project].append(release[0])
+            if date not in oldest_versions_dict:
+                oldest_versions_dict[date] = {project: release[0]}
+            else:
+                if project not in oldest_versions_dict[date]:
+                    oldest_versions_dict[date][project] = release[0]
 
 # Display the result
     print(dict(oldest_versions_dict))
