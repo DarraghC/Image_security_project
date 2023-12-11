@@ -7,6 +7,7 @@ version_dict = {}
 version_release_dict = {}
 
 
+
 def get_version_tags():
     # repository_list = ["alpine", "nginx", "ubuntu", "redis", "postgres", "node", "httpd", "memcached", "python", "mongo",
     #                     "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby",
@@ -14,7 +15,8 @@ def get_version_tags():
     #                     "groovy", "rust", "redmine", "amazoncorretto", "erlang", "elixir", "jruby", "jetty", "odoo", "xwiki",
     #                     "swift", "hylang", "archlinux", "tomee", "gcc", "monica", "varnish","orientdb", "julia"]
 
-    repository_list = ["odoo", "neo4j", "orientdb", "plone", "ubuntu", "alpine"]
+# "orientdb", "plone", "ubuntu", "alpine"
+    repository_list = ["odoo", "neo4j"]
 
     # Make a GET request to the Docker Hub API
     for image in repository_list:
@@ -49,14 +51,17 @@ def get_version_tags():
             print(f"Failed to retrieve tags for {image}. Status code: {response.status_code}")
     print("version_release_dict {0}".format(version_release_dict))  
     print("version_dict {0}".format(version_dict))
+
 # def get_oldest_if_duplicates():
 #     """
 #     Getting the oldest version on a day if multiple are put out in a day 
 #     """
-#     for image_name in version_dict.keys():
-#         for the_image_name, version_list in version_dict.keys():
+#     for image_name, version_list in version_dict.items():
+#         for the_image_name, version_release_and_date_list in version_release_dict.items():
 #             if image_name == the_image_name:
-
+#                 for version in version_list:
+#                     for item in version_release_and_date_list:
+#                         if version in item:
 
 
 def write_version_release_dict_to_file(file_path):
@@ -66,6 +71,7 @@ def write_version_release_dict_to_file(file_path):
     with open(file_path, 'w') as file:
         for key, value in version_release_dict.items():
             file.write(f'{key}: {value}\n')
+
 
 def write_version_dict_to_file(file_path):
     """
