@@ -14,7 +14,7 @@ def get_version_tags():
     #                     "groovy", "rust", "redmine", "amazoncorretto", "erlang", "elixir", "jruby", "jetty", "odoo", "xwiki",
     #                     "swift", "hylang", "archlinux", "tomee", "gcc", "monica", "varnish","orientdb", "julia"]
 
-    repository_list = ["odoo", "neo4j", "orientdb", "plone", "ubuntu", "Alpine"]
+    repository_list = ["odoo", "neo4j", "orientdb", "plone", "ubuntu", "alpine"]
 
     # Make a GET request to the Docker Hub API
     for image in repository_list:
@@ -47,8 +47,8 @@ def get_version_tags():
                     # print(f"Image_Name: {image}, Tag: {tag_name}, Last Updated: {last_updated}")
         else:
             print(f"Failed to retrieve tags for {image}. Status code: {response.status_code}")
-    print("version_release_dict".format(version_release_dict))  
-    print("version_dict".format(version_dict))
+    print("version_release_dict {0}".format(version_release_dict))  
+    print("version_dict {0}".format(version_dict))
 # def get_oldest_if_duplicates():
 #     """
 #     Getting the oldest version on a day if multiple are put out in a day 
