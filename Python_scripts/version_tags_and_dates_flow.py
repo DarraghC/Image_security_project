@@ -1,4 +1,6 @@
 import requests
+from datetime import datetime
+from collections import defaultdict
 
 VERSION_RESULTS_DIR = "version_dict_file.txt"
 VERSION_RELEASE_DIR = "version_release_dict.txt"
@@ -52,7 +54,26 @@ def get_version_tags():
     print("version_release_dict {0}".format(version_release_dict))  
     print("version_dict {0}".format(version_dict))
 
-# def get_oldest_if_duplicates():
+def get_oldest_if_duplicates():
+    """
+    
+    """
+    for project, releases in version_release_dict.items():
+        version_release_dict[project] = sorted((release.split(', ') for release in releases), key=lambda x: datetime.fromisoformat(x[1]))
+
+    # Create a dictionary to store the oldest version for each day
+    oldest_versions_dict = defaultdict(list)
+
+    # Iterate through the sorted releases and store the oldest version for each day
+    for project, releases in version_release_dict.items():
+        for release in releases:
+            date = release[1].split('T')[0]
+            if date not in oldest_versions_dict[project]:
+                oldest_versions_dict[project].append(release[0])
+
+# Display the result
+    print(dict(oldest_versions_dict))
+
 #     """
 #     Getting the oldest version on a day if multiple are put out in a day 
 #     """
@@ -87,6 +108,6 @@ def execute_flow():
     """
     get_version_tags()
 
-    # get_oldest_if_duplicates()
+    get_oldest_if_duplicates()
     write_version_release_dict_to_file(VERSION_RELEASE_DIR)
     write_version_dict_to_file(VERSION_RESULTS_DIR)
