@@ -22,7 +22,6 @@ version_dict = {}
 #               "haproxy", "tomcat", "kong", "neo4j", "amazonlinux", "caddy", "bash", "gradle", "plone", "fedora",
 #               "groovy", "rust", "redmine", "amazoncorretto", "erlang", "elixir", "jruby", "jetty", "odoo", "xwiki",
 #               "swift", "hylang", "archlinux", "tomee", "gcc", "monica", "varnish","orientdb", "julia"] 
-
 image_list = ["odoo", "neo4j", "orientdb", "plone", "ubuntu", "Alpine"]
 
 image_dicts ={}
@@ -199,7 +198,7 @@ def execute_flow():
                                     if image == image_dicts_image:
                                         for item in versions_dates_list:
                                             # print("blah: {0}".format(versions_dates_list))
-                                            print("version is here: {0} , item is {1}".format(version, item))
+                                            # print("version is: {0} , item is {1}".format(version, item))
                                             if version in item:
                                                 version_and_date_list = item.split(',')
                                                 version_date_published = version_and_date_list[1]

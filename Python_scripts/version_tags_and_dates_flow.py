@@ -48,6 +48,15 @@ def get_version_tags():
         else:
             print(f"Failed to retrieve tags for {image}. Status code: {response.status_code}")
 
+# def get_oldest_if_duplicates():
+#     """
+#     Getting the oldest version on a day if multiple are put out in a day 
+#     """
+#     for image_name in version_dict.keys():
+#         for the_image_name, version_list in version_dict.keys():
+#             if image_name == the_image_name:
+
+
 
 def write_version_release_dict_to_file(file_path):
     """
@@ -70,5 +79,9 @@ def execute_flow():
     This is the main function that will call every other function
     """
     get_version_tags()
+    print("version_release_dict".format(version_release_dict))  
+    print("version_dict".format(version_dict))
+
+    # get_oldest_if_duplicates()
     write_version_release_dict_to_file(VERSION_RELEASE_DIR)
     write_version_dict_to_file(VERSION_RESULTS_DIR)
