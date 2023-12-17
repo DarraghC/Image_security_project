@@ -80,40 +80,12 @@ def get_oldest_if_duplicates():
             if image not in oldest_for_date_dict[date] or datetime_obj < datetime.fromisoformat(oldest_for_date_dict[date][image].split(', ')[1]).replace(tzinfo=timezone.utc):
                 oldest_for_date_dict[date][image] = f'{version}, {mydatetime}'
 
-    # Display the result for both "odoo" and "neo4j" on the same date
+    # Display the result for different images on the same date
     for date, versions in oldest_for_date_dict.items():
-        print(f"On {date}:")
-        for image, version in versions.items():
-            print(f"{image}: {version}")
-#     for project, releases in version_release_dict.items():
-#         version_release_dict[project] = sorted((release.split(', ') for release in releases), key=lambda x: datetime.fromisoformat(x[1]))
-
-#     # Create a dictionary to store the oldest version for each day and project
-#     oldest_versions_dict = defaultdict(dict)
-
-#     # Iterate through the sorted releases and store the oldest version for each day and project
-#     for project, releases in version_release_dict.items():
-#         for release in releases:
-#             date = release[1].split('T')[0]
-#             if project not in oldest_versions_dict[date] or datetime.fromisoformat(release[1]) < datetime.fromisoformat(oldest_versions_dict[date][project][1]):
-#                 oldest_versions_dict[date][project] = release
-
-#     # Display the result
-#     result = {date: {project: version[0] for project, version in versions.items()} for date, versions in oldest_versions_dict.items()}
-
-# # Display the result
-#     print(result)
-
-#     """
-#     Getting the oldest version on a day if multiple are put out in a day 
-#     """
-#     for image_name, version_list in version_dict.items():
-#         for the_image_name, version_release_and_date_list in version_release_dict.items():
-#             if image_name == the_image_name:
-#                 for version in version_list:
-#                     for item in version_release_and_date_list:
-#                         if version in item:
-
+        print(oldest_for_date_dict)
+        # print(f"On {date}:")
+        # for image, version in versions.items():
+        #     print(f"{image}: {version}")
 
 def write_version_release_dict_to_file(file_path):
     """
