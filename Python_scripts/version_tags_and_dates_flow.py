@@ -4,9 +4,11 @@ from collections import defaultdict
 
 VERSION_RESULTS_DIR = "version_dict_file.txt"
 VERSION_RELEASE_DIR = "version_release_dict.txt"
+OLDEST_VERSION_FILE_NAME = "oldest_versions.txt"
 
 version_dict = {}
 version_release_dict = {}
+oldest_for_date_dict = {}
 
 
 
@@ -17,7 +19,6 @@ def get_version_tags():
     #                     "groovy", "rust", "redmine", "amazoncorretto", "erlang", "elixir", "jruby", "jetty", "odoo", "xwiki",
     #                     "swift", "hylang", "archlinux", "tomee", "gcc", "monica", "varnish","orientdb", "julia"]
 
-# "orientdb", "plone", "ubuntu", "alpine"
     repository_list = ["odoo", "neo4j"]
 
     # Make a GET request to the Docker Hub API
@@ -56,13 +57,8 @@ def get_version_tags():
 
 def get_oldest_if_duplicates():
     """
-    
+    Function gets the oldest image for each date 
     """
-    version_timing_dict = {}
-    oldest_for_date_dict = {}
-
-    # Create a dictionary to store the oldest version for each day and project
-    oldest_versions_dict = defaultdict(dict)
 
     for image, releases in version_release_dict.items():
         for item in releases:
@@ -81,18 +77,27 @@ def get_oldest_if_duplicates():
                 oldest_for_date_dict[date][image] = f'{version}, {mydatetime}'
 
     # Display the result for different images on the same date
-    for date, versions in oldest_for_date_dict.items():
-        print(oldest_for_date_dict)
+    # for date, versions in oldest_for_date_dict.items():
+    #     print(oldest_for_date_dict)
         # print(f"On {date}:")
         # for image, version in versions.items():
         #     print(f"{image}: {version}")
+
+def write_oldest_for_date_dict(file_path):
+    """
+    Writes the dicts to text files so they can be used by the pipeline
+    """
+    with open(file_path, 'w') as file:
+        for key, value in version_release_dict.items():
+            file.write(f'{key}: {value}\n')
+
 
 def write_version_release_dict_to_file(file_path):
     """
     Writes the dicts to text files so they can be used by the pipeline
     """        
     with open(file_path, 'w') as file:
-        for key, value in version_release_dict.items():
+        for key, value in oldest_for_date_dict.items():
             file.write(f'{key}: {value}\n')
 
 
@@ -111,5 +116,6 @@ def execute_flow():
     get_version_tags()
 
     get_oldest_if_duplicates()
+    write_oldest_for_date_dict(OLDEST_VERSION_FILE_NAME)
     write_version_release_dict_to_file(VERSION_RELEASE_DIR)
     write_version_dict_to_file(VERSION_RESULTS_DIR)

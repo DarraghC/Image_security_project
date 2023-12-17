@@ -36,110 +36,110 @@ jobs:
         chmod +x Python_scripts/main.py
         python Python_scripts/main.py  # Replace with the actual name of your Python script
 
-    # - name: Open and extract data
-    #   run: | 
-    #     file_path="version_dict_file.txt"
-    #     if [ -f "$file_path" ]; then
-    #       # Iterate through each line in the file
-    #       while IFS= read -r line; do
-    #         # Print the current line (You can replace this with your processing logic)
-    #         echo "Line: $line"
+    - name: Open and extract data
+      run: | 
+        file_path="version_dict_file.txt"
+        if [ -f "$file_path" ]; then
+          # Iterate through each line in the file
+          while IFS= read -r line; do
+            # Print the current line (You can replace this with your processing logic)
+            echo "Line: $line"
     
-    #         # Example: Split the line into key and value
-    #         IFS=":" read -r key value <<< "$line"
-    #         echo "Key: $key, Value: $value"
+            # Example: Split the line into key and value
+            IFS=":" read -r key value <<< "$line"
+            echo "Key: $key, Value: $value"
     
-    #         # Remove leading and trailing spaces
-    #         value="${value#"['"}"
-    #         value="${value%"']"}"
+            # Remove leading and trailing spaces
+            value="${value#"['"}"
+            value="${value%"']"}"
 
-    #         cleaned_value=$(echo "$value" | tr -d "'\"[]")
+            cleaned_value=$(echo "$value" | tr -d "'\"[]")
 
-    #         # Print the cleaned value
-    #         echo "Cleaned Value: $cleaned_value"
+            # Print the cleaned value
+            echo "Cleaned Value: $cleaned_value"
     
-    #         # Split the value into an array
-    #         IFS="', '" read -r -a versions <<< "$cleaned_value"
+            # Split the value into an array
+            IFS="', '" read -r -a versions <<< "$cleaned_value"
 
-    #         echo "versions: ${versions[@]}"
-    #         # Iterate through the versions list
-    #         for version in "${versions[@]}"; do
-    #           if [ -n "$version" ] && [[ ! "$version" == *"windows"* ]] && [[ ! "$version" == *"nanoserver"* ]] && [[ ! "$version" == *"3.12.9-management-alpine"* ]]; then
-    #             echo "key is: $key , version is: $version"
+            echo "versions: ${versions[@]}"
+            # Iterate through the versions list
+            for version in "${versions[@]}"; do
+              if [ -n "$version" ] && [[ ! "$version" == *"windows"* ]] && [[ ! "$version" == *"nanoserver"* ]] && [[ ! "$version" == *"3.12.9-management-alpine"* ]]; then
+                echo "key is: $key , version is: $version"
                                 
-    #             trivy image -f json -o "trivy-reports/${key}_${version}.json" "$key:$version"
+                trivy image -f json -o "trivy-reports/${key}_${version}.json" "$key:$version"
               
-    #           fi 
-    #           # You can perform your desired actions here for each item
-    #         done
-    #       done < "$file_path"
-    #     else
-    #       echo "File not found: $file_path"
-    #     fi
-    #   shell: bash
+              fi 
+              # You can perform your desired actions here for each item
+            done
+          done < "$file_path"
+        else
+          echo "File not found: $file_path"
+        fi
+      shell: bash
     
   
-    # - name: Upload Trivy Reports
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: trivy-reports
-    #     path: trivy-reports
+    - name: Upload Trivy Reports
+      uses: actions/upload-artifact@v2
+      with:
+        name: trivy-reports
+        path: trivy-reports
     
-    # - name: Upload version_dict_file text 
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: version-dict-text
-    #     path: version_dict_file.txt
+    - name: Upload version_dict_file text 
+      uses: actions/upload-artifact@v2
+      with:
+        name: version-dict-text
+        path: version_dict_file.txt
 
-    # - name: Upload version-release-dict-text
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: version-release-dict-text
-    #     path: version_release_dict.txt
+    - name: Upload version-release-dict-text
+      uses: actions/upload-artifact@v2
+      with:
+        name: version-release-dict-text
+        path: version_release_dict.txt
 
-    # - name: Set up AWS CLI
-    #   run: |
-    #     aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #     aws configure set region eu-north-1
-    #   shell: bash
+    - name: Set up AWS CLI
+      run: |
+        aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws configure set region eu-north-1
+      shell: bash
 
 
 
-    # - name: Create csv directory
-    #   run: mkdir -p csv-data
-    #   shell: bash
+    - name: Create csv directory
+      run: mkdir -p csv-data
+      shell: bash
     
-    # - name: Check if project_data.csv exists if not create
-    #   run: |
-    #     if aws s3 ls s3://imagereportbucket/data_folder/project_data.csv; then
-    #       echo "File exists"
-    #       aws s3 cp s3://imagereportbucket/data_folder/project_data.csv csv-data/
-    #     else
-    #       echo "File does not exist"
-    #       echo "Creating project_data.csv"
-    #       touch csv-data/project_data.csv  # Create your data file locally
-    #       # aws s3 cp csv-data/project_data.csv s3://imagereportbucket/data_folder/  # Upload the file to S3
-    #     fi
+    - name: Check if project_data.csv exists if not create
+      run: |
+        if aws s3 ls s3://imagereportbucket/data_folder/project_data.csv; then
+          echo "File exists"
+          aws s3 cp s3://imagereportbucket/data_folder/project_data.csv csv-data/
+        else
+          echo "File does not exist"
+          echo "Creating project_data.csv"
+          touch csv-data/project_data.csv  # Create your data file locally
+          # aws s3 cp csv-data/project_data.csv s3://imagereportbucket/data_folder/  # Upload the file to S3
+        fi
     
     
-    # - name: Run Python script to update data csv file
-    #   run: |
-    #    chmod +x Python_scripts/python_main.py
-    #    python Python_scripts/python_main.py  
+    - name: Run Python script to update data csv file
+      run: |
+       chmod +x Python_scripts/python_main.py
+       python Python_scripts/python_main.py  
 
-    # - name: Upload CSV file to Amazon S3
-    #   run: |
-    #     # Define the S3 bucket and folder (prefix) where you want to upload the reports
-    #     s3_bucket="imagereportbucket"
-    #     # current_date=$(date +'%Y-%m-%d')
-    #     # Define the S3 prefix, including the current date
-    #     # s3_prefix="trivy-reports-${current_date}/"
+    - name: Upload CSV file to Amazon S3
+      run: |
+        # Define the S3 bucket and folder (prefix) where you want to upload the reports
+        s3_bucket="imagereportbucket"
+        # current_date=$(date +'%Y-%m-%d')
+        # Define the S3 prefix, including the current date
+        # s3_prefix="trivy-reports-${current_date}/"
   
-    #     # Loop through the reports and upload them to S3
-    #     # for report in trivy-reports/*.json; do
-    #     #   aws s3 cp "$report" "s3://$s3_bucket/$s3_prefix$(basename $report)"
-    #     aws s3 cp csv-data/project_data.csv s3://$s3_bucket/data_folder/  # Upload the file to S3
-    #     # done
-    #   shell: bash
+        # Loop through the reports and upload them to S3
+        # for report in trivy-reports/*.json; do
+        #   aws s3 cp "$report" "s3://$s3_bucket/$s3_prefix$(basename $report)"
+        aws s3 cp csv-data/project_data.csv s3://$s3_bucket/data_folder/  # Upload the file to S3
+        # done
+      shell: bash
       

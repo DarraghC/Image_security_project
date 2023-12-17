@@ -47,6 +47,17 @@ def create_image_dicts():
 
     print("Image dict is : {0}".format(image_dicts))
 
+def get_oldest_version_for_date_dict():
+    """
+    opens a text file and puts the data into a dictionary for easier use
+    """
+    with open(VERSION_RESULTS_DIR) as file: 
+        Lines = file.readlines() 
+        print("Line is: {0}".format(Lines))
+        for line in Lines:
+            split_data  = line.split(":")
+            print("Split data is: {0}".format(Lines))
+            
 
 def get_version_dict():
     """
@@ -173,6 +184,7 @@ def execute_flow():
     This is the main function that will call every other function
     """
     create_image_dicts()
+    get_oldest_version_for_date_dict()
     get_version_dict()
     get_version_release_dict()
     json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
