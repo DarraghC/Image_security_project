@@ -111,6 +111,6 @@ def execute_flow():
     get_version_tags()
 
     get_oldest_if_duplicates()
-    write_oldest_for_date_dict()
+    write_oldest_for_date_dict(OLDEST_VERSION_FILE_NAME)
     write_version_release_dict_to_file(VERSION_RELEASE_DIR)
     write_version_dict_to_file(VERSION_RESULTS_DIR)
