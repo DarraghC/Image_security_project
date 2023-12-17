@@ -68,7 +68,12 @@ def get_oldest_if_duplicates():
         for item in releases:
             version, mydatetime = item.split(', ')
             date, time = mydatetime.split('T')
-            if date not in oldest_for_date_dict or datetime.fromisoformat(time) < datetime.fromisoformat(oldest_for_date_dict[date][image].split(', ')[1]):
+            
+            # Truncate milliseconds and convert to datetime
+            time_without_ms = time.split('.')[0]  # Remove milliseconds
+            datetime_obj = datetime.fromisoformat(f'{date}T{time_without_ms}')
+
+            if date not in oldest_for_date_dict or datetime_obj < datetime.fromisoformat(oldest_for_date_dict[date][image].split(', ')[1]):
                 oldest_for_date_dict[date] = {image: f'{version}, {mydatetime}'}
 
     # Display the result
