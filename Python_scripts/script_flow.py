@@ -65,8 +65,8 @@ def get_oldest_version_for_date_dict():
         Lines = file.readlines() 
         for line in Lines:
             print("line is: {0}".format(line))
-            split_data  = line.split(":")
-            print("Split data is: {0}".format(split_data))
+            # split_data  = line.split(":")
+            # print("Split data is: {0}".format(split_data))
             
 
 def get_version_dict():
