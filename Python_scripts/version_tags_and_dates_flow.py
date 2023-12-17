@@ -60,7 +60,6 @@ def get_oldest_if_duplicates():
     """
     Function gets the oldest image for each date 
     """
-
     for image, releases in version_release_dict.items():
         for item in releases:
             version, mydatetime = item.split(', ')
@@ -69,14 +68,11 @@ def get_oldest_if_duplicates():
             # Truncate milliseconds and convert to datetime
             time_without_ms = time.split('.')[0]  # Remove milliseconds
             datetime_obj = datetime.fromisoformat(f'{date}T{time_without_ms}').replace(tzinfo=timezone.utc)
-
             # Ensure that each date has an associated dictionary
             if date not in oldest_for_date_dict:
                 oldest_for_date_dict[date] = {}
-
             if image not in oldest_for_date_dict[date] or datetime_obj < datetime.fromisoformat(oldest_for_date_dict[date][image].split(', ')[1]).replace(tzinfo=timezone.utc):
                 oldest_for_date_dict[date][image] = f'{version}, {mydatetime}'
-
 
 def write_oldest_for_date_dict(file_path):
     """
