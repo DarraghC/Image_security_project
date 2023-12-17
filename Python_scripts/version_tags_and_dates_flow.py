@@ -88,7 +88,7 @@ def write_oldest_for_date_dict(file_path):
     Writes the dicts to text files so they can be used by the pipeline
     """
     with open(file_path, 'w') as file:
-        for key, value in version_release_dict.items():
+        for key, value in oldest_for_date_dict.items():
             file.write(f'{key}: {value}\n')
 
 
