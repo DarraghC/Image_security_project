@@ -1,5 +1,5 @@
 import requests
-from datetime import datetime
+from datetime import datetime , timezone
 from collections import defaultdict
 
 VERSION_RESULTS_DIR = "version_dict_file.txt"
