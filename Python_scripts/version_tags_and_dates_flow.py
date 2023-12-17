@@ -10,15 +10,17 @@ version_dict = {}
 version_release_dict = {}
 oldest_for_date_dict = {}
 
-# repository_list = ["alpine", "nginx", "ubuntu", "redis", "postgres", "node", "httpd", "memcached", "python", "mongo",
+
+
+def get_version_tags():
+    # repository_list = ["alpine", "nginx", "ubuntu", "redis", "postgres", "node", "httpd", "memcached", "python", "mongo",
     #                     "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby",
     #                     "haproxy", "tomcat", "kong", "neo4j", "amazonlinux", "caddy", "bash", "gradle", "plone", "fedora",
     #                     "groovy", "rust", "redmine", "amazoncorretto", "erlang", "elixir", "jruby", "jetty", "odoo", "xwiki",
     #                     "swift", "hylang", "archlinux", "tomee", "gcc", "monica", "varnish","orientdb", "julia"]
 
-repository_list = ["odoo", "neo4j"]
-
-def get_version_tags():
+# "orientdb", "plone", "ubuntu", "alpine"
+    repository_list = ["odoo", "neo4j"]
 
     # Make a GET request to the Docker Hub API
     for image in repository_list:
@@ -54,15 +56,6 @@ def get_version_tags():
     print("version_release_dict {0}".format(version_release_dict))  
     print("version_dict {0}".format(version_dict))
 
-def create_image_unique_version_dict():
-    """
-    Creates a dict with each image as a key and a empty list for the 
-    """
-    # global image_dicts
-    for image in repository_list:
-        oldest_for_date_dict[image]= []
-    print("oldest_for_date_dict : {0}".format(oldest_for_date_dict))
-
 def get_oldest_if_duplicates():
     """
     Function gets the oldest image for each date 
@@ -84,12 +77,6 @@ def get_oldest_if_duplicates():
             if image not in oldest_for_date_dict[date] or datetime_obj < datetime.fromisoformat(oldest_for_date_dict[date][image].split(', ')[1]).replace(tzinfo=timezone.utc):
                 oldest_for_date_dict[date][image] = f'{version}, {mydatetime}'
 
-    # Display the result for different images on the same date
-    # for date, versions in oldest_for_date_dict.items():
-    #     print(oldest_for_date_dict)
-        # print(f"On {date}:")
-        # for image, version in versions.items():
-        #     print(f"{image}: {version}")
 
 def write_oldest_for_date_dict(file_path):
     """
@@ -124,6 +111,6 @@ def execute_flow():
     get_version_tags()
 
     get_oldest_if_duplicates()
-    write_oldest_for_date_dict(OLDEST_VERSION_FILE_NAME)
+    write_oldest_for_date_dict()
     write_version_release_dict_to_file(VERSION_RELEASE_DIR)
     write_version_dict_to_file(VERSION_RESULTS_DIR)
