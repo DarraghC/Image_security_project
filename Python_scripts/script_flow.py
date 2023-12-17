@@ -14,7 +14,7 @@ CSV_FILE_PATH = "csv-data/project_data.csv"
 
 VERSION_RESULTS_DIR = "version_dict_file.txt"
 VERSION_RELEASE_DIR = "version_release_dict.txt"
-
+OLDEST_VERSION_FILE_NAME = "oldest_versions.txt"
 
 version_dict = {}
 # image_list = ["alpine", "nginx", "ubuntu", "redis", "postgres", "node", "httpd", "memcached", "python", "mongo",
@@ -51,7 +51,7 @@ def get_oldest_version_for_date_dict():
     """
     opens a text file and puts the data into a dictionary for easier use
     """
-    with open(VERSION_RESULTS_DIR) as file: 
+    with open(OLDEST_VERSION_FILE_NAME) as file: 
         Lines = file.readlines() 
         for line in Lines:
             print("line is: {0}".format(line))
