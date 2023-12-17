@@ -58,24 +58,42 @@ def get_oldest_if_duplicates():
     """
     
     """
-    for project, releases in version_release_dict.items():
-        version_release_dict[project] = sorted((release.split(', ') for release in releases), key=lambda x: datetime.fromisoformat(x[1]))
+    version_timing_dict = {}
+    oldest_for_date_dict = {}
 
     # Create a dictionary to store the oldest version for each day and project
     oldest_versions_dict = defaultdict(dict)
 
-    # Iterate through the sorted releases and store the oldest version for each day and project
-    for project, releases in version_release_dict.items():
-        for release in releases:
-            date = release[1].split('T')[0]
-            if project not in oldest_versions_dict[date] or datetime.fromisoformat(release[1]) < datetime.fromisoformat(oldest_versions_dict[date][project][1]):
-                oldest_versions_dict[date][project] = release
+    for image, releases in version_release_dict.items():
+        for item in releases:
+            version, mydatetime = item.split(', ')
+            date, time = mydatetime.split('T')
+            if date not in oldest_for_date_dict or datetime.fromisoformat(time) < datetime.fromisoformat(oldest_for_date_dict[date][image].split(', ')[1]):
+                oldest_for_date_dict[date] = {image: f'{version}, {mydatetime}'}
 
     # Display the result
-    result = {date: {project: version[0] for project, version in versions.items()} for date, versions in oldest_versions_dict.items()}
+    for date, versions in oldest_for_date_dict.items():
+        print(f"On {date}:")
+        for image, version in versions.items():
+            print(f"{image}: {version}")
+#     for project, releases in version_release_dict.items():
+#         version_release_dict[project] = sorted((release.split(', ') for release in releases), key=lambda x: datetime.fromisoformat(x[1]))
 
-# Display the result
-    print(result)
+#     # Create a dictionary to store the oldest version for each day and project
+#     oldest_versions_dict = defaultdict(dict)
+
+#     # Iterate through the sorted releases and store the oldest version for each day and project
+#     for project, releases in version_release_dict.items():
+#         for release in releases:
+#             date = release[1].split('T')[0]
+#             if project not in oldest_versions_dict[date] or datetime.fromisoformat(release[1]) < datetime.fromisoformat(oldest_versions_dict[date][project][1]):
+#                 oldest_versions_dict[date][project] = release
+
+#     # Display the result
+#     result = {date: {project: version[0] for project, version in versions.items()} for date, versions in oldest_versions_dict.items()}
+
+# # Display the result
+#     print(result)
 
 #     """
 #     Getting the oldest version on a day if multiple are put out in a day 
