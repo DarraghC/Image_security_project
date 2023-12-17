@@ -24,7 +24,8 @@ version_dict = {}
 #               "swift", "hylang", "archlinux", "tomee", "gcc", "monica", "varnish","orientdb", "julia"] 
 image_list = ["odoo", "neo4j", "orientdb", "plone", "ubuntu", "Alpine"]
 
-image_dicts ={}
+image_dicts = {}
+oldest_for_date_dict = {}
 
 def get_json(json_file):
     """
@@ -36,6 +37,15 @@ def get_json(json_file):
         json_data_string = str(json_data)
 
     return json_data_string
+
+def create_image_unique_version_dict():
+    """
+    Creates a dict with each image as a key and a empty list for the 
+    """
+    # global image_dicts
+    for image in image_list:
+        oldest_for_date_dict[image]= []
+    print("oldest_for_date_dict : {0}".format(image_dicts))
 
 def create_image_dicts():
     """
@@ -184,6 +194,7 @@ def execute_flow():
     This is the main function that will call every other function
     """
     create_image_dicts()
+    create_image_unique_version_dict
     get_oldest_version_for_date_dict()
     get_version_dict()
     get_version_release_dict()

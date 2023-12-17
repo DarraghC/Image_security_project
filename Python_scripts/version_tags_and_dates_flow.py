@@ -10,16 +10,15 @@ version_dict = {}
 version_release_dict = {}
 oldest_for_date_dict = {}
 
-
-
-def get_version_tags():
-    # repository_list = ["alpine", "nginx", "ubuntu", "redis", "postgres", "node", "httpd", "memcached", "python", "mongo",
+# repository_list = ["alpine", "nginx", "ubuntu", "redis", "postgres", "node", "httpd", "memcached", "python", "mongo",
     #                     "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby",
     #                     "haproxy", "tomcat", "kong", "neo4j", "amazonlinux", "caddy", "bash", "gradle", "plone", "fedora",
     #                     "groovy", "rust", "redmine", "amazoncorretto", "erlang", "elixir", "jruby", "jetty", "odoo", "xwiki",
     #                     "swift", "hylang", "archlinux", "tomee", "gcc", "monica", "varnish","orientdb", "julia"]
 
-    repository_list = ["odoo", "neo4j"]
+repository_list = ["odoo", "neo4j"]
+
+def get_version_tags():
 
     # Make a GET request to the Docker Hub API
     for image in repository_list:
@@ -55,6 +54,15 @@ def get_version_tags():
     print("version_release_dict {0}".format(version_release_dict))  
     print("version_dict {0}".format(version_dict))
 
+def create_image_unique_version_dict():
+    """
+    Creates a dict with each image as a key and a empty list for the 
+    """
+    # global image_dicts
+    for image in repository_list:
+        oldest_for_date_dict[image]= []
+    print("oldest_for_date_dict : {0}".format(oldest_for_date_dict))
+
 def get_oldest_if_duplicates():
     """
     Function gets the oldest image for each date 
@@ -88,7 +96,7 @@ def write_oldest_for_date_dict(file_path):
     Writes the dicts to text files so they can be used by the pipeline
     """
     with open(file_path, 'w') as file:
-        for key, value in oldest_for_date_dict.items():
+        for key, value in version_release_dict.items():
             file.write(f'{key}: {value}\n')
 
 
