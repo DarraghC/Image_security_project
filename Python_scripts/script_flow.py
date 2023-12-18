@@ -230,46 +230,105 @@ def execute_flow():
     print("/n")
     print("version_dict {0}".format(version_dict))
 
-    for json_file in json_files_list:
-        for image in image_list:
-            # print("json file {0}:type {1}  Image is {2} : type{3}".format(json_file, type(json_file), image, type(image)))
-            if image in json_file:
-                # print("got here")
-                json_string_data = get_json(json_file)
+    for image_name, version_list in oldest_for_date_dict.items():
+        for version in version_list:
+            for json_file in json_files_list:
+                if image_name in json_file and version in json_file:
+                    print("pre-here")
+                    print(json_file)
+                    print("got here")
+                    print(image_name, json_file)
+                    json_string_data = get_json(json_file)
+                    # _ , results_data = parse_string_data(json_string_data)
+                    trivy_report_path = "trivy-reports/{0}_{1}.json".format(image_name, version)
+                    print("got here2")
+                    print(trivy_report_path)
+                    if trivy_report_path in json_file:
+                        for image_dicts_image_key, versions_dates_list in image_dicts.items():
+                            if image_name == image_dicts_image_key:
+                                for version_date_item in versions_dates_list:
+                                    if version in version_date_item:
+                                        print("VERSION_DATE_ITEM: {0}".format(version_date_item))
+                                        _theversion, version_date_published = version_date_item.split(',')
+                                        print("Version is: {0}, Published: {1}".format(_theversion, version_date_published))
 
-                # print("json_string_data {0}".format(json_string_data))
-                image_name, results_data = parse_string_data(json_string_data)
-                print("image name is {0} and type is {1}".format(image_name, type(image_name)))
-                print("image is {0} and type is {1}".format(image, type(image)))
+                                        low_count, medium_count, high_count, critical_count = count_error_in_results(json_string_data)
+                                        print("{1}, {2}, {3}, {4}, {5}, {6}, {7}".format(image_name, version, version_date_published, low_count, medium_count, high_count, critical_count))
 
-                for image_key, dict_version_list in oldest_for_date_dict.items():
-                    print("image: {0}, image_key: {1}".format(image, image_key))
-                    if image == image_key:
-                        for version in dict_version_list:
-                            # for version_dict_image_key, version_list in version_dict.items():
-                                print("image: {0}, image_key: {1}".format(image, image_key))
-                                if image == image_key:
-                                    for the_version in dict_version_list:
-                                        print("version: {0}, the_version: {1}".format(version, the_version))
-                                        if version == the_version:
-                                            if "trivy-reports/{0}_{1}.json".format(image, version) in json_file:
-                                                for image_dicts_image, versions_dates_list in image_dicts.items():
-                                                    print("image: {0}, image_dicts_image: {1}".format(image, image_dicts_image))
-                                                    if image == image_dicts_image:
-                                                        for item in versions_dates_list:
-                                                            # print("blah: {0}".format(versions_dates_list))
-                                                            # print("version is: {0} , item is {1}".format(version, item))
-                                                            if version in item:
-                                                                version_and_date_list = item.split(',')
-                                                                version_date_published = version_and_date_list[1]
+                                        if check_csv_file_empty():
+                                            write_headers_to_file()
+                                        write_parsed_data(image_name, version, version_date_published, low_count, medium_count, high_count, critical_count)
 
-                                                                print("Version is: {0}, Published: {1}".format(version, version_date_published))
 
-                                                                # print("results_data is : {0}".format(results_data))
+    # for json_file in json_files_list:
+    #     for image in image_list:
+    # #         # print("json file {0}:type {1}  Image is {2} : type{3}".format(json_file, type(json_file), image, type(image)))
+    # #         if image in json_file:
+    #         json_string_data = get_json(json_file)
+    #         image_name, results_data = parse_string_data(json_string_data)
 
-                                                                low_count, medium_count, high_count, critical_count = count_error_in_results(json_string_data)
-                                                                print("{1}, {2}, {3}, {4}, {5}, {6}, {7}".format(image, version, version_date_published, low_count, medium_count, high_count, critical_count))
-                                                                if check_csv_file_empty():
-                                                                    write_headers_to_file()
-                                                                write_parsed_data(image, version, version_date_published, low_count, medium_count, high_count, critical_count)
+    #         for image_key, dict_version_list in oldest_for_date_dict.items():
+    #             if image == image_key:
+    #                 for version in dict_version_list:
+    #                     if version == image_dicts.get(image, {}).get(version):
+    #                         trivy_report_path = "trivy-reports/{0}_{1}.json".format(image, version)
+    #                         if trivy_report_path in json_file:
+    #                             for image_dicts_image, versions_dates_list in image_dicts.items():
+    #                                 if image == image_dicts_image:
+    #                                     for item in versions_dates_list:
+    #                                         if version in item:
+    #                                             version_and_date_list = item.split(',')
+    #                                             version_date_published = version_and_date_list[1]
+    #                                             print("Version is: {0}, Published: {1}".format(version, version_date_published))
+
+    #                                             low_count, medium_count, high_count, critical_count = count_error_in_results(json_string_data)
+    #                                             print("{1}, {2}, {3}, {4}, {5}, {6}, {7}".format(
+    #                                                 image, version, version_date_published, low_count, medium_count, high_count, critical_count))
+
+    #                                             if check_csv_file_empty():
+    #                                                 write_headers_to_file()
+    #                                             write_parsed_data(image, version, version_date_published, low_count, medium_count, high_count, critical_count)
+
+    # # for json_file in json_files_list:
+    #     for image in image_list:
+    #         # print("json file {0}:type {1}  Image is {2} : type{3}".format(json_file, type(json_file), image, type(image)))
+    #         if image in json_file:
+    #             # print("got here")
+    #             json_string_data = get_json(json_file)
+
+    #             # print("json_string_data {0}".format(json_string_data))
+    #             image_name, results_data = parse_string_data(json_string_data)
+    #             print("image name is {0} and type is {1}".format(image_name, type(image_name)))
+    #             print("image is {0} and type is {1}".format(image, type(image)))
+
+    #             for image_key, dict_version_list in oldest_for_date_dict.items():
+    #                 print("image: {0}, image_key: {1}".format(image, image_key))
+    #                 if image == image_key:
+    #                     for version in dict_version_list:
+    #                         # for version_dict_image_key, version_list in version_dict.items():
+    #                             print("image: {0}, image_key: {1}".format(image, image_key))
+    #                             if image == image_key:
+    #                                 for the_version in dict_version_list:
+    #                                     print("version: {0}, the_version: {1}".format(version, the_version))
+    #                                     if version == the_version:
+    #                                         if "trivy-reports/{0}_{1}.json".format(image, version) in json_file:
+    #                                             for image_dicts_image, versions_dates_list in image_dicts.items():
+    #                                                 print("image: {0}, image_dicts_image: {1}".format(image, image_dicts_image))
+    #                                                 if image == image_dicts_image:
+    #                                                     for item in versions_dates_list:
+    #                                                         # print("blah: {0}".format(versions_dates_list))
+    #                                                         # print("version is: {0} , item is {1}".format(version, item))
+    #                                                         if version in item:
+    #                                                             version_and_date_list = item.split(',')
+    #                                                             version_date_published = version_and_date_list[1]
+
+    #                                                             print("Version is: {0}, Published: {1}".format(version, version_date_published))
+
+    #                                                             # print("results_data is : {0}".format(results_data))
+
+    #                                                             low_count, medium_count, high_count, critical_count = count_error_in_results(json_string_data)
+    #                                                             print("{1}, {2}, {3}, {4}, {5}, {6}, {7}".format(image, version, version_date_published, low_count, medium_count, high_count, critical_count))
+    #                                                             if check_csv_file_empty():
+    #                                                                 write_headers_to_file()
+    #                                                             write_parsed_data(image, version, version_date_published, low_count, medium_count, high_count, critical_count)
 
