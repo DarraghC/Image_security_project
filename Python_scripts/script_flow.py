@@ -216,7 +216,7 @@ def execute_flow():
     create_image_unique_version_dict()
     print("oldest version dict after creation : {0}".format(oldest_for_date_dict))
     get_oldest_version_for_date_dict()
-    print("image dict after creation: {0}, oldest_version_dict: {2}".format(image_dicts, oldest_for_date_dict ))
+    print("image dict after creation: {0}, oldest_version_dict: {1}".format(image_dicts, oldest_for_date_dict ))
     get_version_dict()
     print("Image dict after data added : {0}".format(version_dict))
     get_version_release_dict()
