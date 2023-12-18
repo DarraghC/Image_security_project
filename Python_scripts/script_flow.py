@@ -234,11 +234,11 @@ def execute_flow():
                 # print("image name is {0} and type is {1}".format(image_name, type(image_name)))
                 # print("image is {0} and type is {1}".format(image, type(image)))
 
-                for version_dict_image_key, version_list in version_dict.items():
-                    print("image: {0}, version_dict_image_key: {1}".format(image, version_dict_image_key))
-                    if image == version_dict_image_key:
-                        for version in version_list:
-                            for image_key, dict_version_list in oldest_for_date_dict.items():
+                for image_key, dict_version_list in oldest_for_date_dict.items():
+                    print("image: {0}, image_key: {1}".format(image, image_key))
+                    if image == image_key:
+                        for version in dict_version_list:
+                            # for version_dict_image_key, version_list in version_dict.items():
                                 print("image: {0}, image_key: {1}".format(image, image_key))
                                 if image == image_key:
                                     for the_version in dict_version_list:
@@ -260,7 +260,7 @@ def execute_flow():
                                                                 # print("results_data is : {0}".format(results_data))
 
                                                                 low_count, medium_count, high_count, critical_count = count_error_in_results(json_string_data)
-
+                                                                print("{1}, {2}, {3}, {4}, {5}, {6}, {7}".format(image, version, version_date_published, low_count, medium_count, high_count, critical_count))
                                                                 if check_csv_file_empty():
                                                                     write_headers_to_file()
                                                                 write_parsed_data(image, version, version_date_published, low_count, medium_count, high_count, critical_count)
