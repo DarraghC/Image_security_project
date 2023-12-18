@@ -113,6 +113,7 @@ def get_version_release_dict():
     """
     with open(VERSION_RELEASE_DIR) as file: 
         Lines = file.readlines() 
+        print("LINES FOR VERSION RELEASE DIR {0}".format(Lines))
         for line in Lines:
             key, value = line.split(':', 1)
             for image_name in image_dicts.keys():
