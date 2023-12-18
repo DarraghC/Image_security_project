@@ -221,8 +221,8 @@ def execute_flow():
     get_version_release_dict()
     json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
 
-    print("json_files_list {0}".format(json_files_list))
-    print("/n")
+    # print("json_files_list {0}".format(json_files_list))
+    # print("/n")
     print("oldest_for_date_dict {0}".format(oldest_for_date_dict))
     print("/n")
     print("image_dicts {0}".format(image_dicts))
@@ -236,7 +236,7 @@ def execute_flow():
                 # print("got here")
                 json_string_data = get_json(json_file)
 
-                print("json_string_data {0}".format(json_string_data))
+                # print("json_string_data {0}".format(json_string_data))
                 image_name, results_data = parse_string_data(json_string_data)
                 print("image name is {0} and type is {1}".format(image_name, type(image_name)))
                 print("image is {0} and type is {1}".format(image, type(image)))
