@@ -87,6 +87,7 @@ def get_oldest_version_for_date_dict():
                         print("version {0}".format(version))
                         print("date_time {0}".format(date_time))
                         oldest_for_date_dict[image_name].append(version)
+    print(oldest_for_date_dict)
             # print("line is: {0}".format(line))
             # split_data  = line.split(":")
             # print("Split data is: {0}".format(split_data))
