@@ -115,7 +115,9 @@ def get_version_release_dict():
         Lines = file.readlines() 
         print("LINES FOR VERSION RELEASE DIR {0}".format(Lines))
         for line in Lines:
+            print("line is : {0}".format(line))
             key, value = line.split(':', 1)
+            print("key: {0}, value: {1}".format(key, value))
             for image_name in image_dicts.keys():
                 if image_name == key:
                     new_value = value.replace('"', '').replace("\n", "").replace("]", "").replace("[", "")
