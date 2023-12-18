@@ -222,17 +222,24 @@ def execute_flow():
     json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
 
     print("json_files_list {0}".format(json_files_list))
+    print("/n")
+    print("oldest_for_date_dict {0}".format(oldest_for_date_dict))
+    print("/n")
+    print("image_dicts {0}".format(image_dicts))
+    print("/n")
+    print("version_dict {0}".format(version_dict))
 
     for json_file in json_files_list:
         for image in image_list:
             # print("json file {0}:type {1}  Image is {2} : type{3}".format(json_file, type(json_file), image, type(image)))
             if image in json_file:
-                print("got here")
+                # print("got here")
                 json_string_data = get_json(json_file)
-                # print("json_string_data {0}".format(json_string_data))
-                # image_name, results_data = parse_string_data(json_string_data)
-                # print("image name is {0} and type is {1}".format(image_name, type(image_name)))
-                # print("image is {0} and type is {1}".format(image, type(image)))
+
+                print("json_string_data {0}".format(json_string_data))
+                image_name, results_data = parse_string_data(json_string_data)
+                print("image name is {0} and type is {1}".format(image_name, type(image_name)))
+                print("image is {0} and type is {1}".format(image, type(image)))
 
                 for image_key, dict_version_list in oldest_for_date_dict.items():
                     print("image: {0}, image_key: {1}".format(image, image_key))
