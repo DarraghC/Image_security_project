@@ -150,9 +150,6 @@ def parse_string_data(json_string_data):
     image_name = re.findall(IMAGE_NAME_PATTERN, str(json_string_data))
     image_name = str(set(image_name))
     image_name = image_name.replace('{', '').replace('}', '').replace("'", '')
-    # image_name = image_name.upper()
-    # the_version_patter = VERSION_PATTERN.format(image_name)
-    # print(str(json_string_data))
     results_data = re.findall(RESULTS_PATTERN, str(json_string_data))
 
     return image_name, results_data
@@ -217,18 +214,20 @@ def execute_flow():
     """
     create_image_dicts()
     create_image_unique_version_dict()
+    print("oldest version dict after creation : {0}".format(oldest_for_date_dict))
     get_oldest_version_for_date_dict()
+    print("image dict after creation: {0}, oldest_version_dict: {2}".format(image_dicts, oldest_for_date_dict ))
     get_version_dict()
+    print("Image dict after data added : {0}".format(version_dict))
     get_version_release_dict()
+    print("image dict after updating: {0}".format(image_dicts))
     json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
 
-    # print("json_files_list {0}".format(json_files_list))
+    # print("oldest_for_date_dict {0}".format(oldest_for_date_dict))
     # print("/n")
-    print("oldest_for_date_dict {0}".format(oldest_for_date_dict))
-    print("/n")
-    print("image_dicts {0}".format(image_dicts))
-    print("/n")
-    print("version_dict {0}".format(version_dict))
+    # print("image_dicts {0}".format(image_dicts))
+    # print("/n")
+    # print("version_dict {0}".format(version_dict))
 
     for image_name, version_list in oldest_for_date_dict.items():
         for version in version_list:
