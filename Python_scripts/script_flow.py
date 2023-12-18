@@ -217,7 +217,7 @@ def execute_flow():
     This is the main function that will call every other function
     """
     create_image_dicts()
-    create_image_unique_version_dict
+    create_image_unique_version_dict()
     get_oldest_version_for_date_dict()
     get_version_dict()
     get_version_release_dict()
