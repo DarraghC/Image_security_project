@@ -237,7 +237,7 @@ def execute_flow():
                 for version_dict_image_key, version_list in version_dict.items():
                     if image == version_dict_image_key:
                         for version in version_list:
-                            for image_key, dict_version_list in oldest_for_date_dict.keys():
+                            for image_key, dict_version_list in oldest_for_date_dict.items():
                                 if image == image_key:
                                     for the_version in dict_version_list:
                                         if version == the_version:
