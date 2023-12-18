@@ -64,7 +64,30 @@ def get_oldest_version_for_date_dict():
     with open(OLDEST_VERSION_FILE_NAME) as file: 
         Lines = file.readlines() 
         for line in Lines:
-            print("line is: {0}".format(line))
+            day, image_data_str = line.split(": {'")
+            image_data_str = image_data_str.rstrip("'}")  # Remove trailing characters
+
+            # Split image data into individual image entries
+            image_entries = image_data_str.split("', '")
+
+            # Process each image entry
+            for item in image_entries:
+                for image_name in oldest_for_date_dict.keys():
+                    if image_name in item:
+                        item = item.strip("[]")
+                        print("image_name {0} : item = {1}".format(image_name, item))
+                        
+                        # Split each item into key-value pairs
+                        key, version_data = item.split(": ")
+                        print("key {0}".format(key))
+                        print("version_data {0}".format(version_data))
+                        
+                        # Extract version and date-time information
+                        version, date_time = version_data.split(", ")
+                        print("version {0}".format(version))
+                        print("date_time {0}".format(date_time))
+                        oldest_for_date_dict[image_name].append(version)
+            # print("line is: {0}".format(line))
             # split_data  = line.split(":")
             # print("Split data is: {0}".format(split_data))
             

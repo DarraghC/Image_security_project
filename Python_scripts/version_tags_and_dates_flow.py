@@ -74,7 +74,7 @@ def get_oldest_if_duplicates():
                 oldest_for_date_dict[date] = {}
 
             if image not in oldest_for_date_dict[date] or datetime_obj < datetime.fromisoformat(oldest_for_date_dict[date][image].split(', ')[1]).replace(tzinfo=timezone.utc):
-                oldest_for_date_dict[date][image] = f'{version}'
+                oldest_for_date_dict[date][image] = f'{version}, {mydatetime}'
 
     # Display the result for both "odoo" and "neo4j" on the same date
     for date, versions in oldest_for_date_dict.items():
