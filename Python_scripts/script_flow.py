@@ -227,7 +227,7 @@ def execute_flow():
         for image in image_list:
             # print("json file {0}:type {1}  Image is {2} : type{3}".format(json_file, type(json_file), image, type(image)))
             if image in json_file:
-                # print("got here")
+                print("got here")
                 json_string_data = get_json(json_file)
                 # print("json_string_data {0}".format(json_string_data))
                 # image_name, results_data = parse_string_data(json_string_data)
@@ -235,14 +235,18 @@ def execute_flow():
                 # print("image is {0} and type is {1}".format(image, type(image)))
 
                 for version_dict_image_key, version_list in version_dict.items():
+                    print("image: {0}, version_dict_image_key: {1}".format(image, version_dict_image_key))
                     if image == version_dict_image_key:
                         for version in version_list:
                             for image_key, dict_version_list in oldest_for_date_dict.items():
+                                print("image: {0}, image_key: {1}".format(image, image_key))
                                 if image == image_key:
                                     for the_version in dict_version_list:
+                                        print("version: {0}, the_version: {1}".format(version, the_version))
                                         if version == the_version:
                                             if "trivy-reports/{0}_{1}.json".format(image, version) in json_file:
                                                 for image_dicts_image, versions_dates_list in image_dicts.items():
+                                                    print("image: {0}, image_dicts_image: {1}".format(image, image_dicts_image))
                                                     if image == image_dicts_image:
                                                         for item in versions_dates_list:
                                                             # print("blah: {0}".format(versions_dates_list))
