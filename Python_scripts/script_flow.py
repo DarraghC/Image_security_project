@@ -115,18 +115,19 @@ def get_version_release_dict():
         Lines = file.readlines() 
         print("LINES FOR VERSION RELEASE DIR {0}".format(Lines))
         for line in Lines:
-            print("line is : {0}".format(line))
-            key, value = line.split(':', 1)
-            print("key: {0}, value: {1}".format(key, value))
+            _, value = line.split(':', 1)
             for image_name in image_dicts.keys():
-                if image_name == key:
-                    new_value = value.replace('"', '').replace("\n", "").replace("]", "").replace("[", "")
-                    updated_list = new_value.split("',")
-                    new_list = []
-                    for item in updated_list:
-                        item = item.replace("'", "")
-                        new_list.append(item)
-                    image_dicts[key] = new_list
+                if image_name in value:
+                    new_value = (value.replace('"', '').replace("\n", "").replace("]", "").replace("[", "").replace("{", "").replace("}", ""))
+                    new_value_list = new_value.split("',")
+                    for item in new_value_list:
+                        image_name_from_split, version_data = item.split(": ")
+                        image_name_from_split = image_name_from_split.replace("'", "").strip()
+                        if image_name in image_name_from_split:
+                            version_data = version_data.replace("'", "").strip()
+                            # Split the date string at 'T' and take the first part
+                            version_data_date_only = version_data.split('T')[0]
+                            image_dicts[image_name].append(version_data_date_only)
     print("image_dicts : {0}".format(image_dicts))
             
 
