@@ -84,6 +84,7 @@ def get_oldest_version_for_date_dict():
                         
                         # Extract version and date-time information
                         version, date_time = version_data.split(", ")
+                        version = version.strip("'")
                         # print("version {0}".format(version))
                         # print("date_time {0}".format(date_time))
                         oldest_for_date_dict[image_name].append(version)
