@@ -17,12 +17,12 @@ VERSION_RELEASE_DIR = "version_release_dict.txt"
 OLDEST_VERSION_FILE_NAME = "oldest_versions.txt"
 
 version_dict = {}
-# image_list = ["alpine", "nginx", "ubuntu", "redis", "postgres", "node", "httpd", "memcached", "python", "mongo",
-#               "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby",
-#               "haproxy", "tomcat", "kong", "neo4j", "amazonlinux", "caddy", "bash", "gradle", "plone", "fedora",
-#               "groovy", "rust", "redmine", "amazoncorretto", "erlang", "elixir", "jruby", "jetty", "odoo", "xwiki",
-#               "swift", "hylang", "archlinux", "tomee", "gcc", "monica", "varnish","orientdb", "julia"] 
-image_list = ["odoo", "neo4j", "orientdb", "plone", "ubuntu", "Alpine"]
+image_list = ["alpine", "nginx", "ubuntu", "redis", "postgres", "node", "httpd", "memcached", "python", "mongo",
+              "mysql", "traefik", "mariadb", "docker", "rabbitmq", "golang", "wordpress", "php", "sonarqube", "ruby",
+              "haproxy", "tomcat", "kong", "neo4j", "amazonlinux", "caddy", "bash", "gradle", "plone", "fedora",
+              "groovy", "rust", "redmine", "amazoncorretto", "erlang", "elixir", "jruby", "jetty", "odoo", "xwiki",
+              "swift", "hylang", "archlinux", "tomee", "gcc", "monica", "varnish","orientdb", "julia"] 
+# image_list = ["odoo", "neo4j", "orientdb", "plone", "ubuntu", "Alpine"]
 
 image_dicts = {}
 oldest_for_date_dict = {}
@@ -218,20 +218,15 @@ def execute_flow():
     """
     create_image_dicts()
     create_image_unique_version_dict()
-    print("oldest version dict after creation : {0}".format(oldest_for_date_dict))
+    # print("oldest version dict after creation : {0}".format(oldest_for_date_dict))
     get_oldest_version_for_date_dict()
-    print("image dict after creation: {0}, oldest_version_dict: {1}".format(image_dicts, oldest_for_date_dict ))
+    # print("image dict after creation: {0}, oldest_version_dict: {1}".format(image_dicts, oldest_for_date_dict ))
     get_version_dict()
-    print("Image dict after data added : {0}".format(version_dict))
+    # print("Image dict after data added : {0}".format(version_dict))
     get_version_release_dict()
-    print("image dict after updating: {0}".format(image_dicts))
+    # print("image dict after updating: {0}".format(image_dicts))
     json_files_list = glob.glob(f'{TRIVY_DIR_PATH}/*.json')
 
-    # print("oldest_for_date_dict {0}".format(oldest_for_date_dict))
-    # print("/n")
-    # print("image_dicts {0}".format(image_dicts))
-    # print("/n")
-    # print("version_dict {0}".format(version_dict))
 
     for image_name, version_list in oldest_for_date_dict.items():
         for version in version_list:
@@ -247,17 +242,17 @@ def execute_flow():
                     print("got here2")
                     print(trivy_report_path)
                     if trivy_report_path in json_file:
-                        print("got here 3")
+                        # print("got here 3")
                         for image_dicts_image_key, versions_dates_list in image_dicts.items():
-                            print("got here 4 image_dicts_image_key {0}: image name {1}".format(image_dicts_image_key, image_name))
+                            # print("got here 4 image_dicts_image_key {0}: image name {1}".format(image_dicts_image_key, image_name))
                             if image_name == image_dicts_image_key:
-                                print("got here 5.1 : versions_dates_list {0}".format(versions_dates_list))
+                                # print("got here 5.1 : versions_dates_list {0}".format(versions_dates_list))
                                 for version_date_item in versions_dates_list:
-                                    print("got here 5.2 version: {0} : {1}".format(version, version_date_item))
+                                    # print("got here 5.2 version: {0} : {1}".format(version, version_date_item))
                                     if version in version_date_item:
-                                        print("VERSION_DATE_ITEM: {0}".format(version_date_item))
+                                        # print("VERSION_DATE_ITEM: {0}".format(version_date_item))
                                         _theversion, version_date_published = version_date_item.split(',')
-                                        print("Version is: {0}, Published: {1}".format(_theversion, version_date_published))
+                                        # print("Version is: {0}, Published: {1}".format(_theversion, version_date_published))
 
                                         low_count, medium_count, high_count, critical_count = count_error_in_results(json_string_data)
                                         print("{0}, {1}, {2}, {3}, {4}, {5}, {6}".format(image_name, version, version_date_published, low_count, medium_count, high_count, critical_count))
