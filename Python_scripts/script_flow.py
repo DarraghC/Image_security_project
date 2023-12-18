@@ -260,7 +260,7 @@ def execute_flow():
                                         print("Version is: {0}, Published: {1}".format(_theversion, version_date_published))
 
                                         low_count, medium_count, high_count, critical_count = count_error_in_results(json_string_data)
-                                        print("{1}, {2}, {3}, {4}, {5}, {6}, {7}".format(image_name, version, version_date_published, low_count, medium_count, high_count, critical_count))
+                                        print("{0}, {1}, {2}, {3}, {4}, {5}, {6}".format(image_name, version, version_date_published, low_count, medium_count, high_count, critical_count))
 
                                         if check_csv_file_empty():
                                             write_headers_to_file()
