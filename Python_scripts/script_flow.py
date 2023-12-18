@@ -248,9 +248,9 @@ def execute_flow():
                         for image_dicts_image_key, versions_dates_list in image_dicts.items():
                             print("got here 4 image_dicts_image_key {0}: image name {1}".format(image_dicts_image_key, image_name))
                             if image_name == image_dicts_image_key:
-                                print("got here 5.1 version_date_item: {0} : versions_dates_list {1}".format(version_date_item, versions_dates_list))
+                                print("got here 5.1 {0} : versions_dates_list {1}".format(versions_dates_list))
                                 for version_date_item in versions_dates_list:
-                                    print("got here 5 version: {0} : {1}".format(version, version_date_item))
+                                    print("got here 5.2 version: {0} : {1}".format(version, version_date_item))
                                     if version in version_date_item:
                                         print("VERSION_DATE_ITEM: {0}".format(version_date_item))
                                         _theversion, version_date_published = version_date_item.split(',')
